@@ -1,0 +1,6 @@
+/* Ensures 6-column row wins over sm: at viewport >= 1800px (see --breakpoint-3xl). */
+@media (min-width: 112.5rem) {
+  .footer-legal-links {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}

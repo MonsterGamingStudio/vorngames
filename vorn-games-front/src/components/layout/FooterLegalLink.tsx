@@ -7,7 +7,7 @@ type FooterLegalLinkProps = {
 
 export function FooterLegalLink({ label, onClick }: FooterLegalLinkProps) {
   return (
-    <Button variant="outline" className="w-full lg:w-auto" onClick={onClick}>
+    <Button variant="outline" className="h-auto min-h-10 w-full whitespace-normal px-3 py-2 text-center" onClick={onClick}>
       {label}
     </Button>
   )

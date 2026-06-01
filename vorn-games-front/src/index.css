@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  --breakpoint-3xl: 112.5rem; /* 1800px — footer legal links single row */
   --color-primary: #E7310D;
   --color-secondary: #4E2B22;
   --color-gray: #4D4753;
