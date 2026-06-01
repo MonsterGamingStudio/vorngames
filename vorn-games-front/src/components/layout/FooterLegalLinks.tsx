@@ -11,7 +11,7 @@ export function FooterLegalLinks({ onOpenLegal }: FooterLegalLinksProps) {
   const { t } = useTranslation()
 
   return (
-    <div className="grid w-full grid-cols-2 gap-[14px] lg:flex lg:flex-row lg:flex-wrap lg:justify-between">
+    <div className="grid w-full grid-cols-2 gap-[14px] lg:flex lg:flex-row lg:flex-wrap">
       {footerLegalLinkIds.map((id) => (
         <FooterLegalLink
           key={id}
