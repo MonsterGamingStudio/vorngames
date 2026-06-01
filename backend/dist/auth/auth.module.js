@@ -24,7 +24,7 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [
             config_1.ConfigModule,
             users_module_1.UsersModule,
-            passport_1.PassportModule.register({ session: false }),
+            passport_1.PassportModule.register({ session: true }),
             jwt_1.JwtModule.registerAsync({
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],

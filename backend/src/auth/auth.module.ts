@@ -12,7 +12,8 @@ import { SteamStrategy } from './steam.strategy';
   imports: [
     ConfigModule,
     UsersModule,
-    PassportModule.register({ session: false }),
+    // Steam OpenID stores a nonce in the session between /steam and /steam/callback
+    PassportModule.register({ session: true }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

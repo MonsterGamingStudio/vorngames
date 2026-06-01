@@ -8,11 +8,27 @@ const config_1 = require("@nestjs/config");
 const core_1 = require("@nestjs/core");
 const swagger_1 = require("@nestjs/swagger");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const express_session_1 = __importDefault(require("express-session"));
 const app_module_1 = require("./app.module");
 const auth_constants_1 = require("./auth/auth.constants");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const config = app.get(config_1.ConfigService);
+    const isProduction = config.get('NODE_ENV') === 'production';
+    if (isProduction) {
+        app.set('trust proxy', 1);
+    }
+    app.use((0, express_session_1.default)({
+        secret: config.getOrThrow('JWT_SECRET'),
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: 'lax',
+            maxAge: 15 * 60 * 1000,
+        },
+    }));
     app.setGlobalPrefix('api');
     app.use((0, cookie_parser_1.default)());
     app.useGlobalPipes(new common_1.ValidationPipe({

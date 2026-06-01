@@ -1,14 +1,35 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import { AppModule } from './app.module';
 import { JWT_COOKIE_NAME } from './auth/auth.constants';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(ConfigService);
+  const isProduction = config.get('NODE_ENV') === 'production';
+
+  if (isProduction) {
+    app.set('trust proxy', 1);
+  }
+
+  app.use(
+    session({
+      secret: config.getOrThrow<string>('JWT_SECRET'),
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: 'lax',
+        maxAge: 15 * 60 * 1000,
+      },
+    }),
+  );
 
   app.setGlobalPrefix('api');
   app.use(cookieParser());
