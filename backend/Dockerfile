@@ -14,7 +14,8 @@ FROM node:22-alpine AS production
 WORKDIR /app
 ENV NODE_ENV=production
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm install prisma --no-save
+COPY --from=deps /app/node_modules ./node_modules
+RUN npm prune --omit=dev
 COPY --from=build /app/dist ./dist
 COPY prisma ./prisma
 COPY prisma.config.ts ./
