@@ -21,13 +21,11 @@ export function useLegalModal() {
   }
 
   const title = activeId ? t(`legal.modals.${activeId}.title`) : undefined
-  const content = activeId && activeId !== 'offer' ? t('legal.placeholder') : undefined
 
   return {
     open,
     activeId,
     title,
-    content,
     openModal,
     closeModal,
     handleExited,

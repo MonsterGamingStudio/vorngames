@@ -14,7 +14,7 @@
   },
   "hero": {
     "title": "Новый магнат в S&BOX на тематику супермаркет",
-    "description": "Lorem ipsum dolor sit amet consectetur. Nisl nibh tellus ut vitae dui cras proin sed. Dictumst sit amet adipiscing cursus eros eu lectus nunc amet.",
+    "description": "Начни с небольшого магазина, расширяй торговые площади, нанимай сотрудников, управляй поставками и преврати свой бизнес в крупнейшую торговую сеть на сервере.",
     "connectServer": "Подключить сервер",
     "copyIp": "Скопировать IP адрес"
   },
@@ -23,16 +23,16 @@
     "packLabel": "Пак на",
     "buyFor": "Купить за {{price}}",
     "packs": {
-      "pack10k": { "amount": "$ 10 000", "price": "$1.99" },
-      "pack40k": { "amount": "$ 40 000", "price": "$4.99" },
-      "pack80k": { "amount": "$ 80 000", "price": "$9.99" },
-      "pack150k": { "amount": "$ 150 000", "price": "$14.99" },
-      "pack250k": { "amount": "$ 250 000", "price": "$24.99" },
-      "pack500k": { "amount": "$ 500 000", "price": "$45.99" }
+      "pack10k": { "amount": "$ 10 000", "price": "200 ₽" },
+      "pack40k": { "amount": "$ 40 000", "price": "500 ₽" },
+      "pack80k": { "amount": "$ 80 000", "price": "1 000 ₽" },
+      "pack150k": { "amount": "$ 150 000", "price": "1 500 ₽" },
+      "pack250k": { "amount": "$ 250 000", "price": "2 500 ₽" },
+      "pack500k": { "amount": "$ 500 000", "price": "4 500 ₽" }
     }
   },
   "footer": {
-    "about": "Lorem ipsum dolor sit amet consectetur. Sed turpis eget tempus consectetur curabitur. Ut volutpat dictum scelerisque lectus purus vel. Dolor fames id suspendisse quis.",
+    "about": "VornGames — игровая студия, создающая уникальные проекты для Garry's Mod, S&box и GTA 5. Мы разрабатываем собственные игровые режимы, системы монетизации и игровые сервисы, уделяя особое внимание качеству и удобству игроков.",
     "requisitesTitle": "Реквизиты",
     "requisites": {
       "ip": "ИП",
@@ -49,11 +49,11 @@
   "legal": {
     "modals": {
       "offer": { "title": "Договор офёрты" },
-      "privacy": { "title": "Политики конфиденциальности" },
-      "terms": { "title": "Пользовательское соглашение" },
-      "payment": { "title": "Правила оплаты" }
-    },
-    "placeholder": "Lorem ipsum dolor sit amet consectetur. Quam faucibus faucibus magna ultrices habitant scelerisque eu arcu interdum. Pellentesque quis eget nulla pellentesque vitae enim nibh egestas nec. Enim et at phasellus consectetur velit. Quis ut fames dignissim adipiscing elit amet aliquam. Pellentesque eu viverra vitae molestie vel."
+      "terms": { "title": "Условия предоставления услуг" },
+      "payment": { "title": "Оплата и возврат" },
+      "products": { "title": "Описание товаров и услуг" },
+      "privacy": { "title": "Политика конфиденциальности" }
+    }
   },
   "notFound": {
     "title": "Not found",

@@ -1,26 +1,18 @@
 import type { LegalModalId } from '../../layout/constants'
 import { Modal } from '../ui/Modal'
-import { OfferLegalContent } from './legal/OfferLegalContent'
-import { LegalModalContent } from './LegalModalContent'
+import { legalModalContentById } from './legal/legalModalContent'
 
 type LegalModalHostProps = {
   open: boolean
   modalId?: LegalModalId
   title?: string
-  content?: string
   onClose: () => void
   onExited: () => void
 }
 
-export function LegalModalHost({
-  open,
-  modalId,
-  title,
-  content,
-  onClose,
-  onExited,
-}: LegalModalHostProps) {
-  const isOffer = modalId === 'offer'
+export function LegalModalHost({ open, modalId, title, onClose, onExited }: LegalModalHostProps) {
+  const Content = modalId ? legalModalContentById[modalId] : null
+  const isStructuredLegal = modalId != null
 
   return (
     <Modal
@@ -28,14 +20,10 @@ export function LegalModalHost({
       onClose={onClose}
       onExited={onExited}
       title={title}
-      className={isOffer ? 'max-w-2xl' : undefined}
-      scrollClassName={isOffer ? 'max-h-[min(75vh,40rem)]' : undefined}
+      className={isStructuredLegal ? 'max-w-2xl' : undefined}
+      scrollClassName={isStructuredLegal ? 'max-h-[min(75vh,40rem)]' : undefined}
     >
-      {isOffer ? (
-        <OfferLegalContent />
-      ) : content ? (
-        <LegalModalContent content={content} />
-      ) : null}
+      {Content ? <Content /> : null}
     </Modal>
   )
 }

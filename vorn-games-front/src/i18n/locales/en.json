@@ -14,7 +14,7 @@
   },
   "hero": {
     "title": "A new supermarket tycoon experience in S&BOX",
-    "description": "Lorem ipsum dolor sit amet consectetur. Nisl nibh tellus ut vitae dui cras proin sed. Dictumst sit amet adipiscing cursus eros eu lectus nunc amet.",
+    "description": "Start with a small store, expand your floor space, hire staff, manage supply chains, and turn your business into the largest retail network on the server.",
     "connectServer": "Connect to server",
     "copyIp": "Copy IP address"
   },
@@ -32,7 +32,7 @@
     }
   },
   "footer": {
-    "about": "Lorem ipsum dolor sit amet consectetur. Sed turpis eget tempus consectetur curabitur. Ut volutpat dictum scelerisque lectus purus vel. Dolor fames id suspendisse quis.",
+    "about": "VornGames is a game studio creating unique projects for Garry's Mod, S&box, and GTA 5. We develop our own game modes, monetization systems, and game services with a strong focus on quality and player experience.",
     "requisitesTitle": "Company details",
     "requisites": {
       "ip": "Sole proprietor",
@@ -49,11 +49,11 @@
   "legal": {
     "modals": {
       "offer": { "title": "Public offer agreement" },
-      "privacy": { "title": "Privacy policy" },
-      "terms": { "title": "Terms of use" },
-      "payment": { "title": "Payment rules" }
-    },
-    "placeholder": "Lorem ipsum dolor sit amet consectetur. Quam faucibus faucibus magna ultrices habitant scelerisque eu arcu interdum. Pellentesque quis eget nulla pellentesque vitae enim nibh egestas nec. Enim et at phasellus consectetur velit. Quis ut fames dignissim adipiscing elit amet aliquam. Pellentesque eu viverra vitae molestie vel."
+      "terms": { "title": "Terms of service" },
+      "payment": { "title": "Payment and refunds" },
+      "products": { "title": "Goods and services description" },
+      "privacy": { "title": "Privacy policy" }
+    }
   },
   "notFound": {
     "title": "Not found",

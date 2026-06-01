@@ -51,6 +51,59 @@ cp .env.example .env
 docker compose up -d --build
 ```
 
+## Production на VPS: Postgres в Docker + API через PM2
+
+Быстрее, чем каждый раз собирать Docker-образ API (на слабом VPS `docker build` может занимать 5+ минут). Обновление — `git pull`, `npm ci`, `npm run build`, `pm2 reload` (~1–2 мин).
+
+### Один раз на сервере
+
+```bash
+# Node 22
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs
+
+sudo npm install -g pm2
+pm2 startup   # выполнить команду, которую выведет pm2
+
+cd ~/back/vorngames/backend
+cp .env.example .env
+nano .env
+```
+
+В `.env` для PM2:
+
+```env
+POSTGRES_PASSWORD=...
+DATABASE_URL=postgresql://postgres:ВАШ_ПАРОЛЬ@127.0.0.1:5433/vorn_games
+STEAM_REALM=https://www.vorngames.com
+STEAM_RETURN_URL=https://www.vorngames.com/api/auth/steam/callback
+FRONTEND_URL=https://www.vorngames.com
+```
+
+Если раньше крутился API в Docker — остановите его, Postgres можно оставить или перейти на отдельный compose:
+
+```bash
+docker compose -f docker-compose.prod.yml stop api
+docker compose -f docker-compose.postgres.yml up -d
+chmod +x scripts/deploy-pm2.sh
+./scripts/deploy-pm2.sh
+```
+
+nginx по-прежнему проксирует `/api` на `http://127.0.0.1:3000`.
+
+### Обновление после `git pull`
+
+```bash
+cd backend
+./scripts/deploy-pm2.sh
+# или вручную: npm ci && npx prisma migrate deploy && npm run build && pm2 reload vorngames-api
+```
+
+| Способ | Сборка API | Типичное обновление |
+|--------|------------|---------------------|
+| Docker (`docker-compose.prod.yml`) | Внутри образа, долго | `docker compose build` |
+| PM2 + Postgres в Docker | `npm run build` на хосте | `pm2 reload` |
+
 ## Переменные окружения
 
 ### backend/.env

@@ -5,7 +5,7 @@ export const PAGE_CONTAINER_CLASS =
 
 export const TELEGRAM_URL = 'https://t.me/vorngames'
 
-export const legalModalIds = ['offer', 'privacy', 'terms', 'payment'] as const
+export const legalModalIds = ['offer', 'terms', 'payment', 'products', 'privacy'] as const
 
 export type LegalModalId = (typeof legalModalIds)[number]
 

@@ -4,6 +4,7 @@ import { cn } from '../../utils/cn'
 export type DropdownOption<T extends string = string> = {
   value: T
   label: string
+  icon?: React.ReactNode
   disabled?: boolean
 }
 
@@ -79,8 +80,14 @@ export function Dropdown<T extends string>({
           )}
           onClick={() => setOpen((v) => !v)}
         >
-          <span className={cn(!selected ? 'text-[var(--color-muted)]' : '')}>
-            {selected?.label ?? placeholder}
+          <span
+            className={cn(
+              'flex min-w-0 items-center gap-2',
+              !selected ? 'text-[var(--color-muted)]' : '',
+            )}
+          >
+            {selected?.icon}
+            <span className="truncate">{selected?.label ?? placeholder}</span>
           </span>
           <span aria-hidden className="text-[var(--color-muted)]">
             ▾
@@ -114,7 +121,10 @@ export function Dropdown<T extends string>({
                       setOpen(false)
                     }}
                   >
-                    <span>{o.label}</span>
+                    <span className="flex min-w-0 items-center gap-2">
+                      {o.icon}
+                      <span className="truncate">{o.label}</span>
+                    </span>
                     {isSelected ? (
                       <span className="text-[var(--color-muted)]">✓</span>
                     ) : null}
