@@ -1,0 +1,26 @@
+# Postgres only (API runs on host via PM2).
+# docker compose -f docker-compose.postgres.yml up -d
+#
+# DATABASE_URL in .env:
+# postgresql://postgres:${POSTGRES_PASSWORD}@127.0.0.1:5433/vorn_games
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:5433:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: vorn_games
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d vorn_games']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
