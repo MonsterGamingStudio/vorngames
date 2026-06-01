@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { cn } from '../../utils/cn'
 import type { DonatPack } from '../../layout/constants'
 import { DonatPackAmount } from './DonatPackAmount'
@@ -8,6 +9,9 @@ type DonatPackDetailsProps = {
 }
 
 export function DonatPackDetails({ pack }: DonatPackDetailsProps) {
+  const { t } = useTranslation()
+  const amount = t(`donat.packs.${pack.id}.amount`)
+
   return (
     <div
       className={cn(
@@ -15,8 +19,8 @@ export function DonatPackDetails({ pack }: DonatPackDetailsProps) {
         pack.featured && 'items-center',
       )}
     >
-      <span className="font-gilroy-medium text-[16px] text-outline">Пак на</span>
-      <DonatPackAmount amount={pack.amount} featured={pack.featured} />
+      <span className="font-gilroy-medium text-[16px] text-outline">{t('donat.packLabel')}</span>
+      <DonatPackAmount amount={amount} featured={pack.featured} />
       <DonatPackBuyButton pack={pack} />
     </div>
   )

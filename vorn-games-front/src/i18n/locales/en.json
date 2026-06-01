@@ -1,0 +1,63 @@
+{
+  "language": {
+    "label": "Language",
+    "ru": "Русский",
+    "en": "English"
+  },
+  "header": {
+    "supermarket": "Supermarket",
+    "balance": "Balance",
+    "topUp": "Top up balance",
+    "steamLogin": "Sign in with Steam",
+    "themeLight": "Switch to light theme",
+    "themeDark": "Switch to dark theme"
+  },
+  "hero": {
+    "title": "A new supermarket tycoon experience in S&BOX",
+    "description": "Lorem ipsum dolor sit amet consectetur. Nisl nibh tellus ut vitae dui cras proin sed. Dictumst sit amet adipiscing cursus eros eu lectus nunc amet.",
+    "connectServer": "Connect to server",
+    "copyIp": "Copy IP address"
+  },
+  "donat": {
+    "sectionTitle": "Donation packs",
+    "packLabel": "Pack for",
+    "buyFor": "Buy for {{price}}",
+    "packs": {
+      "pack10k": { "amount": "$ 10,000", "price": "$1.99" },
+      "pack40k": { "amount": "$ 40,000", "price": "$4.99" },
+      "pack80k": { "amount": "$ 80,000", "price": "$9.99" },
+      "pack150k": { "amount": "$ 150,000", "price": "$14.99" },
+      "pack250k": { "amount": "$ 250,000", "price": "$24.99" },
+      "pack500k": { "amount": "$ 500,000", "price": "$45.99" }
+    }
+  },
+  "footer": {
+    "about": "Lorem ipsum dolor sit amet consectetur. Sed turpis eget tempus consectetur curabitur. Ut volutpat dictum scelerisque lectus purus vel. Dolor fames id suspendisse quis.",
+    "requisitesTitle": "Company details",
+    "requisites": {
+      "ip": "Sole proprietor",
+      "inn": "TIN",
+      "ogrnip": "OGRNIP",
+      "ipValue": "Lipatnikov Elisey Nikolaevich",
+      "innValue": "662334140502",
+      "ogrnipValue": "325665800304141"
+    },
+    "email": "Email",
+    "telegram": "Our Telegram",
+    "poweredBy": "Powered by"
+  },
+  "legal": {
+    "modals": {
+      "offer": { "title": "Public offer agreement" },
+      "privacy": { "title": "Privacy policy" },
+      "terms": { "title": "Terms of use" },
+      "payment": { "title": "Payment rules" }
+    },
+    "placeholder": "Lorem ipsum dolor sit amet consectetur. Quam faucibus faucibus magna ultrices habitant scelerisque eu arcu interdum. Pellentesque quis eget nulla pellentesque vitae enim nibh egestas nec. Enim et at phasellus consectetur velit. Quis ut fames dignissim adipiscing elit amet aliquam. Pellentesque eu viverra vitae molestie vel."
+  },
+  "notFound": {
+    "title": "Not found",
+    "description": "Page not found.",
+    "home": "Back to home"
+  }
+}

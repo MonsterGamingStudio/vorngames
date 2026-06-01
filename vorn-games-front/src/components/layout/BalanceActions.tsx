@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { User } from '../../store/services/authApi'
 import { Button } from '../ui/Button'
 import { BalanceDisplay } from './BalanceDisplay'
@@ -7,11 +8,13 @@ type BalanceActionsProps = {
 }
 
 export function BalanceActions({ user }: BalanceActionsProps) {
+  const { t } = useTranslation()
+
   return (
     <>
       <BalanceDisplay balance={user.balance} />
       <Button variant="primary" leftIcon={<img src="/icons/plus.svg" alt="" />}>
-        Пополнить баланс
+        {t('header.topUp')}
       </Button>
       <Button
         variant="secondary"

@@ -1,9 +1,11 @@
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '../utils/cn'
 import { applyTheme, getSystemTheme, resolveTheme, type ResolvedTheme, type Theme } from '../utils/theme'
 import './ThemeSwitcher.css'
 
 export function ThemeSwitcher() {
+  const { t } = useTranslation()
   const isFirstRender = React.useRef(true)
   const [theme, setTheme] = React.useState<Theme>(() => {
     try {
@@ -54,7 +56,7 @@ export function ThemeSwitcher() {
       type="button"
       className="vorn-theme-switcher"
       onClick={onToggle}
-      aria-label={isDark ? 'Включить светлую тему' : 'Включить тёмную тему'}
+      aria-label={isDark ? t('header.themeLight') : t('header.themeDark')}
     >
       <span
         className={cn(

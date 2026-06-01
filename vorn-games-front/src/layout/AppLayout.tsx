@@ -27,7 +27,9 @@ export function AppLayout() {
 
       <LegalModalHost
         open={legalModal.open}
+        modalId={legalModal.activeId ?? undefined}
         title={legalModal.title}
+        content={legalModal.content}
         onClose={legalModal.closeModal}
         onExited={legalModal.handleExited}
       />

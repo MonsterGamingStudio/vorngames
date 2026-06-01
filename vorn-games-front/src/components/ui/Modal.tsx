@@ -10,6 +10,7 @@ export type ModalProps = {
   title?: string
   children: React.ReactNode
   className?: string
+  scrollClassName?: string
 }
 
 function useEscapeKey(open: boolean, onClose: () => void) {
@@ -23,7 +24,15 @@ function useEscapeKey(open: boolean, onClose: () => void) {
   }, [open, onClose])
 }
 
-export function Modal({ open, onClose, onExited, title, children, className }: ModalProps) {
+export function Modal({
+  open,
+  onClose,
+  onExited,
+  title,
+  children,
+  className,
+  scrollClassName,
+}: ModalProps) {
   useEscapeKey(open, onClose)
 
   const [mounted, setMounted] = React.useState(open)
@@ -94,7 +103,12 @@ export function Modal({ open, onClose, onExited, title, children, className }: M
               />
           </div>
         ) : null}
-        <div className="vorn-scrollbar max-h-[min(60vh,28rem)] overflow-y-auto pr-1 -mr-1">
+        <div
+          className={cn(
+            'vorn-scrollbar max-h-[min(60vh,28rem)] overflow-y-auto pr-1 -mr-1',
+            scrollClassName,
+          )}
+        >
           {children}
         </div>
       </div>

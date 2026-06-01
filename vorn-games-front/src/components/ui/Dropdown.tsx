@@ -9,6 +9,7 @@ export type DropdownOption<T extends string = string> = {
 
 export type DropdownProps<T extends string = string> = {
   label?: string
+  'aria-label'?: string
   value: T
   onChange: (value: T) => void
   options: Array<DropdownOption<T>>
@@ -19,6 +20,7 @@ export type DropdownProps<T extends string = string> = {
 
 export function Dropdown<T extends string>({
   label,
+  'aria-label': ariaLabel,
   value,
   onChange,
   options,
@@ -71,6 +73,7 @@ export function Dropdown<T extends string>({
           disabled={disabled}
           aria-haspopup="listbox"
           aria-expanded={open}
+          aria-label={ariaLabel ?? label}
           className={cn(
             'flex h-10 w-full items-center justify-between rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-sm shadow-sm shadow-black/5 outline-none transition focus:border-[var(--color-accent)]/50 focus:ring-2 focus:ring-[var(--color-accent)]/20 disabled:opacity-50',
           )}

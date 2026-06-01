@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react'
-import { legalModals, type LegalModalId } from '../layout/constants'
+import { useTranslation } from 'react-i18next'
+import type { LegalModalId } from '../layout/constants'
 
 export function useLegalModal() {
+  const { t } = useTranslation()
   const [activeId, setActiveId] = useState<LegalModalId | null>(null)
   const [open, setOpen] = useState(false)
   const openRef = useRef(open)
@@ -18,11 +20,14 @@ export function useLegalModal() {
     if (!openRef.current) setActiveId(null)
   }
 
-  const title = activeId ? legalModals[activeId].title : undefined
+  const title = activeId ? t(`legal.modals.${activeId}.title`) : undefined
+  const content = activeId && activeId !== 'offer' ? t('legal.placeholder') : undefined
 
   return {
     open,
+    activeId,
     title,
+    content,
     openModal,
     closeModal,
     handleExited,
