@@ -15,8 +15,7 @@
   "hero": {
     "title": "A new supermarket tycoon experience in S&BOX",
     "description": "Start with a small store, expand your floor space, hire staff, manage supply chains, and turn your business into the largest retail network on the server.",
-    "connectServer": "Connect to server",
-    "copyIp": "Copy IP address"
+    "startPlaying": "Start playing"
   },
   "donat": {
     "sectionTitle": "Donation packs",
