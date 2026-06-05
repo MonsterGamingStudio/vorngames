@@ -8,6 +8,13 @@ datasource db {
   provider = "postgresql"
 }
 
+enum PaymentStatus {
+  pending
+  paid
+  failed
+  canceled
+}
+
 model User {
   id        String   @id @default(uuid())
   steamId   String   @unique
@@ -16,4 +23,20 @@ model User {
   balance   Decimal  @default(0) @db.Decimal(12, 2)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id              String        @id @default(uuid())
+  orderId         String        @unique
+  game            String
+  steamId         String?
+  amount          Int
+  description     String
+  status          PaymentStatus @default(pending)
+  paymentUrl      String?
+  unitpayId       String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  paidAt          DateTime?
+  wsNotifiedAt    DateTime?
 }

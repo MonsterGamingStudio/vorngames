@@ -131,5 +131,67 @@ cd backend
 | GET | `/api/auth/steam/callback` | Callback, установка cookie |
 | GET | `/api/auth/me` | Текущий пользователь (cookie) |
 | POST | `/api/auth/logout` | Выход |
+| POST | `/api/payments/create` | Создание платежа UnitPay (секрет в заголовке) |
+| GET | `/api/payments/unitpay/handler` | Webhook UnitPay (check / pay / error) |
 
 Пользователь в БД: `username`, `avatarUrl`, `balance` (RUB).
+
+### Платежи (UnitPay)
+
+**Создание платежа** — `POST /api/payments/create`
+
+Заголовок: `X-Payments-Secret: <PAYMENTS_API_SECRET>` (или `Authorization: Bearer <secret>`)
+
+```json
+{
+  "game": "shop_tycoon",
+  "order_id": "550e8400-e29b-41d4-a716-446655440000",
+  "steamid": "76561198000000000",
+  "amount": 5000,
+  "description": "Валюта $5 000 000"
+}
+```
+
+Ответ `200`:
+
+```json
+{
+  "payment_url": "https://unitpay.ru/pay/...",
+  "payment_id": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+`payment_id` — ваш `order_id`; его же вернём в callback на WS.
+
+**UnitPay handler** — укажите в личном кабинете UnitPay:
+
+`https://www.vorngames.com/api/payments/unitpay/handler`
+
+Документация: [Создание платежа](https://help.unitpay.ru/payments/create-payment), [Обработчик платежа](https://help.unitpay.ru/payments/payment-handler).
+
+**Callback на игровой WS** — после `pay` / `error` бэкенд шлёт:
+
+`POST <WS_CALLBACK_URL>` (по умолчанию `https://ws.vorngames.com/api/payment/callback`)
+
+Заголовок: `X-Payments-Secret` (тот же секрет)
+
+```json
+{
+  "order_id": "550e8400-e29b-41d4-a716-446655440000",
+  "status": "success",
+  "amount": 5000
+}
+```
+
+`status`: `success` | `failed` | `canceled`
+
+#### Переменные для платежей (`backend/.env`)
+
+| Переменная | Описание |
+|------------|----------|
+| `PAYMENTS_API_SECRET` | Общий секрет для `/api/payments/create` и WS callback |
+| `UNITPAY_PROJECT_ID` | ID проекта в UnitPay |
+| `UNITPAY_SECRET_KEY` | Секретный ключ проекта UnitPay |
+| `UNITPAY_PAYMENT_TYPE` | Код ПС, например `card` |
+| `UNITPAY_SKIP_IP_CHECK` | `true` локально; в prod — `false` |
+| `WS_CALLBACK_URL` | URL вашего WS-сервера для начисления валюты |
