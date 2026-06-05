@@ -140,7 +140,7 @@ cd backend
 
 **Создание платежа** — `POST /api/payments/create`
 
-Заголовок: `X-Payments-Secret: <PAYMENTS_API_SECRET>` (или `Authorization: Bearer <secret>`)
+Заголовок: `X-Webhook-Secret: <PAYMENTS_API_SECRET>` (или `Authorization: Bearer <secret>`)
 
 ```json
 {
@@ -173,7 +173,7 @@ cd backend
 
 `POST <WS_CALLBACK_URL>` (по умолчанию `https://ws.vorngames.com/api/payment/callback`)
 
-Заголовок: `X-Payments-Secret` (тот же секрет)
+Заголовок: `X-Webhook-Secret` (тот же секрет)
 
 ```json
 {

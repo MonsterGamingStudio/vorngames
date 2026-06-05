@@ -34,7 +34,7 @@ export class PaymentsController {
     summary: 'Create payment and get UnitPay redirect URL',
     description:
       `Supported games: ${SUPPORTED_GAMES.join(', ')}. ` +
-      'Requires shared secret in `X-Payments-Secret` header or `Authorization: Bearer <secret>`.',
+      'Requires shared secret in `X-Webhook-Secret` header or `Authorization: Bearer <secret>`.',
   })
   @ApiHeader({
     name: PAYMENTS_API_SECRET_HEADER,
