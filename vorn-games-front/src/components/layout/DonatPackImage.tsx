@@ -9,7 +9,7 @@ export function DonatPackImage({ pack }: DonatPackImageProps) {
   return (
     <div
       className={cn(
-        'vorn-case-block-donat h-[200px]',
+        'vorn-case-block-donat h-[160px] sm:h-[200px]',
         pack.featured && 'vorn-case-block-donat--featured',
       )}
     >

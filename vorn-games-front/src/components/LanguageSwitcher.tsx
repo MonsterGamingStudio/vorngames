@@ -39,6 +39,7 @@ export function LanguageSwitcher() {
       options={options}
       aria-label={t('language.label')}
       placeholder={t('language.label')}
+      selectedLabelClassName="vorn-language-switcher__label"
     />
   )
 }

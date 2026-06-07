@@ -4,6 +4,8 @@ export function HeroTitle() {
   const { t } = useTranslation()
 
   return (
-    <h1 className="w-[350px] max-lg:w-full text-[28px] text-secondary leading-[120%]">{t('hero.title')}</h1>
+    <h1 className="w-full max-w-[350px] text-[22px] text-secondary leading-[120%] sm:text-[26px] lg:text-[28px]">
+      {t('hero.title')}
+    </h1>
   )
 }

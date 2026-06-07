@@ -7,9 +7,13 @@ export function HeaderBrand() {
   const { t } = useTranslation()
 
   return (
-    <div className="flex flex-wrap gap-[14px] items-center">
+    <div className="flex flex-wrap items-center gap-[14px] max-md:min-w-0 max-md:w-full max-md:gap-2">
       <Logo />
-      <Button variant="primary" leftIcon={<img src="/icons/cart.svg" alt="" />}>
+      <Button
+        variant="primary"
+        className="max-md:min-w-0 max-md:flex-1"
+        leftIcon={<img src="/icons/cart.svg" alt="" />}
+      >
         {t('header.supermarket')}
       </Button>
       <LanguageSwitcher />

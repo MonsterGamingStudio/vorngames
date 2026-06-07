@@ -8,7 +8,7 @@ export function FooterTelegramButton() {
   return (
     <Button
       variant="outline"
-      className="whitespace-normal text-center"
+      className="footer-legal-link w-full min-w-0 whitespace-normal text-center"
       leftIcon={<img src="/icons/tg.svg" alt="" />}
       leftIconDark={<img src="/icons/tgDark.svg" alt="" />}
       onClick={() => window.open(TELEGRAM_URL, '_blank', 'noopener,noreferrer')}

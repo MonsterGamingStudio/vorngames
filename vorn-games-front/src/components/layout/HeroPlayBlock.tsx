@@ -10,7 +10,7 @@ export function HeroPlayBlock() {
   return (
     <button
       type="button"
-      className="vorn-play-block relative w-[640px] h-[360px] max-lg:w-full max-lg:h-auto max-lg:aspect-16/9 rounded-[20px] border border-gray/20 overflow-hidden"
+      className="vorn-play-block relative aspect-16/9 w-full min-w-0 overflow-hidden rounded-[16px] border border-gray/20 sm:rounded-[20px] lg:h-[360px] lg:w-[640px] lg:aspect-auto"
       aria-label="Play video"
       onClick={() => setIsPlaying(true)}
     >

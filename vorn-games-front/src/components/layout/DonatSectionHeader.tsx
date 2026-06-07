@@ -6,7 +6,7 @@ export function DonatSectionHeader() {
   return (
     <div className="flex gap-[14px] items-center">
       <img src="/icons/donat.svg" alt="" />
-      <span className="text-[24px] text-secondary">{t('donat.sectionTitle')}</span>
+      <span className="text-[20px] text-secondary sm:text-[24px]">{t('donat.sectionTitle')}</span>
     </div>
   )
 }

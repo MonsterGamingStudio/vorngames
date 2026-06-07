@@ -6,7 +6,7 @@ export function FooterContacts() {
   const { t } = useTranslation()
 
   return (
-    <div className="flex flex-col gap-[22px]">
+    <div className="flex min-w-0 flex-col gap-4 sm:gap-[22px]">
       {footerContactEmails.map((email) => (
         <FooterContactItem key={email} title={t('footer.email')} value={email} />
       ))}

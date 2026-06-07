@@ -8,7 +8,7 @@ export function FooterRequisites() {
   return (
     <div className="flex flex-col gap-[14px]">
       <span className="text-[16px] font-gilroy-medium text-outline">{t('footer.requisitesTitle')}</span>
-      <div className="text-secondary text-[20px] max-sm:text-[18px] flex flex-col gap-[10px]">
+      <div className="flex flex-col gap-[10px] text-[16px] text-secondary sm:text-[20px]">
         {footerRequisiteKeys.map((key) => (
           <FooterRequisiteLine
             key={key}

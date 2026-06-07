@@ -17,6 +17,7 @@ export type DropdownProps<T extends string = string> = {
   placeholder?: string
   disabled?: boolean
   className?: string
+  selectedLabelClassName?: string
 }
 
 export function Dropdown<T extends string>({
@@ -28,6 +29,7 @@ export function Dropdown<T extends string>({
   placeholder = 'Select…',
   disabled,
   className,
+  selectedLabelClassName,
 }: DropdownProps<T>) {
   const [open, setOpen] = React.useState(false)
   const buttonRef = React.useRef<HTMLButtonElement | null>(null)
@@ -87,7 +89,9 @@ export function Dropdown<T extends string>({
             )}
           >
             {selected?.icon}
-            <span className="truncate">{selected?.label ?? placeholder}</span>
+            <span className={cn('truncate', selectedLabelClassName)}>
+              {selected?.label ?? placeholder}
+            </span>
           </span>
           <span aria-hidden className="text-[var(--color-muted)]">
             ▾

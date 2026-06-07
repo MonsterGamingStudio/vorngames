@@ -10,7 +10,7 @@ export function DonatPackAmount({ amount, featured }: DonatPackAmountProps) {
     <span
       className={cn(
         'text-secondary mb-5',
-        featured ? 'text-[30px]' : 'text-[24px]',
+        featured ? 'text-[24px] sm:text-[30px]' : 'text-[20px] sm:text-[24px]',
       )}
     >
       {amount}

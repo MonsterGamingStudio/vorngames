@@ -1,3 +1,9 @@
+@media (min-width: 112.5rem) {
+  .footer-legal-links {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
 .footer-legal-links .vorn-button {
   min-height: 2rem;
   height: auto;

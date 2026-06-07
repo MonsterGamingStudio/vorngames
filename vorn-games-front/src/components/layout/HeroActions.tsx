@@ -9,6 +9,7 @@ export function HeroActions() {
     <Button
       variant="primary"
       size="50"
+      className="max-sm:w-full"
       leftIcon={<img src="/icons/play.svg" alt="" />}
       onClick={() => window.open(PLAY_GAME_URL, '_blank', 'noopener,noreferrer')}
     >

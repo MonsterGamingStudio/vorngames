@@ -15,7 +15,7 @@ export function DonatPackDetails({ pack }: DonatPackDetailsProps) {
   return (
     <div
       className={cn(
-        'vorn-case-block-donat-item p-[30px] border-t border-gray/20 flex flex-col gap-[10px]',
+        'vorn-case-block-donat-item flex flex-col gap-[10px] border-t border-gray/20 p-4 sm:p-[30px]',
         pack.featured && 'items-center',
       )}
     >

@@ -25,7 +25,8 @@
 
 html {
   color-scheme: light;
-  overflow-y: scroll;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 html[data-theme='dark'] {
@@ -60,6 +61,7 @@ body {
 
 body {
   margin: 0;
+  overflow-x: clip;
   font-family: var(--font-sans);
   font-weight: 700;
   font-style: normal;

@@ -4,7 +4,7 @@ export function HeroDescription() {
   const { t } = useTranslation()
 
   return (
-    <p className="w-[350px] max-lg:w-full font-gilroy-medium text-[14px] text-outline">
+    <p className="w-full max-w-[350px] font-gilroy-medium text-[13px] leading-[140%] text-outline sm:text-[14px]">
       {t('hero.description')}
     </p>
   )

@@ -1,7 +1,7 @@
 import type { ButtonProps } from '../components/ui/Button'
 
 export const PAGE_CONTAINER_CLASS =
-  'mx-auto w-full max-w-6xl px-6 py-10 2xl:max-w-[80%]'
+  'mx-auto w-full min-w-0 max-w-6xl px-4 py-6 sm:px-6 sm:py-10 2xl:max-w-[80%]'
 
 export const TELEGRAM_URL = 'https://t.me/vorngames'
 

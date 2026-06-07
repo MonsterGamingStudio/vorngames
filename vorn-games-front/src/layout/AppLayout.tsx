@@ -12,7 +12,7 @@ export function AppLayout() {
   const legalModal = useLegalModal()
 
   return (
-    <main className="min-h-dvh">
+    <main className="min-h-dvh min-w-0 overflow-x-clip">
       <PageContainer>
         <AppHeader />
         <HeroSection />

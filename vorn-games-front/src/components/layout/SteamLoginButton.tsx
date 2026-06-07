@@ -12,6 +12,7 @@ export function SteamLoginButton() {
   return (
     <Button
       variant="secondary"
+      className="max-md:min-w-0 max-md:flex-1"
       onClick={handleLogin}
       leftIcon={<img src="/icons/steam.svg" alt="" />}
     >

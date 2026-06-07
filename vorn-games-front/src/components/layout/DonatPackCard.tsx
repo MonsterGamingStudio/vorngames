@@ -11,7 +11,7 @@ export function DonatPackCard({ pack }: DonatPackCardProps) {
   return (
     <div
       className={cn(
-        'border border-gray/20 w-full rounded-[20px] overflow-hidden flex flex-col',
+        'flex w-full min-w-0 flex-col overflow-hidden rounded-[16px] border border-gray/20 sm:rounded-[20px]',
         pack.featured && 'col-span-2 max-lg:col-span-1',
       )}
     >

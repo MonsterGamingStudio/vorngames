@@ -65,7 +65,7 @@ export function Modal({
   return createPortal(
     <div
       className={cn(
-        'fixed inset-0 z-50 flex items-center justify-center p-4',
+        'fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4',
         visible ? 'pointer-events-auto' : 'pointer-events-none',
       )}
       aria-hidden={!visible}
@@ -83,7 +83,7 @@ export function Modal({
         aria-modal="true"
         aria-label={displayTitle}
         className={cn(
-          'relative w-full max-w-lg rounded-2xl border border-gray/20 bg-surface p-6 shadow-lg transition-all duration-300 ease-out motion-reduce:transition-none',
+          'relative w-full max-w-lg rounded-2xl border border-gray/20 bg-surface p-4 shadow-lg transition-all duration-300 ease-out motion-reduce:transition-none sm:p-6',
           visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-3 scale-[0.97]',
           className,
         )}
@@ -94,13 +94,19 @@ export function Modal({
         }}
       >
         {displayTitle ? (
-          <div className="mb-4 flex items-center gap-4">
-            <img src="/icons/modal.svg" alt="Modal" />
-            <div className="text-[22px] text-secondary">{displayTitle}</div>
-            <img src="/icons/close.svg" alt="Close"
+          <div className="mb-4 flex min-w-0 items-center gap-3 sm:gap-4">
+            <img src="/icons/modal.svg" alt="" className="shrink-0" aria-hidden />
+            <div className="min-w-0 flex-1 text-[18px] leading-tight text-secondary sm:text-[22px]">
+              {displayTitle}
+            </div>
+            <button
+              type="button"
               onClick={onClose}
-              className="ml-auto h-10 w-10 cursor-pointer"
-              />
+              className="ml-auto shrink-0 cursor-pointer border-0 bg-transparent p-0"
+              aria-label="Close"
+            >
+              <img src="/icons/close.svg" alt="" className="h-9 w-9 sm:h-10 sm:w-10" />
+            </button>
           </div>
         ) : null}
         <div

@@ -23,3 +23,21 @@ html[data-theme='dark'] .vorn-language-switcher button:hover:not(:disabled) {
 .vorn-language-switcher [role='listbox'] {
   border-radius: 1rem;
 }
+
+@media (max-width: 639px) {
+  .vorn-language-switcher {
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+  .vorn-language-switcher .vorn-language-switcher__label {
+    display: none;
+  }
+
+  .vorn-language-switcher button {
+    justify-content: center;
+    gap: 0.25rem;
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
+  }
+}

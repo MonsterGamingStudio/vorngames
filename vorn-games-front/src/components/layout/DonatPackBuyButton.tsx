@@ -11,7 +11,11 @@ export function DonatPackBuyButton({ pack }: DonatPackBuyButtonProps) {
   const price = t(`donat.packs.${pack.id}.price`)
 
   return (
-    <Button variant="primary" size={pack.buttonSize}>
+    <Button
+      variant="primary"
+      size={pack.buttonSize}
+      className="w-full whitespace-normal text-center max-sm:px-4 max-sm:text-[14px]"
+    >
       {t('donat.buyFor', { price })}
     </Button>
   )
