@@ -47,7 +47,7 @@
   },
   "legal": {
     "modals": {
-      "offer": { "title": "Public offer agreement" },
+      "offer": { "title": "Public offer" },
       "terms": { "title": "Terms of service" },
       "payment": { "title": "Payment and refunds" },
       "products": { "title": "Goods and services description" },
