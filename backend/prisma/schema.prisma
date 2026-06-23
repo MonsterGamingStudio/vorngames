@@ -15,28 +15,288 @@ enum PaymentStatus {
   canceled
 }
 
+enum PaymentType {
+  donate
+  script
+}
+
+enum UserRole {
+  user
+  admin
+}
+
+enum GameCategory {
+  gmod
+  fivem
+}
+
+enum ScriptBadge {
+  none
+  bestseller
+  popular
+  new
+  preorder
+}
+
+enum ScriptMediaType {
+  image
+  youtube
+}
+
+enum CommentStatus {
+  pending
+  approved
+  rejected
+}
+
+enum SupportTicketStatus {
+  open
+  closed
+}
+
+enum NotificationType {
+  comment_submitted
+  comment_approved
+  purchase_completed
+  support_reply
+  support_ticket_created
+  script_update
+}
+
+enum Currency {
+  RUB
+  USD
+}
+
 model User {
+  id             String    @id @default(uuid())
+  steamId        String    @unique
+  username       String
+  avatarUrl      String
+  balance        Decimal   @default(0) @db.Decimal(12, 2)
+  role           UserRole  @default(user)
+  isBlocked      Boolean   @default(false)
+  blockedReason  String?
+  lastLoginIp    String?
+  lastLoginAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  purchases           Purchase[]
+  comments            Comment[]
+  moderatedComments   Comment[]         @relation("CommentModerator")
+  scriptViews         ScriptView[]
+  scriptClicks        ScriptClick[]
+  payments            Payment[]
+  notifications       Notification[]
+  supportTickets      SupportTicket[]
+  supportMessages     SupportMessage[]
+  ipBlocksCreated     IpBlock[]         @relation("IpBlockCreator")
+}
+
+model IpBlock {
+  id          String   @id @default(uuid())
+  ip          String   @unique
+  reason      String?
+  createdById String?
+  createdAt   DateTime @default(now())
+
+  createdBy User? @relation("IpBlockCreator", fields: [createdById], references: [id], onDelete: SetNull)
+}
+
+model Script {
+  id               String       @id @default(uuid())
+  slug             String       @unique
+  title            String
+  shortDescription String
+  gameCategory     GameCategory
+  priceRub         Int
+  priceUsd         Int
+  discountPercent  Int?
+  badge            ScriptBadge  @default(none)
+  instructionHtml  String       @default("")
+  isPublished      Boolean      @default(false)
+  featuredOnHome   Boolean      @default(false)
+  publishedAt      DateTime?
+  fileUpdatedAt    DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  media      ScriptMedia[]
+  versions   ScriptVersion[]
+  purchases  Purchase[]
+  views      ScriptView[]
+  clicks     ScriptClick[]
+  comments   Comment[]
+  payments   Payment[]
+}
+
+model ScriptMedia {
+  id        String          @id @default(uuid())
+  scriptId  String
+  type      ScriptMediaType
+  url       String
+  sortOrder Int             @default(0)
+  createdAt DateTime        @default(now())
+
+  script Script @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+
+  @@index([scriptId, sortOrder])
+}
+
+model ScriptVersion {
+  id           String   @id @default(uuid())
+  scriptId     String
+  versionLabel String
+  storageKey   String
+  fileName     String
+  fileSize     Int
+  checksum     String?
+  releasedAt   DateTime @default(now())
+  isCurrent    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  script                    Script     @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+  purchasesLastDownloaded   Purchase[] @relation("LastDownloadedVersion")
+
+  @@index([scriptId, isCurrent])
+}
+
+model Purchase {
+  id                      String    @id @default(uuid())
+  userId                  String
+  scriptId                String
+  paymentId               String?   @unique
+  pricePaid               Int
+  currency                Currency
+  purchasedAt             DateTime  @default(now())
+  lastDownloadedVersionId String?
+  grantedByAdmin          Boolean   @default(false)
+
+  user                    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  script                  Script         @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+  payment                 Payment?       @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+  lastDownloadedVersion   ScriptVersion? @relation("LastDownloadedVersion", fields: [lastDownloadedVersionId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, scriptId])
+  @@index([userId])
+  @@index([scriptId])
+}
+
+model ScriptView {
   id        String   @id @default(uuid())
-  steamId   String   @unique
-  username  String
-  avatarUrl String
-  balance   Decimal  @default(0) @db.Decimal(12, 2)
+  scriptId  String
+  userId    String?
+  ipHash    String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  script Script @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+  user   User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([scriptId, createdAt])
+}
+
+model ScriptClick {
+  id        String   @id @default(uuid())
+  scriptId  String
+  userId    String?
+  ipHash    String
+  createdAt DateTime @default(now())
+
+  script Script @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+  user   User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([scriptId, createdAt])
+}
+
+model Comment {
+  id            String        @id @default(uuid())
+  scriptId      String
+  userId        String
+  text          String
+  status        CommentStatus @default(pending)
+  moderatedAt   DateTime?
+  moderatedById String?
+  createdAt     DateTime      @default(now())
+
+  script      Script @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moderatedBy User?  @relation("CommentModerator", fields: [moderatedById], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([scriptId, status])
+}
+
+model SupportTicket {
+  id           String              @id @default(uuid())
+  ticketNumber String              @unique
+  userId       String
+  subject      String
+  status       SupportTicketStatus @default(open)
+  closedAt     DateTime?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages SupportMessage[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model SupportMessage {
+  id        String   @id @default(uuid())
+  ticketId  String
+  authorId  String
+  isStaff   Boolean  @default(false)
+  body      String
+  createdAt DateTime @default(now())
+
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId, createdAt])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  type      NotificationType
+  title     String
+  body      String
+  payload   Json?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+  @@index([userId, createdAt])
 }
 
 model Payment {
-  id              String        @id @default(uuid())
-  orderId         String        @unique
-  game            String
-  steamId         String?
-  amount          Int
-  description     String
-  status          PaymentStatus @default(pending)
-  paymentUrl      String?
-  unitpayId       String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  paidAt          DateTime?
-  wsNotifiedAt    DateTime?
+  id           String        @id @default(uuid())
+  orderId      String        @unique
+  type         PaymentType   @default(donate)
+  game         String        @default("")
+  steamId      String?
+  userId       String?
+  scriptId     String?
+  amount       Int
+  description  String
+  status       PaymentStatus @default(pending)
+  paymentUrl   String?
+  unitpayId    String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  paidAt       DateTime?
+  wsNotifiedAt DateTime?
+
+  user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  script   Script?   @relation(fields: [scriptId], references: [id], onDelete: SetNull)
+  purchase Purchase?
+
+  @@index([type, status])
+  @@index([userId])
+  @@index([scriptId])
 }

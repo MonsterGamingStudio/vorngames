@@ -14,6 +14,7 @@ const passport_1 = require("@nestjs/passport");
 const users_module_1 = require("../users/users.module");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
+const guards_1 = require("./guards");
 const jwt_strategy_1 = require("./jwt.strategy");
 const steam_strategy_1 = require("./steam.strategy");
 let AuthModule = class AuthModule {
@@ -37,8 +38,15 @@ exports.AuthModule = AuthModule = __decorate([
             }),
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, steam_strategy_1.SteamStrategy, jwt_strategy_1.JwtStrategy],
-        exports: [auth_service_1.AuthService],
+        providers: [
+            auth_service_1.AuthService,
+            steam_strategy_1.SteamStrategy,
+            jwt_strategy_1.JwtStrategy,
+            guards_1.AdminGuard,
+            guards_1.BlockedUserGuard,
+            guards_1.OptionalJwtAuthGuard,
+        ],
+        exports: [auth_service_1.AuthService, guards_1.AdminGuard, guards_1.BlockedUserGuard, guards_1.OptionalJwtAuthGuard],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

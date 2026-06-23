@@ -14,9 +14,10 @@ export declare class AuthService {
         photos?: Array<{
             value: string;
         }>;
-    }): Promise<User>;
+    }, loginIp?: string): Promise<User>;
     signToken(user: User): string;
     getUserById(id: string): Promise<User | null>;
+    getCurrentUser(user: User, loginIp?: string): Promise<User>;
     toUserResponse(user: User): UserResponseDto;
     getFrontendUrl(): string;
 }

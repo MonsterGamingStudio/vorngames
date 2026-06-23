@@ -8,23 +8,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var PaymentsService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentsService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("../generated/prisma/client");
 const prisma_service_1 = require("../prisma/prisma.service");
+const purchases_service_1 = require("../purchases/purchases.service");
 const unitpay_service_1 = require("./unitpay.service");
 const ws_callback_service_1 = require("./ws-callback.service");
 let PaymentsService = PaymentsService_1 = class PaymentsService {
     prisma;
     unitpay;
     wsCallback;
+    purchasesService;
     logger = new common_1.Logger(PaymentsService_1.name);
-    constructor(prisma, unitpay, wsCallback) {
+    constructor(prisma, unitpay, wsCallback, purchasesService) {
         this.prisma = prisma;
         this.unitpay = unitpay;
         this.wsCallback = wsCallback;
+        this.purchasesService = purchasesService;
     }
     async createPayment(dto) {
         const orderId = dto.order_id;
@@ -45,6 +51,7 @@ let PaymentsService = PaymentsService_1 = class PaymentsService {
         const payment = await this.prisma.payment.create({
             data: {
                 orderId,
+                type: client_1.PaymentType.donate,
                 game: dto.game,
                 steamId: dto.steamid,
                 amount: dto.amount,
@@ -114,6 +121,9 @@ let PaymentsService = PaymentsService_1 = class PaymentsService {
             return this.unitpay.errorResponse('Order amount mismatch');
         }
         if (found.status === client_1.PaymentStatus.paid) {
+            if (found.type === client_1.PaymentType.script) {
+                await this.purchasesService.fulfillScriptPayment(found.id);
+            }
             return this.unitpay.successResponse('Already paid');
         }
         if (found.status !== client_1.PaymentStatus.pending) {
@@ -127,7 +137,12 @@ let PaymentsService = PaymentsService_1 = class PaymentsService {
                 unitpayId: unitpayId ?? found.unitpayId,
             },
         });
-        await this.notifyWsOnce(found, 'success');
+        if (found.type === client_1.PaymentType.script) {
+            await this.purchasesService.fulfillScriptPayment(found.id);
+        }
+        else {
+            await this.notifyWsOnce(found, 'success');
+        }
         return this.unitpay.successResponse('Payment successful');
     }
     async handleError(params) {
@@ -143,7 +158,9 @@ let PaymentsService = PaymentsService_1 = class PaymentsService {
             where: { id: found.id },
             data: { status: client_1.PaymentStatus.failed },
         });
-        await this.notifyWsOnce(found, 'failed');
+        if (found.type === client_1.PaymentType.donate) {
+            await this.notifyWsOnce(found, 'failed');
+        }
         return this.unitpay.successResponse('Error recorded');
     }
     async findPaymentOrError(orderId) {
@@ -159,7 +176,7 @@ let PaymentsService = PaymentsService_1 = class PaymentsService {
         return payment;
     }
     async notifyWsOnce(payment, status) {
-        if (payment.wsNotifiedAt) {
+        if (payment.wsNotifiedAt || payment.type !== client_1.PaymentType.donate) {
             return;
         }
         await this.wsCallback.notify({
@@ -176,8 +193,10 @@ let PaymentsService = PaymentsService_1 = class PaymentsService {
 exports.PaymentsService = PaymentsService;
 exports.PaymentsService = PaymentsService = PaymentsService_1 = __decorate([
     (0, common_1.Injectable)(),
+    __param(3, (0, common_1.Inject)((0, common_1.forwardRef)(() => purchases_service_1.PurchasesService))),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         unitpay_service_1.UnitpayService,
-        ws_callback_service_1.WsCallbackService])
+        ws_callback_service_1.WsCallbackService,
+        purchases_service_1.PurchasesService])
 ], PaymentsService);
 //# sourceMappingURL=payments.service.js.map

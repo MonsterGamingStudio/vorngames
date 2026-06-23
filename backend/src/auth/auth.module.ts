@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { AdminGuard, BlockedUserGuard, OptionalJwtAuthGuard } from './guards';
 import { JwtStrategy } from './jwt.strategy';
 import { SteamStrategy } from './steam.strategy';
 
@@ -12,7 +13,6 @@ import { SteamStrategy } from './steam.strategy';
   imports: [
     ConfigModule,
     UsersModule,
-    // Steam OpenID stores a nonce in the session between /steam and /steam/callback
     PassportModule.register({ session: true }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -26,7 +26,14 @@ import { SteamStrategy } from './steam.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, SteamStrategy, JwtStrategy],
-  exports: [AuthService],
+  providers: [
+    AuthService,
+    SteamStrategy,
+    JwtStrategy,
+    AdminGuard,
+    BlockedUserGuard,
+    OptionalJwtAuthGuard,
+  ],
+  exports: [AuthService, AdminGuard, BlockedUserGuard, OptionalJwtAuthGuard],
 })
 export class AuthModule {}

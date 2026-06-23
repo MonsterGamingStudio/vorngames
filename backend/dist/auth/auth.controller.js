@@ -17,9 +17,11 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const passport_1 = require("@nestjs/passport");
 const swagger_1 = require("@nestjs/swagger");
+const utils_1 = require("../common/utils");
 const auth_constants_1 = require("./auth.constants");
 const auth_service_1 = require("./auth.service");
 const user_response_dto_1 = require("./dto/user-response.dto");
+const guards_1 = require("./guards");
 const jwt_auth_guard_1 = require("./jwt-auth.guard");
 let AuthController = class AuthController {
     authService;
@@ -42,8 +44,9 @@ let AuthController = class AuthController {
         });
         res.redirect(this.authService.getFrontendUrl());
     }
-    getMe(req) {
-        return this.authService.toUserResponse(req.user);
+    async getMe(req) {
+        const user = await this.authService.getCurrentUser(req.user, (0, utils_1.getClientIp)(req));
+        return this.authService.toUserResponse(user);
     }
     logout(res) {
         res.clearCookie(auth_constants_1.JWT_COOKIE_NAME, {
@@ -78,11 +81,11 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Get current authenticated user' }),
     (0, swagger_1.ApiResponse)({ status: 200, type: user_response_dto_1.UserResponseDto }),
     (0, swagger_1.ApiUnauthorizedResponse)({ description: 'Not authenticated' }),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, guards_1.BlockedUserGuard),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", user_response_dto_1.UserResponseDto)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getMe", null);
 __decorate([
     (0, common_1.Post)('logout'),

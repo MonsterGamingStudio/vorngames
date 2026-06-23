@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../generated/prisma/client';
 import { UserResponseDto } from './dto/user-response.dto';
-import { UsersService, SteamProfileInput } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 
 type JwtPayload = {
   sub: string;
@@ -18,12 +18,15 @@ export class AuthService {
     private readonly config: ConfigService,
   ) {}
 
-  async validateSteamProfile(profile: {
-    id: string;
-    displayName?: string;
-    photos?: Array<{ value: string }>;
-  }): Promise<User> {
-    const steamProfile: SteamProfileInput = {
+  async validateSteamProfile(
+    profile: {
+      id: string;
+      displayName?: string;
+      photos?: Array<{ value: string }>;
+    },
+    loginIp?: string,
+  ): Promise<User> {
+    const steamProfile = {
       steamId: profile.id,
       username: profile.displayName ?? 'Steam User',
       avatarUrl:
@@ -32,7 +35,7 @@ export class AuthService {
         'https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff25dc1cdfeb_full.jpg',
     };
 
-    return this.usersService.upsertFromSteam(steamProfile);
+    return this.usersService.upsertFromSteam(steamProfile, loginIp);
   }
 
   signToken(user: User): string {
@@ -48,6 +51,14 @@ export class AuthService {
     return this.usersService.findById(id);
   }
 
+  async getCurrentUser(user: User, loginIp?: string): Promise<User> {
+    const refreshed = await this.usersService.refreshSteamProfile(user);
+    if (loginIp) {
+      return this.usersService.recordLogin(refreshed.id, loginIp);
+    }
+    return refreshed;
+  }
+
   toUserResponse(user: User): UserResponseDto {
     return {
       id: user.id,
@@ -55,6 +66,9 @@ export class AuthService {
       username: user.username,
       avatarUrl: user.avatarUrl,
       balance: UsersService.toBalanceNumber(user.balance),
+      role: user.role,
+      isBlocked: user.isBlocked,
+      createdAt: user.createdAt,
     };
   }
 

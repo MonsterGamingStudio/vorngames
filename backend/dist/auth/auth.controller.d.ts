@@ -13,7 +13,7 @@ export declare class AuthController {
     }, res: Response): void;
     getMe(req: Request & {
         user: User;
-    }): UserResponseDto;
+    }): Promise<UserResponseDto>;
     logout(res: Response): {
         ok: boolean;
     };

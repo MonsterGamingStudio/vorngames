@@ -47,7 +47,7 @@ async function bootstrap() {
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Vorn Games API')
-    .setDescription('Steam auth and user profile API')
+    .setDescription('VornGames API: Steam auth, scripts catalog, purchases, support')
     .setVersion('1.0')
     .addCookieAuth(JWT_COOKIE_NAME)
     .build();

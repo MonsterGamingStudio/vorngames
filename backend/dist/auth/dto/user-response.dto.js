@@ -17,6 +17,9 @@ class UserResponseDto {
     username;
     avatarUrl;
     balance;
+    role;
+    isBlocked;
+    createdAt;
 }
 exports.UserResponseDto = UserResponseDto;
 __decorate([
@@ -39,4 +42,16 @@ __decorate([
     (0, swagger_1.ApiProperty)({ example: 0, description: 'Balance in RUB' }),
     __metadata("design:type", Number)
 ], UserResponseDto.prototype, "balance", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'user', enum: ['user', 'admin'] }),
+    __metadata("design:type", String)
+], UserResponseDto.prototype, "role", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: false }),
+    __metadata("design:type", Boolean)
+], UserResponseDto.prototype, "isBlocked", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: '2025-01-15T12:00:00.000Z' }),
+    __metadata("design:type", Date)
+], UserResponseDto.prototype, "createdAt", void 0);
 //# sourceMappingURL=user-response.dto.js.map

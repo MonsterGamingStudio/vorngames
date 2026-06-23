@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.PaymentScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.NullableJsonNullValueInput = exports.SortOrder = exports.PaymentScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.SupportMessageScalarFieldEnum = exports.SupportTicketScalarFieldEnum = exports.CommentScalarFieldEnum = exports.ScriptClickScalarFieldEnum = exports.ScriptViewScalarFieldEnum = exports.PurchaseScalarFieldEnum = exports.ScriptVersionScalarFieldEnum = exports.ScriptMediaScalarFieldEnum = exports.ScriptScalarFieldEnum = exports.IpBlockScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -46,6 +46,17 @@ exports.JsonNull = runtime.JsonNull;
 exports.AnyNull = runtime.AnyNull;
 exports.ModelName = {
     User: 'User',
+    IpBlock: 'IpBlock',
+    Script: 'Script',
+    ScriptMedia: 'ScriptMedia',
+    ScriptVersion: 'ScriptVersion',
+    Purchase: 'Purchase',
+    ScriptView: 'ScriptView',
+    ScriptClick: 'ScriptClick',
+    Comment: 'Comment',
+    SupportTicket: 'SupportTicket',
+    SupportMessage: 'SupportMessage',
+    Notification: 'Notification',
     Payment: 'Payment'
 };
 exports.TransactionIsolationLevel = runtime.makeStrictEnum({
@@ -60,14 +71,130 @@ exports.UserScalarFieldEnum = {
     username: 'username',
     avatarUrl: 'avatarUrl',
     balance: 'balance',
+    role: 'role',
+    isBlocked: 'isBlocked',
+    blockedReason: 'blockedReason',
+    lastLoginIp: 'lastLoginIp',
+    lastLoginAt: 'lastLoginAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+exports.IpBlockScalarFieldEnum = {
+    id: 'id',
+    ip: 'ip',
+    reason: 'reason',
+    createdById: 'createdById',
+    createdAt: 'createdAt'
+};
+exports.ScriptScalarFieldEnum = {
+    id: 'id',
+    slug: 'slug',
+    title: 'title',
+    shortDescription: 'shortDescription',
+    gameCategory: 'gameCategory',
+    priceRub: 'priceRub',
+    priceUsd: 'priceUsd',
+    discountPercent: 'discountPercent',
+    badge: 'badge',
+    instructionHtml: 'instructionHtml',
+    isPublished: 'isPublished',
+    featuredOnHome: 'featuredOnHome',
+    publishedAt: 'publishedAt',
+    fileUpdatedAt: 'fileUpdatedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.ScriptMediaScalarFieldEnum = {
+    id: 'id',
+    scriptId: 'scriptId',
+    type: 'type',
+    url: 'url',
+    sortOrder: 'sortOrder',
+    createdAt: 'createdAt'
+};
+exports.ScriptVersionScalarFieldEnum = {
+    id: 'id',
+    scriptId: 'scriptId',
+    versionLabel: 'versionLabel',
+    storageKey: 'storageKey',
+    fileName: 'fileName',
+    fileSize: 'fileSize',
+    checksum: 'checksum',
+    releasedAt: 'releasedAt',
+    isCurrent: 'isCurrent',
+    createdAt: 'createdAt'
+};
+exports.PurchaseScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    scriptId: 'scriptId',
+    paymentId: 'paymentId',
+    pricePaid: 'pricePaid',
+    currency: 'currency',
+    purchasedAt: 'purchasedAt',
+    lastDownloadedVersionId: 'lastDownloadedVersionId',
+    grantedByAdmin: 'grantedByAdmin'
+};
+exports.ScriptViewScalarFieldEnum = {
+    id: 'id',
+    scriptId: 'scriptId',
+    userId: 'userId',
+    ipHash: 'ipHash',
+    createdAt: 'createdAt'
+};
+exports.ScriptClickScalarFieldEnum = {
+    id: 'id',
+    scriptId: 'scriptId',
+    userId: 'userId',
+    ipHash: 'ipHash',
+    createdAt: 'createdAt'
+};
+exports.CommentScalarFieldEnum = {
+    id: 'id',
+    scriptId: 'scriptId',
+    userId: 'userId',
+    text: 'text',
+    status: 'status',
+    moderatedAt: 'moderatedAt',
+    moderatedById: 'moderatedById',
+    createdAt: 'createdAt'
+};
+exports.SupportTicketScalarFieldEnum = {
+    id: 'id',
+    ticketNumber: 'ticketNumber',
+    userId: 'userId',
+    subject: 'subject',
+    status: 'status',
+    closedAt: 'closedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.SupportMessageScalarFieldEnum = {
+    id: 'id',
+    ticketId: 'ticketId',
+    authorId: 'authorId',
+    isStaff: 'isStaff',
+    body: 'body',
+    createdAt: 'createdAt'
+};
+exports.NotificationScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    type: 'type',
+    title: 'title',
+    body: 'body',
+    payload: 'payload',
+    readAt: 'readAt',
+    createdAt: 'createdAt'
 };
 exports.PaymentScalarFieldEnum = {
     id: 'id',
     orderId: 'orderId',
+    type: 'type',
     game: 'game',
     steamId: 'steamId',
+    userId: 'userId',
+    scriptId: 'scriptId',
     amount: 'amount',
     description: 'description',
     status: 'status',
@@ -82,6 +209,10 @@ exports.SortOrder = {
     asc: 'asc',
     desc: 'desc'
 };
+exports.NullableJsonNullValueInput = {
+    DbNull: exports.DbNull,
+    JsonNull: exports.JsonNull
+};
 exports.QueryMode = {
     default: 'default',
     insensitive: 'insensitive'
@@ -89,5 +220,10 @@ exports.QueryMode = {
 exports.NullsOrder = {
     first: 'first',
     last: 'last'
+};
+exports.JsonNullValueFilter = {
+    DbNull: exports.DbNull,
+    JsonNull: exports.JsonNull,
+    AnyNull: exports.AnyNull
 };
 //# sourceMappingURL=prismaNamespaceBrowser.js.map

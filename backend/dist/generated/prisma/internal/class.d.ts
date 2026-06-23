@@ -33,6 +33,39 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get user(): Prisma.UserDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get ipBlock(): Prisma.IpBlockDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get script(): Prisma.ScriptDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get scriptMedia(): Prisma.ScriptMediaDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get scriptVersion(): Prisma.ScriptVersionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get purchase(): Prisma.PurchaseDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get scriptView(): Prisma.ScriptViewDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get scriptClick(): Prisma.ScriptClickDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get comment(): Prisma.CommentDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get supportTicket(): Prisma.SupportTicketDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get supportMessage(): Prisma.SupportMessageDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get notification(): Prisma.NotificationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
     get payment(): Prisma.PaymentDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;

@@ -1,3 +1,14 @@
 export type * from './models/User';
+export type * from './models/IpBlock';
+export type * from './models/Script';
+export type * from './models/ScriptMedia';
+export type * from './models/ScriptVersion';
+export type * from './models/Purchase';
+export type * from './models/ScriptView';
+export type * from './models/ScriptClick';
+export type * from './models/Comment';
+export type * from './models/SupportTicket';
+export type * from './models/SupportMessage';
+export type * from './models/Notification';
 export type * from './models/Payment';
 export type * from './commonInputTypes';

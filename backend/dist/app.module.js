@@ -9,9 +9,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
+const admin_module_1 = require("./admin/admin.module");
 const auth_module_1 = require("./auth/auth.module");
+const comments_module_1 = require("./comments/comments.module");
+const notifications_module_1 = require("./notifications/notifications.module");
 const payments_module_1 = require("./payments/payments.module");
 const prisma_module_1 = require("./prisma/prisma.module");
+const profile_module_1 = require("./profile/profile.module");
+const purchases_module_1 = require("./purchases/purchases.module");
+const scripts_module_1 = require("./scripts/scripts.module");
+const storage_module_1 = require("./storage/storage.module");
+const support_module_1 = require("./support/support.module");
+const users_module_1 = require("./users/users.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -22,8 +31,17 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true,
             }),
             prisma_module_1.PrismaModule,
+            storage_module_1.StorageModule,
+            users_module_1.UsersModule,
+            notifications_module_1.NotificationsModule,
             auth_module_1.AuthModule,
             payments_module_1.PaymentsModule,
+            scripts_module_1.ScriptsModule,
+            purchases_module_1.PurchasesModule,
+            comments_module_1.CommentsModule,
+            profile_module_1.ProfileModule,
+            support_module_1.SupportModule,
+            admin_module_1.AdminModule,
         ],
     })
 ], AppModule);

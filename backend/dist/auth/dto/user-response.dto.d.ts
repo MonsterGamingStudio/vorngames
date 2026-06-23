@@ -4,4 +4,7 @@ export declare class UserResponseDto {
     username: string;
     avatarUrl: string;
     balance: number;
+    role: string;
+    isBlocked: boolean;
+    createdAt: Date;
 }

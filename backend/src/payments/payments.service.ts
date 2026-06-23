@@ -1,6 +1,13 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
-import { Payment, PaymentStatus } from '../generated/prisma/client';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  Logger,
+  forwardRef,
+} from '@nestjs/common';
+import { Payment, PaymentStatus, PaymentType } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { PurchasesService } from '../purchases/purchases.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { CreatePaymentResponseDto } from './dto/create-payment-response.dto';
 import { UnitpayService, UnitPayHandlerParams } from './unitpay.service';
@@ -14,6 +21,8 @@ export class PaymentsService {
     private readonly prisma: PrismaService,
     private readonly unitpay: UnitpayService,
     private readonly wsCallback: WsCallbackService,
+    @Inject(forwardRef(() => PurchasesService))
+    private readonly purchasesService: PurchasesService,
   ) {}
 
   async createPayment(dto: CreatePaymentDto): Promise<CreatePaymentResponseDto> {
@@ -42,6 +51,7 @@ export class PaymentsService {
     const payment = await this.prisma.payment.create({
       data: {
         orderId,
+        type: PaymentType.donate,
         game: dto.game,
         steamId: dto.steamid,
         amount: dto.amount,
@@ -133,6 +143,9 @@ export class PaymentsService {
     }
 
     if (found.status === PaymentStatus.paid) {
+      if (found.type === PaymentType.script) {
+        await this.purchasesService.fulfillScriptPayment(found.id);
+      }
       return this.unitpay.successResponse('Already paid');
     }
 
@@ -149,7 +162,11 @@ export class PaymentsService {
       },
     });
 
-    await this.notifyWsOnce(found, 'success');
+    if (found.type === PaymentType.script) {
+      await this.purchasesService.fulfillScriptPayment(found.id);
+    } else {
+      await this.notifyWsOnce(found, 'success');
+    }
 
     return this.unitpay.successResponse('Payment successful');
   }
@@ -172,7 +189,9 @@ export class PaymentsService {
       data: { status: PaymentStatus.failed },
     });
 
-    await this.notifyWsOnce(found, 'failed');
+    if (found.type === PaymentType.donate) {
+      await this.notifyWsOnce(found, 'failed');
+    }
 
     return this.unitpay.successResponse('Error recorded');
   }
@@ -199,7 +218,7 @@ export class PaymentsService {
     payment: Payment,
     status: WsPaymentStatus,
   ): Promise<void> {
-    if (payment.wsNotifiedAt) {
+    if (payment.wsNotifiedAt || payment.type !== PaymentType.donate) {
       return;
     }
 
@@ -214,5 +233,4 @@ export class PaymentsService {
       data: { wsNotifiedAt: new Date() },
     });
   }
-
 }

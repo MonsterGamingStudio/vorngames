@@ -23,7 +23,7 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
         this.config = config;
     }
-    async validateSteamProfile(profile) {
+    async validateSteamProfile(profile, loginIp) {
         const steamProfile = {
             steamId: profile.id,
             username: profile.displayName ?? 'Steam User',
@@ -31,7 +31,7 @@ let AuthService = class AuthService {
                 profile.photos?.[0]?.value ??
                 'https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff25dc1cdfeb_full.jpg',
         };
-        return this.usersService.upsertFromSteam(steamProfile);
+        return this.usersService.upsertFromSteam(steamProfile, loginIp);
     }
     signToken(user) {
         const payload = {
@@ -43,6 +43,13 @@ let AuthService = class AuthService {
     async getUserById(id) {
         return this.usersService.findById(id);
     }
+    async getCurrentUser(user, loginIp) {
+        const refreshed = await this.usersService.refreshSteamProfile(user);
+        if (loginIp) {
+            return this.usersService.recordLogin(refreshed.id, loginIp);
+        }
+        return refreshed;
+    }
     toUserResponse(user) {
         return {
             id: user.id,
@@ -50,6 +57,9 @@ let AuthService = class AuthService {
             username: user.username,
             avatarUrl: user.avatarUrl,
             balance: users_service_1.UsersService.toBalanceNumber(user.balance),
+            role: user.role,
+            isBlocked: user.isBlocked,
+            createdAt: user.createdAt,
         };
     }
     getFrontendUrl() {

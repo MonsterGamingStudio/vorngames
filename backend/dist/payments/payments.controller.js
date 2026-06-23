@@ -68,7 +68,7 @@ __decorate([
     (0, swagger_1.ApiOperation)({
         summary: 'Create payment and get UnitPay redirect URL',
         description: `Supported games: ${payments_constants_1.SUPPORTED_GAMES.join(', ')}. ` +
-            'Requires shared secret in `X-Payments-Secret` header or `Authorization: Bearer <secret>`.',
+            'Requires shared secret in `X-Webhook-Secret` header or `Authorization: Bearer <secret>`.',
     }),
     (0, swagger_1.ApiHeader)({
         name: payments_constants_1.PAYMENTS_API_SECRET_HEADER,

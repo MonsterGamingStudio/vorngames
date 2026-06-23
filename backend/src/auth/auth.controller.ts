@@ -17,9 +17,11 @@ import {
 } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { User } from '../generated/prisma/client';
+import { getClientIp } from '../common/utils';
 import { JWT_COOKIE_NAME } from './auth.constants';
 import { AuthService } from './auth.service';
 import { UserResponseDto } from './dto/user-response.dto';
+import { BlockedUserGuard } from './guards';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @ApiTags('auth')
@@ -59,9 +61,15 @@ export class AuthController {
   @ApiOperation({ summary: 'Get current authenticated user' })
   @ApiResponse({ status: 200, type: UserResponseDto })
   @ApiUnauthorizedResponse({ description: 'Not authenticated' })
-  @UseGuards(JwtAuthGuard)
-  getMe(@Req() req: Request & { user: User }): UserResponseDto {
-    return this.authService.toUserResponse(req.user);
+  @UseGuards(JwtAuthGuard, BlockedUserGuard)
+  async getMe(
+    @Req() req: Request & { user: User },
+  ): Promise<UserResponseDto> {
+    const user = await this.authService.getCurrentUser(
+      req.user,
+      getClientIp(req),
+    );
+    return this.authService.toUserResponse(user);
   }
 
   @Post('logout')

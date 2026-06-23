@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
+import { AdminSyncService } from './admin-sync.service';
 import { UsersService } from './users.service';
 
 @Module({
-  providers: [UsersService],
-  exports: [UsersService],
+  providers: [AdminSyncService, UsersService],
+  exports: [AdminSyncService, UsersService],
 })
 export class UsersModule {}

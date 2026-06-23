@@ -15,4 +15,13 @@ export class UserResponseDto {
 
   @ApiProperty({ example: 0, description: 'Balance in RUB' })
   balance!: number;
+
+  @ApiProperty({ example: 'user', enum: ['user', 'admin'] })
+  role!: string;
+
+  @ApiProperty({ example: false })
+  isBlocked!: boolean;
+
+  @ApiProperty({ example: '2025-01-15T12:00:00.000Z' })
+  createdAt!: Date;
 }

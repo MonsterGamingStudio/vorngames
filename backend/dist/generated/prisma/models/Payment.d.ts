@@ -18,8 +18,11 @@ export type PaymentSumAggregateOutputType = {
 export type PaymentMinAggregateOutputType = {
     id: string | null;
     orderId: string | null;
+    type: $Enums.PaymentType | null;
     game: string | null;
     steamId: string | null;
+    userId: string | null;
+    scriptId: string | null;
     amount: number | null;
     description: string | null;
     status: $Enums.PaymentStatus | null;
@@ -33,8 +36,11 @@ export type PaymentMinAggregateOutputType = {
 export type PaymentMaxAggregateOutputType = {
     id: string | null;
     orderId: string | null;
+    type: $Enums.PaymentType | null;
     game: string | null;
     steamId: string | null;
+    userId: string | null;
+    scriptId: string | null;
     amount: number | null;
     description: string | null;
     status: $Enums.PaymentStatus | null;
@@ -48,8 +54,11 @@ export type PaymentMaxAggregateOutputType = {
 export type PaymentCountAggregateOutputType = {
     id: number;
     orderId: number;
+    type: number;
     game: number;
     steamId: number;
+    userId: number;
+    scriptId: number;
     amount: number;
     description: number;
     status: number;
@@ -70,8 +79,11 @@ export type PaymentSumAggregateInputType = {
 export type PaymentMinAggregateInputType = {
     id?: true;
     orderId?: true;
+    type?: true;
     game?: true;
     steamId?: true;
+    userId?: true;
+    scriptId?: true;
     amount?: true;
     description?: true;
     status?: true;
@@ -85,8 +97,11 @@ export type PaymentMinAggregateInputType = {
 export type PaymentMaxAggregateInputType = {
     id?: true;
     orderId?: true;
+    type?: true;
     game?: true;
     steamId?: true;
+    userId?: true;
+    scriptId?: true;
     amount?: true;
     description?: true;
     status?: true;
@@ -100,8 +115,11 @@ export type PaymentMaxAggregateInputType = {
 export type PaymentCountAggregateInputType = {
     id?: true;
     orderId?: true;
+    type?: true;
     game?: true;
     steamId?: true;
+    userId?: true;
+    scriptId?: true;
     amount?: true;
     description?: true;
     status?: true;
@@ -144,8 +162,11 @@ export type PaymentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type PaymentGroupByOutputType = {
     id: string;
     orderId: string;
+    type: $Enums.PaymentType;
     game: string;
     steamId: string | null;
+    userId: string | null;
+    scriptId: string | null;
     amount: number;
     description: string;
     status: $Enums.PaymentStatus;
@@ -170,8 +191,11 @@ export type PaymentWhereInput = {
     NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[];
     id?: Prisma.StringFilter<"Payment"> | string;
     orderId?: Prisma.StringFilter<"Payment"> | string;
+    type?: Prisma.EnumPaymentTypeFilter<"Payment"> | $Enums.PaymentType;
     game?: Prisma.StringFilter<"Payment"> | string;
     steamId?: Prisma.StringNullableFilter<"Payment"> | string | null;
+    userId?: Prisma.StringNullableFilter<"Payment"> | string | null;
+    scriptId?: Prisma.StringNullableFilter<"Payment"> | string | null;
     amount?: Prisma.IntFilter<"Payment"> | number;
     description?: Prisma.StringFilter<"Payment"> | string;
     status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus;
@@ -181,12 +205,18 @@ export type PaymentWhereInput = {
     updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string;
     paidAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
     wsNotifiedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
+    user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
+    script?: Prisma.XOR<Prisma.ScriptNullableScalarRelationFilter, Prisma.ScriptWhereInput> | null;
+    purchase?: Prisma.XOR<Prisma.PurchaseNullableScalarRelationFilter, Prisma.PurchaseWhereInput> | null;
 };
 export type PaymentOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     orderId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
     game?: Prisma.SortOrder;
     steamId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    userId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    scriptId?: Prisma.SortOrderInput | Prisma.SortOrder;
     amount?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -196,6 +226,9 @@ export type PaymentOrderByWithRelationInput = {
     updatedAt?: Prisma.SortOrder;
     paidAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     wsNotifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    user?: Prisma.UserOrderByWithRelationInput;
+    script?: Prisma.ScriptOrderByWithRelationInput;
+    purchase?: Prisma.PurchaseOrderByWithRelationInput;
 };
 export type PaymentWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -203,8 +236,11 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
     AND?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[];
     OR?: Prisma.PaymentWhereInput[];
     NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[];
+    type?: Prisma.EnumPaymentTypeFilter<"Payment"> | $Enums.PaymentType;
     game?: Prisma.StringFilter<"Payment"> | string;
     steamId?: Prisma.StringNullableFilter<"Payment"> | string | null;
+    userId?: Prisma.StringNullableFilter<"Payment"> | string | null;
+    scriptId?: Prisma.StringNullableFilter<"Payment"> | string | null;
     amount?: Prisma.IntFilter<"Payment"> | number;
     description?: Prisma.StringFilter<"Payment"> | string;
     status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus;
@@ -214,12 +250,18 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
     updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string;
     paidAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
     wsNotifiedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
+    user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null;
+    script?: Prisma.XOR<Prisma.ScriptNullableScalarRelationFilter, Prisma.ScriptWhereInput> | null;
+    purchase?: Prisma.XOR<Prisma.PurchaseNullableScalarRelationFilter, Prisma.PurchaseWhereInput> | null;
 }, "id" | "orderId">;
 export type PaymentOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     orderId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
     game?: Prisma.SortOrder;
     steamId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    userId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    scriptId?: Prisma.SortOrderInput | Prisma.SortOrder;
     amount?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -241,8 +283,11 @@ export type PaymentScalarWhereWithAggregatesInput = {
     NOT?: Prisma.PaymentScalarWhereWithAggregatesInput | Prisma.PaymentScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"Payment"> | string;
     orderId?: Prisma.StringWithAggregatesFilter<"Payment"> | string;
+    type?: Prisma.EnumPaymentTypeWithAggregatesFilter<"Payment"> | $Enums.PaymentType;
     game?: Prisma.StringWithAggregatesFilter<"Payment"> | string;
     steamId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null;
+    userId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null;
+    scriptId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null;
     amount?: Prisma.IntWithAggregatesFilter<"Payment"> | number;
     description?: Prisma.StringWithAggregatesFilter<"Payment"> | string;
     status?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Payment"> | $Enums.PaymentStatus;
@@ -256,7 +301,8 @@ export type PaymentScalarWhereWithAggregatesInput = {
 export type PaymentCreateInput = {
     id?: string;
     orderId: string;
-    game: string;
+    type?: $Enums.PaymentType;
+    game?: string;
     steamId?: string | null;
     amount: number;
     description: string;
@@ -267,12 +313,18 @@ export type PaymentCreateInput = {
     updatedAt?: Date | string;
     paidAt?: Date | string | null;
     wsNotifiedAt?: Date | string | null;
+    user?: Prisma.UserCreateNestedOneWithoutPaymentsInput;
+    script?: Prisma.ScriptCreateNestedOneWithoutPaymentsInput;
+    purchase?: Prisma.PurchaseCreateNestedOneWithoutPaymentInput;
 };
 export type PaymentUncheckedCreateInput = {
     id?: string;
     orderId: string;
-    game: string;
+    type?: $Enums.PaymentType;
+    game?: string;
     steamId?: string | null;
+    userId?: string | null;
+    scriptId?: string | null;
     amount: number;
     description: string;
     status?: $Enums.PaymentStatus;
@@ -282,10 +334,12 @@ export type PaymentUncheckedCreateInput = {
     updatedAt?: Date | string;
     paidAt?: Date | string | null;
     wsNotifiedAt?: Date | string | null;
+    purchase?: Prisma.PurchaseUncheckedCreateNestedOneWithoutPaymentInput;
 };
 export type PaymentUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
     game?: Prisma.StringFieldUpdateOperationsInput | string;
     steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     amount?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -297,12 +351,18 @@ export type PaymentUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    user?: Prisma.UserUpdateOneWithoutPaymentsNestedInput;
+    script?: Prisma.ScriptUpdateOneWithoutPaymentsNestedInput;
+    purchase?: Prisma.PurchaseUpdateOneWithoutPaymentNestedInput;
 };
 export type PaymentUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
     game?: Prisma.StringFieldUpdateOperationsInput | string;
     steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scriptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     amount?: Prisma.IntFieldUpdateOperationsInput | number;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
@@ -312,12 +372,16 @@ export type PaymentUncheckedUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purchase?: Prisma.PurchaseUncheckedUpdateOneWithoutPaymentNestedInput;
 };
 export type PaymentCreateManyInput = {
     id?: string;
     orderId: string;
-    game: string;
+    type?: $Enums.PaymentType;
+    game?: string;
     steamId?: string | null;
+    userId?: string | null;
+    scriptId?: string | null;
     amount: number;
     description: string;
     status?: $Enums.PaymentStatus;
@@ -331,6 +395,7 @@ export type PaymentCreateManyInput = {
 export type PaymentUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
     game?: Prisma.StringFieldUpdateOperationsInput | string;
     steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     amount?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -346,8 +411,11 @@ export type PaymentUpdateManyMutationInput = {
 export type PaymentUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
     game?: Prisma.StringFieldUpdateOperationsInput | string;
     steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scriptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     amount?: Prisma.IntFieldUpdateOperationsInput | number;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
     status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
@@ -358,11 +426,26 @@ export type PaymentUncheckedUpdateManyInput = {
     paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
+export type PaymentListRelationFilter = {
+    every?: Prisma.PaymentWhereInput;
+    some?: Prisma.PaymentWhereInput;
+    none?: Prisma.PaymentWhereInput;
+};
+export type PaymentOrderByRelationAggregateInput = {
+    _count?: Prisma.SortOrder;
+};
+export type PaymentNullableScalarRelationFilter = {
+    is?: Prisma.PaymentWhereInput | null;
+    isNot?: Prisma.PaymentWhereInput | null;
+};
 export type PaymentCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     orderId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
     game?: Prisma.SortOrder;
     steamId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    scriptId?: Prisma.SortOrder;
     amount?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -379,8 +462,11 @@ export type PaymentAvgOrderByAggregateInput = {
 export type PaymentMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     orderId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
     game?: Prisma.SortOrder;
     steamId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    scriptId?: Prisma.SortOrder;
     amount?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -394,8 +480,11 @@ export type PaymentMaxOrderByAggregateInput = {
 export type PaymentMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     orderId?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
     game?: Prisma.SortOrder;
     steamId?: Prisma.SortOrder;
+    userId?: Prisma.SortOrder;
+    scriptId?: Prisma.SortOrder;
     amount?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
@@ -409,27 +498,470 @@ export type PaymentMinOrderByAggregateInput = {
 export type PaymentSumOrderByAggregateInput = {
     amount?: Prisma.SortOrder;
 };
-export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null;
+export type PaymentCreateNestedManyWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput> | Prisma.PaymentCreateWithoutUserInput[] | Prisma.PaymentUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutUserInput | Prisma.PaymentCreateOrConnectWithoutUserInput[];
+    createMany?: Prisma.PaymentCreateManyUserInputEnvelope;
+    connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
 };
-export type IntFieldUpdateOperationsInput = {
-    set?: number;
-    increment?: number;
-    decrement?: number;
-    multiply?: number;
-    divide?: number;
+export type PaymentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput> | Prisma.PaymentCreateWithoutUserInput[] | Prisma.PaymentUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutUserInput | Prisma.PaymentCreateOrConnectWithoutUserInput[];
+    createMany?: Prisma.PaymentCreateManyUserInputEnvelope;
+    connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+};
+export type PaymentUpdateManyWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput> | Prisma.PaymentCreateWithoutUserInput[] | Prisma.PaymentUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutUserInput | Prisma.PaymentCreateOrConnectWithoutUserInput[];
+    upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutUserInput | Prisma.PaymentUpsertWithWhereUniqueWithoutUserInput[];
+    createMany?: Prisma.PaymentCreateManyUserInputEnvelope;
+    set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    update?: Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput | Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput[];
+    updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutUserInput | Prisma.PaymentUpdateManyWithWhereWithoutUserInput[];
+    deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[];
+};
+export type PaymentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput> | Prisma.PaymentCreateWithoutUserInput[] | Prisma.PaymentUncheckedCreateWithoutUserInput[];
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutUserInput | Prisma.PaymentCreateOrConnectWithoutUserInput[];
+    upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutUserInput | Prisma.PaymentUpsertWithWhereUniqueWithoutUserInput[];
+    createMany?: Prisma.PaymentCreateManyUserInputEnvelope;
+    set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    update?: Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput | Prisma.PaymentUpdateWithWhereUniqueWithoutUserInput[];
+    updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutUserInput | Prisma.PaymentUpdateManyWithWhereWithoutUserInput[];
+    deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[];
+};
+export type PaymentCreateNestedManyWithoutScriptInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutScriptInput, Prisma.PaymentUncheckedCreateWithoutScriptInput> | Prisma.PaymentCreateWithoutScriptInput[] | Prisma.PaymentUncheckedCreateWithoutScriptInput[];
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutScriptInput | Prisma.PaymentCreateOrConnectWithoutScriptInput[];
+    createMany?: Prisma.PaymentCreateManyScriptInputEnvelope;
+    connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+};
+export type PaymentUncheckedCreateNestedManyWithoutScriptInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutScriptInput, Prisma.PaymentUncheckedCreateWithoutScriptInput> | Prisma.PaymentCreateWithoutScriptInput[] | Prisma.PaymentUncheckedCreateWithoutScriptInput[];
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutScriptInput | Prisma.PaymentCreateOrConnectWithoutScriptInput[];
+    createMany?: Prisma.PaymentCreateManyScriptInputEnvelope;
+    connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+};
+export type PaymentUpdateManyWithoutScriptNestedInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutScriptInput, Prisma.PaymentUncheckedCreateWithoutScriptInput> | Prisma.PaymentCreateWithoutScriptInput[] | Prisma.PaymentUncheckedCreateWithoutScriptInput[];
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutScriptInput | Prisma.PaymentCreateOrConnectWithoutScriptInput[];
+    upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutScriptInput | Prisma.PaymentUpsertWithWhereUniqueWithoutScriptInput[];
+    createMany?: Prisma.PaymentCreateManyScriptInputEnvelope;
+    set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    update?: Prisma.PaymentUpdateWithWhereUniqueWithoutScriptInput | Prisma.PaymentUpdateWithWhereUniqueWithoutScriptInput[];
+    updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutScriptInput | Prisma.PaymentUpdateManyWithWhereWithoutScriptInput[];
+    deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[];
+};
+export type PaymentUncheckedUpdateManyWithoutScriptNestedInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutScriptInput, Prisma.PaymentUncheckedCreateWithoutScriptInput> | Prisma.PaymentCreateWithoutScriptInput[] | Prisma.PaymentUncheckedCreateWithoutScriptInput[];
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutScriptInput | Prisma.PaymentCreateOrConnectWithoutScriptInput[];
+    upsert?: Prisma.PaymentUpsertWithWhereUniqueWithoutScriptInput | Prisma.PaymentUpsertWithWhereUniqueWithoutScriptInput[];
+    createMany?: Prisma.PaymentCreateManyScriptInputEnvelope;
+    set?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    disconnect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    delete?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    connect?: Prisma.PaymentWhereUniqueInput | Prisma.PaymentWhereUniqueInput[];
+    update?: Prisma.PaymentUpdateWithWhereUniqueWithoutScriptInput | Prisma.PaymentUpdateWithWhereUniqueWithoutScriptInput[];
+    updateMany?: Prisma.PaymentUpdateManyWithWhereWithoutScriptInput | Prisma.PaymentUpdateManyWithWhereWithoutScriptInput[];
+    deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[];
+};
+export type PaymentCreateNestedOneWithoutPurchaseInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutPurchaseInput, Prisma.PaymentUncheckedCreateWithoutPurchaseInput>;
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutPurchaseInput;
+    connect?: Prisma.PaymentWhereUniqueInput;
+};
+export type PaymentUpdateOneWithoutPurchaseNestedInput = {
+    create?: Prisma.XOR<Prisma.PaymentCreateWithoutPurchaseInput, Prisma.PaymentUncheckedCreateWithoutPurchaseInput>;
+    connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutPurchaseInput;
+    upsert?: Prisma.PaymentUpsertWithoutPurchaseInput;
+    disconnect?: Prisma.PaymentWhereInput | boolean;
+    delete?: Prisma.PaymentWhereInput | boolean;
+    connect?: Prisma.PaymentWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentUpdateToOneWithWhereWithoutPurchaseInput, Prisma.PaymentUpdateWithoutPurchaseInput>, Prisma.PaymentUncheckedUpdateWithoutPurchaseInput>;
+};
+export type EnumPaymentTypeFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentType;
 };
 export type EnumPaymentStatusFieldUpdateOperationsInput = {
     set?: $Enums.PaymentStatus;
 };
-export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null;
+export type PaymentCreateWithoutUserInput = {
+    id?: string;
+    orderId: string;
+    type?: $Enums.PaymentType;
+    game?: string;
+    steamId?: string | null;
+    amount: number;
+    description: string;
+    status?: $Enums.PaymentStatus;
+    paymentUrl?: string | null;
+    unitpayId?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    paidAt?: Date | string | null;
+    wsNotifiedAt?: Date | string | null;
+    script?: Prisma.ScriptCreateNestedOneWithoutPaymentsInput;
+    purchase?: Prisma.PurchaseCreateNestedOneWithoutPaymentInput;
+};
+export type PaymentUncheckedCreateWithoutUserInput = {
+    id?: string;
+    orderId: string;
+    type?: $Enums.PaymentType;
+    game?: string;
+    steamId?: string | null;
+    scriptId?: string | null;
+    amount: number;
+    description: string;
+    status?: $Enums.PaymentStatus;
+    paymentUrl?: string | null;
+    unitpayId?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    paidAt?: Date | string | null;
+    wsNotifiedAt?: Date | string | null;
+    purchase?: Prisma.PurchaseUncheckedCreateNestedOneWithoutPaymentInput;
+};
+export type PaymentCreateOrConnectWithoutUserInput = {
+    where: Prisma.PaymentWhereUniqueInput;
+    create: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput>;
+};
+export type PaymentCreateManyUserInputEnvelope = {
+    data: Prisma.PaymentCreateManyUserInput | Prisma.PaymentCreateManyUserInput[];
+    skipDuplicates?: boolean;
+};
+export type PaymentUpsertWithWhereUniqueWithoutUserInput = {
+    where: Prisma.PaymentWhereUniqueInput;
+    update: Prisma.XOR<Prisma.PaymentUpdateWithoutUserInput, Prisma.PaymentUncheckedUpdateWithoutUserInput>;
+    create: Prisma.XOR<Prisma.PaymentCreateWithoutUserInput, Prisma.PaymentUncheckedCreateWithoutUserInput>;
+};
+export type PaymentUpdateWithWhereUniqueWithoutUserInput = {
+    where: Prisma.PaymentWhereUniqueInput;
+    data: Prisma.XOR<Prisma.PaymentUpdateWithoutUserInput, Prisma.PaymentUncheckedUpdateWithoutUserInput>;
+};
+export type PaymentUpdateManyWithWhereWithoutUserInput = {
+    where: Prisma.PaymentScalarWhereInput;
+    data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyWithoutUserInput>;
+};
+export type PaymentScalarWhereInput = {
+    AND?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[];
+    OR?: Prisma.PaymentScalarWhereInput[];
+    NOT?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[];
+    id?: Prisma.StringFilter<"Payment"> | string;
+    orderId?: Prisma.StringFilter<"Payment"> | string;
+    type?: Prisma.EnumPaymentTypeFilter<"Payment"> | $Enums.PaymentType;
+    game?: Prisma.StringFilter<"Payment"> | string;
+    steamId?: Prisma.StringNullableFilter<"Payment"> | string | null;
+    userId?: Prisma.StringNullableFilter<"Payment"> | string | null;
+    scriptId?: Prisma.StringNullableFilter<"Payment"> | string | null;
+    amount?: Prisma.IntFilter<"Payment"> | number;
+    description?: Prisma.StringFilter<"Payment"> | string;
+    status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus;
+    paymentUrl?: Prisma.StringNullableFilter<"Payment"> | string | null;
+    unitpayId?: Prisma.StringNullableFilter<"Payment"> | string | null;
+    createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string;
+    updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string;
+    paidAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
+    wsNotifiedAt?: Prisma.DateTimeNullableFilter<"Payment"> | Date | string | null;
+};
+export type PaymentCreateWithoutScriptInput = {
+    id?: string;
+    orderId: string;
+    type?: $Enums.PaymentType;
+    game?: string;
+    steamId?: string | null;
+    amount: number;
+    description: string;
+    status?: $Enums.PaymentStatus;
+    paymentUrl?: string | null;
+    unitpayId?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    paidAt?: Date | string | null;
+    wsNotifiedAt?: Date | string | null;
+    user?: Prisma.UserCreateNestedOneWithoutPaymentsInput;
+    purchase?: Prisma.PurchaseCreateNestedOneWithoutPaymentInput;
+};
+export type PaymentUncheckedCreateWithoutScriptInput = {
+    id?: string;
+    orderId: string;
+    type?: $Enums.PaymentType;
+    game?: string;
+    steamId?: string | null;
+    userId?: string | null;
+    amount: number;
+    description: string;
+    status?: $Enums.PaymentStatus;
+    paymentUrl?: string | null;
+    unitpayId?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    paidAt?: Date | string | null;
+    wsNotifiedAt?: Date | string | null;
+    purchase?: Prisma.PurchaseUncheckedCreateNestedOneWithoutPaymentInput;
+};
+export type PaymentCreateOrConnectWithoutScriptInput = {
+    where: Prisma.PaymentWhereUniqueInput;
+    create: Prisma.XOR<Prisma.PaymentCreateWithoutScriptInput, Prisma.PaymentUncheckedCreateWithoutScriptInput>;
+};
+export type PaymentCreateManyScriptInputEnvelope = {
+    data: Prisma.PaymentCreateManyScriptInput | Prisma.PaymentCreateManyScriptInput[];
+    skipDuplicates?: boolean;
+};
+export type PaymentUpsertWithWhereUniqueWithoutScriptInput = {
+    where: Prisma.PaymentWhereUniqueInput;
+    update: Prisma.XOR<Prisma.PaymentUpdateWithoutScriptInput, Prisma.PaymentUncheckedUpdateWithoutScriptInput>;
+    create: Prisma.XOR<Prisma.PaymentCreateWithoutScriptInput, Prisma.PaymentUncheckedCreateWithoutScriptInput>;
+};
+export type PaymentUpdateWithWhereUniqueWithoutScriptInput = {
+    where: Prisma.PaymentWhereUniqueInput;
+    data: Prisma.XOR<Prisma.PaymentUpdateWithoutScriptInput, Prisma.PaymentUncheckedUpdateWithoutScriptInput>;
+};
+export type PaymentUpdateManyWithWhereWithoutScriptInput = {
+    where: Prisma.PaymentScalarWhereInput;
+    data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyWithoutScriptInput>;
+};
+export type PaymentCreateWithoutPurchaseInput = {
+    id?: string;
+    orderId: string;
+    type?: $Enums.PaymentType;
+    game?: string;
+    steamId?: string | null;
+    amount: number;
+    description: string;
+    status?: $Enums.PaymentStatus;
+    paymentUrl?: string | null;
+    unitpayId?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    paidAt?: Date | string | null;
+    wsNotifiedAt?: Date | string | null;
+    user?: Prisma.UserCreateNestedOneWithoutPaymentsInput;
+    script?: Prisma.ScriptCreateNestedOneWithoutPaymentsInput;
+};
+export type PaymentUncheckedCreateWithoutPurchaseInput = {
+    id?: string;
+    orderId: string;
+    type?: $Enums.PaymentType;
+    game?: string;
+    steamId?: string | null;
+    userId?: string | null;
+    scriptId?: string | null;
+    amount: number;
+    description: string;
+    status?: $Enums.PaymentStatus;
+    paymentUrl?: string | null;
+    unitpayId?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    paidAt?: Date | string | null;
+    wsNotifiedAt?: Date | string | null;
+};
+export type PaymentCreateOrConnectWithoutPurchaseInput = {
+    where: Prisma.PaymentWhereUniqueInput;
+    create: Prisma.XOR<Prisma.PaymentCreateWithoutPurchaseInput, Prisma.PaymentUncheckedCreateWithoutPurchaseInput>;
+};
+export type PaymentUpsertWithoutPurchaseInput = {
+    update: Prisma.XOR<Prisma.PaymentUpdateWithoutPurchaseInput, Prisma.PaymentUncheckedUpdateWithoutPurchaseInput>;
+    create: Prisma.XOR<Prisma.PaymentCreateWithoutPurchaseInput, Prisma.PaymentUncheckedCreateWithoutPurchaseInput>;
+    where?: Prisma.PaymentWhereInput;
+};
+export type PaymentUpdateToOneWithWhereWithoutPurchaseInput = {
+    where?: Prisma.PaymentWhereInput;
+    data: Prisma.XOR<Prisma.PaymentUpdateWithoutPurchaseInput, Prisma.PaymentUncheckedUpdateWithoutPurchaseInput>;
+};
+export type PaymentUpdateWithoutPurchaseInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
+    game?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    amount?: Prisma.IntFieldUpdateOperationsInput | number;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
+    paymentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unitpayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    user?: Prisma.UserUpdateOneWithoutPaymentsNestedInput;
+    script?: Prisma.ScriptUpdateOneWithoutPaymentsNestedInput;
+};
+export type PaymentUncheckedUpdateWithoutPurchaseInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
+    game?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scriptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    amount?: Prisma.IntFieldUpdateOperationsInput | number;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
+    paymentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unitpayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type PaymentCreateManyUserInput = {
+    id?: string;
+    orderId: string;
+    type?: $Enums.PaymentType;
+    game?: string;
+    steamId?: string | null;
+    scriptId?: string | null;
+    amount: number;
+    description: string;
+    status?: $Enums.PaymentStatus;
+    paymentUrl?: string | null;
+    unitpayId?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    paidAt?: Date | string | null;
+    wsNotifiedAt?: Date | string | null;
+};
+export type PaymentUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
+    game?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    amount?: Prisma.IntFieldUpdateOperationsInput | number;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
+    paymentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unitpayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    script?: Prisma.ScriptUpdateOneWithoutPaymentsNestedInput;
+    purchase?: Prisma.PurchaseUpdateOneWithoutPaymentNestedInput;
+};
+export type PaymentUncheckedUpdateWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
+    game?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scriptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    amount?: Prisma.IntFieldUpdateOperationsInput | number;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
+    paymentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unitpayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purchase?: Prisma.PurchaseUncheckedUpdateOneWithoutPaymentNestedInput;
+};
+export type PaymentUncheckedUpdateManyWithoutUserInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
+    game?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    scriptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    amount?: Prisma.IntFieldUpdateOperationsInput | number;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
+    paymentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unitpayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type PaymentCreateManyScriptInput = {
+    id?: string;
+    orderId: string;
+    type?: $Enums.PaymentType;
+    game?: string;
+    steamId?: string | null;
+    userId?: string | null;
+    amount: number;
+    description: string;
+    status?: $Enums.PaymentStatus;
+    paymentUrl?: string | null;
+    unitpayId?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    paidAt?: Date | string | null;
+    wsNotifiedAt?: Date | string | null;
+};
+export type PaymentUpdateWithoutScriptInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
+    game?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    amount?: Prisma.IntFieldUpdateOperationsInput | number;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
+    paymentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unitpayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    user?: Prisma.UserUpdateOneWithoutPaymentsNestedInput;
+    purchase?: Prisma.PurchaseUpdateOneWithoutPaymentNestedInput;
+};
+export type PaymentUncheckedUpdateWithoutScriptInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
+    game?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    amount?: Prisma.IntFieldUpdateOperationsInput | number;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
+    paymentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unitpayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    purchase?: Prisma.PurchaseUncheckedUpdateOneWithoutPaymentNestedInput;
+};
+export type PaymentUncheckedUpdateManyWithoutScriptInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    orderId?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType;
+    game?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    amount?: Prisma.IntFieldUpdateOperationsInput | number;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus;
+    paymentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unitpayId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    wsNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     orderId?: boolean;
+    type?: boolean;
     game?: boolean;
     steamId?: boolean;
+    userId?: boolean;
+    scriptId?: boolean;
     amount?: boolean;
     description?: boolean;
     status?: boolean;
@@ -439,12 +971,18 @@ export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     updatedAt?: boolean;
     paidAt?: boolean;
     wsNotifiedAt?: boolean;
+    user?: boolean | Prisma.Payment$userArgs<ExtArgs>;
+    script?: boolean | Prisma.Payment$scriptArgs<ExtArgs>;
+    purchase?: boolean | Prisma.Payment$purchaseArgs<ExtArgs>;
 }, ExtArgs["result"]["payment"]>;
 export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     orderId?: boolean;
+    type?: boolean;
     game?: boolean;
     steamId?: boolean;
+    userId?: boolean;
+    scriptId?: boolean;
     amount?: boolean;
     description?: boolean;
     status?: boolean;
@@ -454,12 +992,17 @@ export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
     updatedAt?: boolean;
     paidAt?: boolean;
     wsNotifiedAt?: boolean;
+    user?: boolean | Prisma.Payment$userArgs<ExtArgs>;
+    script?: boolean | Prisma.Payment$scriptArgs<ExtArgs>;
 }, ExtArgs["result"]["payment"]>;
 export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     orderId?: boolean;
+    type?: boolean;
     game?: boolean;
     steamId?: boolean;
+    userId?: boolean;
+    scriptId?: boolean;
     amount?: boolean;
     description?: boolean;
     status?: boolean;
@@ -469,12 +1012,17 @@ export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
     updatedAt?: boolean;
     paidAt?: boolean;
     wsNotifiedAt?: boolean;
+    user?: boolean | Prisma.Payment$userArgs<ExtArgs>;
+    script?: boolean | Prisma.Payment$scriptArgs<ExtArgs>;
 }, ExtArgs["result"]["payment"]>;
 export type PaymentSelectScalar = {
     id?: boolean;
     orderId?: boolean;
+    type?: boolean;
     game?: boolean;
     steamId?: boolean;
+    userId?: boolean;
+    scriptId?: boolean;
     amount?: boolean;
     description?: boolean;
     status?: boolean;
@@ -485,15 +1033,35 @@ export type PaymentSelectScalar = {
     paidAt?: boolean;
     wsNotifiedAt?: boolean;
 };
-export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "game" | "steamId" | "amount" | "description" | "status" | "paymentUrl" | "unitpayId" | "createdAt" | "updatedAt" | "paidAt" | "wsNotifiedAt", ExtArgs["result"]["payment"]>;
+export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "type" | "game" | "steamId" | "userId" | "scriptId" | "amount" | "description" | "status" | "paymentUrl" | "unitpayId" | "createdAt" | "updatedAt" | "paidAt" | "wsNotifiedAt", ExtArgs["result"]["payment"]>;
+export type PaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    user?: boolean | Prisma.Payment$userArgs<ExtArgs>;
+    script?: boolean | Prisma.Payment$scriptArgs<ExtArgs>;
+    purchase?: boolean | Prisma.Payment$purchaseArgs<ExtArgs>;
+};
+export type PaymentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    user?: boolean | Prisma.Payment$userArgs<ExtArgs>;
+    script?: boolean | Prisma.Payment$scriptArgs<ExtArgs>;
+};
+export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    user?: boolean | Prisma.Payment$userArgs<ExtArgs>;
+    script?: boolean | Prisma.Payment$scriptArgs<ExtArgs>;
+};
 export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Payment";
-    objects: {};
+    objects: {
+        user: Prisma.$UserPayload<ExtArgs> | null;
+        script: Prisma.$ScriptPayload<ExtArgs> | null;
+        purchase: Prisma.$PurchasePayload<ExtArgs> | null;
+    };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         orderId: string;
+        type: $Enums.PaymentType;
         game: string;
         steamId: string | null;
+        userId: string | null;
+        scriptId: string | null;
         amount: number;
         description: string;
         status: $Enums.PaymentStatus;
@@ -555,6 +1123,9 @@ export interface PaymentDelegate<ExtArgs extends runtime.Types.Extensions.Intern
 }
 export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
+    user<T extends Prisma.Payment$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    script<T extends Prisma.Payment$scriptArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$scriptArgs<ExtArgs>>): Prisma.Prisma__ScriptClient<runtime.Types.Result.GetResult<Prisma.$ScriptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    purchase<T extends Prisma.Payment$purchaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Payment$purchaseArgs<ExtArgs>>): Prisma.Prisma__PurchaseClient<runtime.Types.Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -562,8 +1133,11 @@ export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.
 export interface PaymentFieldRefs {
     readonly id: Prisma.FieldRef<"Payment", 'String'>;
     readonly orderId: Prisma.FieldRef<"Payment", 'String'>;
+    readonly type: Prisma.FieldRef<"Payment", 'PaymentType'>;
     readonly game: Prisma.FieldRef<"Payment", 'String'>;
     readonly steamId: Prisma.FieldRef<"Payment", 'String'>;
+    readonly userId: Prisma.FieldRef<"Payment", 'String'>;
+    readonly scriptId: Prisma.FieldRef<"Payment", 'String'>;
     readonly amount: Prisma.FieldRef<"Payment", 'Int'>;
     readonly description: Prisma.FieldRef<"Payment", 'String'>;
     readonly status: Prisma.FieldRef<"Payment", 'PaymentStatus'>;
@@ -577,16 +1151,19 @@ export interface PaymentFieldRefs {
 export type PaymentFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
     where: Prisma.PaymentWhereUniqueInput;
 };
 export type PaymentFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
     where: Prisma.PaymentWhereUniqueInput;
 };
 export type PaymentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
     where?: Prisma.PaymentWhereInput;
     orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[];
     cursor?: Prisma.PaymentWhereUniqueInput;
@@ -597,6 +1174,7 @@ export type PaymentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type PaymentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
     where?: Prisma.PaymentWhereInput;
     orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[];
     cursor?: Prisma.PaymentWhereUniqueInput;
@@ -607,6 +1185,7 @@ export type PaymentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions
 export type PaymentFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
     where?: Prisma.PaymentWhereInput;
     orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[];
     cursor?: Prisma.PaymentWhereUniqueInput;
@@ -617,6 +1196,7 @@ export type PaymentFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type PaymentCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
     data: Prisma.XOR<Prisma.PaymentCreateInput, Prisma.PaymentUncheckedCreateInput>;
 };
 export type PaymentCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -628,10 +1208,12 @@ export type PaymentCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
     data: Prisma.PaymentCreateManyInput | Prisma.PaymentCreateManyInput[];
     skipDuplicates?: boolean;
+    include?: Prisma.PaymentIncludeCreateManyAndReturn<ExtArgs> | null;
 };
 export type PaymentUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
     data: Prisma.XOR<Prisma.PaymentUpdateInput, Prisma.PaymentUncheckedUpdateInput>;
     where: Prisma.PaymentWhereUniqueInput;
 };
@@ -646,10 +1228,12 @@ export type PaymentUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
     data: Prisma.XOR<Prisma.PaymentUpdateManyMutationInput, Prisma.PaymentUncheckedUpdateManyInput>;
     where?: Prisma.PaymentWhereInput;
     limit?: number;
+    include?: Prisma.PaymentIncludeUpdateManyAndReturn<ExtArgs> | null;
 };
 export type PaymentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
     where: Prisma.PaymentWhereUniqueInput;
     create: Prisma.XOR<Prisma.PaymentCreateInput, Prisma.PaymentUncheckedCreateInput>;
     update: Prisma.XOR<Prisma.PaymentUpdateInput, Prisma.PaymentUncheckedUpdateInput>;
@@ -657,13 +1241,33 @@ export type PaymentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type PaymentDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
     where: Prisma.PaymentWhereUniqueInput;
 };
 export type PaymentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.PaymentWhereInput;
     limit?: number;
 };
+export type Payment$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.UserSelect<ExtArgs> | null;
+    omit?: Prisma.UserOmit<ExtArgs> | null;
+    include?: Prisma.UserInclude<ExtArgs> | null;
+    where?: Prisma.UserWhereInput;
+};
+export type Payment$scriptArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.ScriptSelect<ExtArgs> | null;
+    omit?: Prisma.ScriptOmit<ExtArgs> | null;
+    include?: Prisma.ScriptInclude<ExtArgs> | null;
+    where?: Prisma.ScriptWhereInput;
+};
+export type Payment$purchaseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.PurchaseSelect<ExtArgs> | null;
+    omit?: Prisma.PurchaseOmit<ExtArgs> | null;
+    include?: Prisma.PurchaseInclude<ExtArgs> | null;
+    where?: Prisma.PurchaseWhereInput;
+};
 export type PaymentDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PaymentSelect<ExtArgs> | null;
     omit?: Prisma.PaymentOmit<ExtArgs> | null;
+    include?: Prisma.PaymentInclude<ExtArgs> | null;
 };
