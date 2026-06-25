@@ -24,8 +24,9 @@ let LocalStorageController = class LocalStorageController {
         this.config = config;
     }
     serve(key, res) {
+        const normalizedKey = key.replace(/^\//, '');
         const uploadDir = this.config.get('UPLOAD_DIR', './uploads');
-        const filePath = (0, path_1.join)(uploadDir, key);
+        const filePath = (0, path_1.join)(uploadDir, normalizedKey);
         if (!(0, fs_1.existsSync)(filePath)) {
             throw new common_1.NotFoundException();
         }
@@ -34,7 +35,7 @@ let LocalStorageController = class LocalStorageController {
 };
 exports.LocalStorageController = LocalStorageController;
 __decorate([
-    (0, common_1.Get)(':key(*)'),
+    (0, common_1.Get)('*key'),
     __param(0, (0, common_1.Param)('key')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

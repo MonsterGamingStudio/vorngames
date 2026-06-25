@@ -10,10 +10,11 @@ import { join } from 'path';
 export class LocalStorageController {
   constructor(private readonly config: ConfigService) {}
 
-  @Get(':key(*)')
+  @Get('*key')
   serve(@Param('key') key: string, @Res() res: Response) {
+    const normalizedKey = key.replace(/^\//, '');
     const uploadDir = this.config.get<string>('UPLOAD_DIR', './uploads');
-    const filePath = join(uploadDir, key);
+    const filePath = join(uploadDir, normalizedKey);
 
     if (!existsSync(filePath)) {
       throw new NotFoundException();
