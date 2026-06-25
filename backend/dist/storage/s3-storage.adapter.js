@@ -15,24 +15,39 @@ const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 let S3StorageAdapter = class S3StorageAdapter {
-    client;
-    bucket;
+    config;
+    client = null;
+    bucket = null;
     constructor(config) {
-        const endpoint = config.get('S3_ENDPOINT');
-        this.bucket = config.getOrThrow('S3_BUCKET');
+        this.config = config;
+    }
+    resolveClient() {
+        if (this.client && this.bucket) {
+            return { client: this.client, bucket: this.bucket };
+        }
+        const endpoint = this.config.get('S3_ENDPOINT');
+        const bucket = this.config.get('S3_BUCKET');
+        const accessKey = this.config.get('S3_ACCESS_KEY');
+        const secretKey = this.config.get('S3_SECRET_KEY');
+        if (!bucket || !accessKey || !secretKey) {
+            throw new common_1.InternalServerErrorException('S3/R2 storage is not configured (S3_BUCKET, S3_ACCESS_KEY, S3_SECRET_KEY)');
+        }
+        this.bucket = bucket;
         this.client = new client_s3_1.S3Client({
-            region: config.get('S3_REGION', 'auto'),
+            region: this.config.get('S3_REGION', 'auto'),
             endpoint: endpoint || undefined,
             forcePathStyle: Boolean(endpoint),
             credentials: {
-                accessKeyId: config.getOrThrow('S3_ACCESS_KEY'),
-                secretAccessKey: config.getOrThrow('S3_SECRET_KEY'),
+                accessKeyId: accessKey,
+                secretAccessKey: secretKey,
             },
         });
+        return { client: this.client, bucket: this.bucket };
     }
     async upload(key, buffer, mimeType) {
-        await this.client.send(new client_s3_1.PutObjectCommand({
-            Bucket: this.bucket,
+        const { client, bucket } = this.resolveClient();
+        await client.send(new client_s3_1.PutObjectCommand({
+            Bucket: bucket,
             Key: key,
             Body: buffer,
             ContentType: mimeType,
@@ -40,22 +55,26 @@ let S3StorageAdapter = class S3StorageAdapter {
         return { key };
     }
     async delete(key) {
-        await this.client.send(new client_s3_1.DeleteObjectCommand({ Bucket: this.bucket, Key: key }));
+        const { client, bucket } = this.resolveClient();
+        await client.send(new client_s3_1.DeleteObjectCommand({ Bucket: bucket, Key: key }));
     }
     async getSignedUrl(key, ttlSeconds) {
-        const command = new client_s3_1.GetObjectCommand({ Bucket: this.bucket, Key: key });
-        return (0, s3_request_presigner_1.getSignedUrl)(this.client, command, { expiresIn: ttlSeconds });
+        const { client, bucket } = this.resolveClient();
+        const command = new client_s3_1.GetObjectCommand({ Bucket: bucket, Key: key });
+        return (0, s3_request_presigner_1.getSignedUrl)(client, command, { expiresIn: ttlSeconds });
     }
     async stream(key) {
-        const response = await this.client.send(new client_s3_1.GetObjectCommand({ Bucket: this.bucket, Key: key }));
+        const { client, bucket } = this.resolveClient();
+        const response = await client.send(new client_s3_1.GetObjectCommand({ Bucket: bucket, Key: key }));
         if (!response.Body) {
             throw new Error(`File not found: ${key}`);
         }
         return response.Body;
     }
     async exists(key) {
+        const { client, bucket } = this.resolveClient();
         try {
-            await this.client.send(new client_s3_1.HeadObjectCommand({ Bucket: this.bucket, Key: key }));
+            await client.send(new client_s3_1.HeadObjectCommand({ Bucket: bucket, Key: key }));
             return true;
         }
         catch {

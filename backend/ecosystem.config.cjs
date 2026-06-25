@@ -12,6 +12,8 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
       },
+      // Load backend/.env (PM2 5.3+)
+      env_file: '.env',
     },
   ],
 };

@@ -6,28 +6,46 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Readable } from 'stream';
 import { StorageAdapter } from './storage.interface';
 
 @Injectable()
 export class S3StorageAdapter implements StorageAdapter {
-  private readonly client: S3Client;
-  private readonly bucket: string;
+  private client: S3Client | null = null;
+  private bucket: string | null = null;
 
-  constructor(config: ConfigService) {
-    const endpoint = config.get<string>('S3_ENDPOINT');
-    this.bucket = config.getOrThrow<string>('S3_BUCKET');
+  constructor(private readonly config: ConfigService) {}
+
+  private resolveClient(): { client: S3Client; bucket: string } {
+    if (this.client && this.bucket) {
+      return { client: this.client, bucket: this.bucket };
+    }
+
+    const endpoint = this.config.get<string>('S3_ENDPOINT');
+    const bucket = this.config.get<string>('S3_BUCKET');
+    const accessKey = this.config.get<string>('S3_ACCESS_KEY');
+    const secretKey = this.config.get<string>('S3_SECRET_KEY');
+
+    if (!bucket || !accessKey || !secretKey) {
+      throw new InternalServerErrorException(
+        'S3/R2 storage is not configured (S3_BUCKET, S3_ACCESS_KEY, S3_SECRET_KEY)',
+      );
+    }
+
+    this.bucket = bucket;
     this.client = new S3Client({
-      region: config.get<string>('S3_REGION', 'auto'),
+      region: this.config.get<string>('S3_REGION', 'auto'),
       endpoint: endpoint || undefined,
       forcePathStyle: Boolean(endpoint),
       credentials: {
-        accessKeyId: config.getOrThrow<string>('S3_ACCESS_KEY'),
-        secretAccessKey: config.getOrThrow<string>('S3_SECRET_KEY'),
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey,
       },
     });
+
+    return { client: this.client, bucket: this.bucket };
   }
 
   async upload(
@@ -35,9 +53,10 @@ export class S3StorageAdapter implements StorageAdapter {
     buffer: Buffer,
     mimeType: string,
   ): Promise<{ key: string }> {
-    await this.client.send(
+    const { client, bucket } = this.resolveClient();
+    await client.send(
       new PutObjectCommand({
-        Bucket: this.bucket,
+        Bucket: bucket,
         Key: key,
         Body: buffer,
         ContentType: mimeType,
@@ -47,19 +66,20 @@ export class S3StorageAdapter implements StorageAdapter {
   }
 
   async delete(key: string): Promise<void> {
-    await this.client.send(
-      new DeleteObjectCommand({ Bucket: this.bucket, Key: key }),
-    );
+    const { client, bucket } = this.resolveClient();
+    await client.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
   }
 
   async getSignedUrl(key: string, ttlSeconds: number): Promise<string> {
-    const command = new GetObjectCommand({ Bucket: this.bucket, Key: key });
-    return getSignedUrl(this.client, command, { expiresIn: ttlSeconds });
+    const { client, bucket } = this.resolveClient();
+    const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+    return getSignedUrl(client, command, { expiresIn: ttlSeconds });
   }
 
   async stream(key: string): Promise<NodeJS.ReadableStream> {
-    const response = await this.client.send(
-      new GetObjectCommand({ Bucket: this.bucket, Key: key }),
+    const { client, bucket } = this.resolveClient();
+    const response = await client.send(
+      new GetObjectCommand({ Bucket: bucket, Key: key }),
     );
     if (!response.Body) {
       throw new Error(`File not found: ${key}`);
@@ -68,10 +88,9 @@ export class S3StorageAdapter implements StorageAdapter {
   }
 
   async exists(key: string): Promise<boolean> {
+    const { client, bucket } = this.resolveClient();
     try {
-      await this.client.send(
-        new HeadObjectCommand({ Bucket: this.bucket, Key: key }),
-      );
+      await client.send(new HeadObjectCommand({ Bucket: bucket, Key: key }));
       return true;
     } catch {
       return false;

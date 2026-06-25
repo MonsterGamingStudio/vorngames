@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require("dotenv/config");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const core_1 = require("@nestjs/core");
@@ -49,6 +50,10 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup('api/docs', app, document);
     const port = config.get('PORT', 3000);
     await app.listen(port);
+    console.log(`API listening on port ${port}`);
 }
-bootstrap();
+bootstrap().catch((err) => {
+    console.error('Failed to start API:', err);
+    process.exit(1);
+});
 //# sourceMappingURL=main.js.map
