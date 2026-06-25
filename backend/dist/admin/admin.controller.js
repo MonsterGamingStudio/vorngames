@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const client_1 = require("../generated/prisma/client");
@@ -20,23 +21,12 @@ const auth_constants_1 = require("../auth/auth.constants");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const utils_1 = require("../common/utils");
+const purchase_dto_1 = require("../purchases/dto/purchase.dto");
 const prisma_service_1 = require("../prisma/prisma.service");
 const purchases_service_1 = require("../purchases/purchases.service");
 const scripts_service_1 = require("../scripts/scripts.service");
 const users_service_1 = require("../users/users.service");
-class UpdateUserDto {
-    isBlocked;
-    blockedReason;
-    role;
-}
-class GrantPurchaseDto {
-    scriptId;
-    currency;
-}
-class IpBlockDto {
-    ip;
-    reason;
-}
+const admin_dto_1 = require("./dto/admin.dto");
 let AdminController = class AdminController {
     users;
     purchases;
@@ -48,10 +38,13 @@ let AdminController = class AdminController {
         this.scripts = scripts;
         this.prisma = prisma;
     }
-    async listUsers(search, page, limit) {
-        const pagination = (0, utils_1.parsePagination)({ page, limit });
+    async listUsers(query) {
+        const pagination = (0, utils_1.parsePagination)({
+            page: query.page,
+            limit: query.limit,
+        });
         return this.users.listUsers({
-            search,
+            search: query.search,
             skip: pagination.skip,
             take: pagination.limit,
         });
@@ -80,9 +73,7 @@ let AdminController = class AdminController {
             this.prisma.user.count(),
             this.prisma.script.count({ where: { isPublished: true } }),
             this.prisma.purchase.count(),
-            this.prisma.supportTicket.count({
-                where: { status: 'open' },
-            }),
+            this.prisma.supportTicket.count({ where: { status: 'open' } }),
             this.prisma.comment.count({ where: { status: 'pending' } }),
         ]);
         return { users, scripts, purchases, openTickets, pendingComments };
@@ -91,35 +82,50 @@ let AdminController = class AdminController {
 exports.AdminController = AdminController;
 __decorate([
     (0, common_1.Get)('users'),
-    (0, swagger_1.ApiOperation)({ summary: 'List users' }),
-    __param(0, (0, common_1.Query)('search')),
-    __param(1, (0, common_1.Query)('page')),
-    __param(2, (0, common_1.Query)('limit')),
+    (0, swagger_1.ApiOperation)({ summary: 'List users with search and pagination' }),
+    (0, swagger_1.ApiOkResponse)({
+        schema: {
+            properties: {
+                items: { type: 'array', items: { type: 'object' } },
+                total: { type: 'number', example: 100 },
+            },
+        },
+    }),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:paramtypes", [admin_dto_1.AdminUsersQueryDto]),
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "listUsers", null);
 __decorate([
     (0, common_1.Patch)('users/:id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Update user block/role' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Block/unblock user or change role' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiBody)({ type: admin_dto_1.UpdateUserDto }),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, UpdateUserDto]),
+    __metadata("design:paramtypes", [String, admin_dto_1.UpdateUserDto]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Post)('users/:id/purchases/grant'),
-    (0, swagger_1.ApiOperation)({ summary: 'Grant script to user' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Grant script purchase to user (admin)' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid', description: 'User ID' }),
+    (0, swagger_1.ApiBody)({ type: purchase_dto_1.GrantPurchaseDto }),
+    openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, GrantPurchaseDto]),
+    __metadata("design:paramtypes", [String, purchase_dto_1.GrantPurchaseDto]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "grantPurchase", null);
 __decorate([
     (0, common_1.Delete)('users/:userId/purchases/:purchaseId'),
-    (0, swagger_1.ApiOperation)({ summary: 'Revoke purchase' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Revoke purchase from user' }),
+    (0, swagger_1.ApiParam)({ name: 'userId', format: 'uuid' }),
+    (0, swagger_1.ApiParam)({ name: 'purchaseId', format: 'uuid' }),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('purchaseId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -128,14 +134,18 @@ __decorate([
 __decorate([
     (0, common_1.Post)('ip-blocks'),
     (0, swagger_1.ApiOperation)({ summary: 'Block IP address' }),
+    (0, swagger_1.ApiBody)({ type: admin_dto_1.IpBlockDto }),
+    openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [IpBlockDto]),
+    __metadata("design:paramtypes", [admin_dto_1.IpBlockDto]),
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "blockIp", null);
 __decorate([
     (0, common_1.Delete)('ip-blocks/:ip'),
     (0, swagger_1.ApiOperation)({ summary: 'Unblock IP address' }),
+    (0, swagger_1.ApiParam)({ name: 'ip', example: '203.0.113.10' }),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('ip')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -144,6 +154,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('dashboard'),
     (0, swagger_1.ApiOperation)({ summary: 'Admin dashboard aggregates' }),
+    (0, swagger_1.ApiOkResponse)({ type: admin_dto_1.AdminDashboardDto }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

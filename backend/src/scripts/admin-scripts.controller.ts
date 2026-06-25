@@ -12,36 +12,30 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
-  GameCategory,
-  ScriptBadge,
-  ScriptMediaType,
-} from '../generated/prisma/client';
+  ApiBody,
+  ApiConsumes,
+  ApiCookieAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+import { OkResponseDto } from '../common/dto/common.dto';
 import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { AdminGuard, BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import {
+  AddScriptMediaDto,
+  CreateScriptDto,
+  ReorderScriptMediaDto,
+  ScriptMediaDto,
+  ScriptStatsDto,
+  UploadImageBodyDto,
+  UploadVersionBodyDto,
+} from './dto/script.dto';
 import { ScriptsService } from './scripts.service';
-
-class CreateScriptBodyDto {
-  title!: string;
-  slug?: string;
-  shortDescription!: string;
-  gameCategory!: GameCategory;
-  priceRub!: number;
-  priceUsd!: number;
-  discountPercent?: number;
-  badge?: ScriptBadge;
-  instructionHtml?: string;
-  isPublished?: boolean;
-  featuredOnHome?: boolean;
-}
-
-class AddMediaBodyDto {
-  type!: ScriptMediaType;
-  url!: string;
-  sortOrder?: number;
-}
 
 @ApiTags('admin/scripts')
 @ApiCookieAuth(JWT_COOKIE_NAME)
@@ -51,59 +45,124 @@ export class AdminScriptsController {
   constructor(private readonly scripts: ScriptsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List all scripts (admin)' })
+  @ApiOperation({ summary: 'List all scripts including unpublished' })
   listAll() {
     return this.scripts.listAll();
   }
 
   @Post()
   @ApiOperation({ summary: 'Create script' })
-  create(@Body() body: CreateScriptBodyDto) {
+  @ApiBody({ type: CreateScriptDto })
+  create(@Body() body: CreateScriptDto) {
     return this.scripts.create(body);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update script' })
-  update(@Param('id') id: string, @Body() body: CreateScriptBodyDto) {
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiBody({ type: CreateScriptDto })
+  update(@Param('id') id: string, @Body() body: CreateScriptDto) {
     return this.scripts.update(id, body);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Unpublish script' })
+  @ApiOperation({ summary: 'Unpublish script (soft delete)' })
+  @ApiParam({ name: 'id', format: 'uuid' })
   remove(@Param('id') id: string) {
     return this.scripts.unpublish(id);
   }
 
   @Post(':id/media')
   @ApiOperation({ summary: 'Add media URL or YouTube link' })
-  addMedia(@Param('id') id: string, @Body() body: AddMediaBodyDto) {
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiBody({ type: AddScriptMediaDto })
+  @ApiOkResponse({ type: ScriptMediaDto })
+  addMedia(@Param('id') id: string, @Body() body: AddScriptMediaDto) {
     return this.scripts.addMedia(id, body);
   }
 
   @Post(':id/media/upload')
-  @ApiOperation({ summary: 'Upload image' })
+  @ApiOperation({ summary: 'Upload image file' })
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: {
+        file: { type: 'string', format: 'binary' },
+        sortOrder: { type: 'number', example: 0 },
+      },
+    },
+  })
+  @ApiOkResponse({ type: ScriptMediaDto })
   @UseInterceptors(FileInterceptor('file'))
   uploadImage(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Body('sortOrder') sortOrder?: string,
+    @Body() body: UploadImageBodyDto,
   ) {
-    return this.scripts.uploadImage(id, file, Number(sortOrder) || 0);
+    return this.scripts.uploadImage(id, file, body.sortOrder ?? 0);
+  }
+
+  @Get(':id/media')
+  @ApiOperation({ summary: 'List script media' })
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiOkResponse({ type: ScriptMediaDto, isArray: true })
+  listMedia(@Param('id') id: string) {
+    return this.scripts.listMedia(id);
+  }
+
+  @Patch(':id/media/reorder')
+  @ApiOperation({ summary: 'Reorder script media' })
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiBody({ type: ReorderScriptMediaDto })
+  @ApiOkResponse({ type: ScriptMediaDto, isArray: true })
+  reorderMedia(@Param('id') id: string, @Body() body: ReorderScriptMediaDto) {
+    return this.scripts.reorderMedia(id, body.items);
+  }
+
+  @Delete(':id/media/:mediaId')
+  @ApiOperation({ summary: 'Delete script media' })
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiParam({ name: 'mediaId', format: 'uuid' })
+  @ApiOkResponse({ type: OkResponseDto })
+  removeMedia(@Param('id') id: string, @Param('mediaId') mediaId: string) {
+    return this.scripts.removeMedia(id, mediaId);
   }
 
   @Post(':id/versions')
-  @ApiOperation({ summary: 'Upload new script version' })
+  @ApiOperation({
+    summary: 'Upload new script version',
+    description: 'Notifies all purchasers about script_update',
+  })
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: {
+        file: { type: 'string', format: 'binary', description: 'zip/rar archive' },
+        versionLabel: { type: 'string', example: '1.2.0' },
+      },
+    },
+  })
   @UseInterceptors(FileInterceptor('file'))
   uploadVersion(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Body('versionLabel') versionLabel: string,
+    @Body() body: UploadVersionBodyDto,
   ) {
-    return this.scripts.addVersion(id, file, versionLabel || '1.0');
+    return this.scripts.addVersion(id, file, body.versionLabel || '1.0');
   }
 
   @Get(':id/stats')
-  @ApiOperation({ summary: 'Script statistics' })
+  @ApiOperation({ summary: 'Script statistics (views, clicks, purchases, comments)' })
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiQuery({ name: 'from', required: false, example: '2026-01-01' })
+  @ApiQuery({ name: 'to', required: false, example: '2026-12-31' })
+  @ApiOkResponse({ type: ScriptStatsDto })
   stats(
     @Param('id') id: string,
     @Query('from') from?: string,

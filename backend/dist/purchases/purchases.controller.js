@@ -13,20 +13,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PurchasesController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const client_1 = require("../generated/prisma/client");
 const auth_constants_1 = require("../auth/auth.constants");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const purchase_dto_1 = require("./dto/purchase.dto");
 const purchases_service_1 = require("./purchases.service");
 let PurchasesController = class PurchasesController {
     purchases;
     constructor(purchases) {
         this.purchases = purchases;
     }
-    purchase(id, req, currency) {
-        const cur = currency?.toUpperCase() === 'USD' ? client_1.Currency.USD : client_1.Currency.RUB;
+    purchase(id, req, query) {
+        const cur = query.currency?.toUpperCase() === 'USD' ? client_1.Currency.USD : client_1.Currency.RUB;
         return this.purchases.createPurchase(req.user, id, cur);
     }
     list(req) {
@@ -40,21 +42,26 @@ exports.PurchasesController = PurchasesController;
 __decorate([
     (0, common_1.Post)('scripts/:id/purchase'),
     (0, swagger_1.ApiOperation)({
-        summary: 'Create script purchase payment (Steam login required)',
+        summary: 'Create script purchase payment',
+        description: 'Requires Steam login. Returns UnitPay payment URL. Guests receive 401.',
     }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid', description: 'Script ID' }),
+    (0, swagger_1.ApiQuery)({ name: 'currency', required: false, enum: ['RUB', 'USD'] }),
+    (0, swagger_1.ApiOkResponse)({ type: purchase_dto_1.CreatePurchaseResponseDto }),
     (0, swagger_1.ApiUnauthorizedResponse)({
         description: 'Authentication required — purchase is not available to guests',
     }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),
-    __param(2, (0, common_1.Query)('currency')),
+    __param(2, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, String]),
+    __metadata("design:paramtypes", [String, Object, purchase_dto_1.CreatePurchaseQueryDto]),
     __metadata("design:returntype", void 0)
 ], PurchasesController.prototype, "purchase", null);
 __decorate([
     (0, common_1.Get)('profile/purchases'),
-    (0, swagger_1.ApiOperation)({ summary: 'List user purchases' }),
+    (0, swagger_1.ApiOperation)({ summary: 'List purchased scripts with needsUpdate flag' }),
+    (0, swagger_1.ApiOkResponse)({ type: purchase_dto_1.PurchaseItemDto, isArray: true }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -62,7 +69,12 @@ __decorate([
 ], PurchasesController.prototype, "list", null);
 __decorate([
     (0, common_1.Get)('purchases/:id/download'),
-    (0, swagger_1.ApiOperation)({ summary: 'Download purchased script file' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Download purchased script file',
+        description: 'Streams the current version of the script archive',
+    }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid', description: 'Purchase ID' }),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),
     __param(2, (0, common_1.Res)()),

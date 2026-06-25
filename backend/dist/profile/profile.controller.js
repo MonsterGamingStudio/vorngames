@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfileController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const auth_constants_1 = require("../auth/auth.constants");
@@ -21,6 +22,7 @@ const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const utils_1 = require("../common/utils");
 const users_service_1 = require("../users/users.service");
+const profile_dto_1 = require("./dto/profile.dto");
 let ProfileController = class ProfileController {
     authService;
     usersService;
@@ -51,7 +53,9 @@ let ProfileController = class ProfileController {
 exports.ProfileController = ProfileController;
 __decorate([
     (0, common_1.Get)('profile/me'),
+    (0, swagger_1.ApiCookieAuth)(auth_constants_1.JWT_COOKIE_NAME),
     (0, swagger_1.ApiOperation)({ summary: 'Extended profile with achievements' }),
+    (0, swagger_1.ApiOkResponse)({ type: profile_dto_1.ProfileMeResponseDto }),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, guards_1.BlockedUserGuard),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -60,7 +64,10 @@ __decorate([
 ], ProfileController.prototype, "getMe", null);
 __decorate([
     (0, common_1.Get)('users/:id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Public user profile' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Public user profile (from comments link)' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiOkResponse)({ type: profile_dto_1.PublicProfileResponseDto }),
+    (0, swagger_1.ApiNotFoundResponse)({ description: 'User not found' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -68,7 +75,6 @@ __decorate([
 ], ProfileController.prototype, "getPublic", null);
 exports.ProfileController = ProfileController = __decorate([
     (0, swagger_1.ApiTags)('profile'),
-    (0, swagger_1.ApiCookieAuth)(auth_constants_1.JWT_COOKIE_NAME),
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
         users_service_1.UsersService])

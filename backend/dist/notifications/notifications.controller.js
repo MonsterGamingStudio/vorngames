@@ -13,22 +13,28 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotificationsController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const auth_constants_1 = require("../auth/auth.constants");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const common_dto_1 = require("../common/dto/common.dto");
 const utils_1 = require("../common/utils");
+const notification_dto_1 = require("./dto/notification.dto");
 const notifications_service_1 = require("./notifications.service");
 let NotificationsController = class NotificationsController {
     notifications;
     constructor(notifications) {
         this.notifications = notifications;
     }
-    async list(req, unreadOnly, page, limit) {
-        const pagination = (0, utils_1.parsePagination)({ page, limit });
+    async list(req, query) {
+        const pagination = (0, utils_1.parsePagination)({
+            page: query.page,
+            limit: query.limit,
+        });
         const items = await this.notifications.list(req.user.id, {
-            unreadOnly: unreadOnly === 'true',
+            unreadOnly: query.unreadOnly === 'true',
             skip: pagination.skip,
             take: pagination.limit,
         });
@@ -38,8 +44,8 @@ let NotificationsController = class NotificationsController {
         const count = await this.notifications.countUnread(req.user.id);
         return { count };
     }
-    async markRead(req, ids) {
-        const idList = ids?.split(',').filter(Boolean);
+    async markRead(req, query) {
+        const idList = query.ids?.split(',').filter(Boolean);
         await this.notifications.markRead(req.user.id, idList);
         return { ok: true };
     }
@@ -47,18 +53,18 @@ let NotificationsController = class NotificationsController {
 exports.NotificationsController = NotificationsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'List notifications' }),
+    (0, swagger_1.ApiOperation)({ summary: 'List user notifications' }),
+    (0, swagger_1.ApiOkResponse)({ type: notification_dto_1.NotificationListResponseDto }),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Query)('unreadOnly')),
-    __param(2, (0, common_1.Query)('page')),
-    __param(3, (0, common_1.Query)('limit')),
+    __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, String, String]),
+    __metadata("design:paramtypes", [Object, notification_dto_1.NotificationListQueryDto]),
     __metadata("design:returntype", Promise)
 ], NotificationsController.prototype, "list", null);
 __decorate([
     (0, common_1.Get)('unread-count'),
     (0, swagger_1.ApiOperation)({ summary: 'Unread notifications count' }),
+    (0, swagger_1.ApiOkResponse)({ type: common_dto_1.CountResponseDto }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -67,10 +73,12 @@ __decorate([
 __decorate([
     (0, common_1.Patch)('read'),
     (0, swagger_1.ApiOperation)({ summary: 'Mark notifications as read' }),
+    (0, swagger_1.ApiQuery)({ name: 'ids', required: false, description: 'Comma-separated IDs' }),
+    (0, swagger_1.ApiOkResponse)({ type: common_dto_1.OkResponseDto }),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Query)('ids')),
+    __param(1, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [Object, notification_dto_1.MarkNotificationsReadQueryDto]),
     __metadata("design:returntype", Promise)
 ], NotificationsController.prototype, "markRead", null);
 exports.NotificationsController = NotificationsController = __decorate([

@@ -1,13 +1,7 @@
 import type { Request } from 'express';
 import { SupportTicketStatus, User } from '../generated/prisma/client';
+import { AddMessageDto, CreateTicketDto } from './dto/support.dto';
 import { SupportService } from './support.service';
-declare class CreateTicketDto {
-    subject: string;
-    body: string;
-}
-declare class AddMessageDto {
-    body: string;
-}
 export declare class SupportController {
     private readonly support;
     constructor(support: SupportService);
@@ -149,4 +143,3 @@ export declare class AdminSupportController {
         closedAt: Date | null;
     }>;
 }
-export {};

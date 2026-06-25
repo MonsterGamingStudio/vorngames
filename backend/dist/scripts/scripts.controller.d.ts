@@ -1,16 +1,17 @@
 import type { Request } from 'express';
-import { GameCategory, User } from '../generated/prisma/client';
+import { User } from '../generated/prisma/client';
+import { ScriptListQueryDto } from './dto/script.dto';
 import { ScriptsService } from './scripts.service';
 export declare class ScriptsController {
     private readonly scripts;
     constructor(scripts: ScriptsService);
-    list(search?: string, gameCategory?: GameCategory, sort?: 'price_asc' | 'price_desc' | 'popular', page?: string, limit?: string): Promise<{
+    list(query: ScriptListQueryDto): Promise<{
         items: {
             id: string;
             slug: string;
             title: string;
             shortDescription: string;
-            gameCategory: GameCategory;
+            gameCategory: import("../generated/prisma/enums").GameCategory;
             priceRub: number;
             priceUsd: number;
             discountPercent: number | null;
@@ -24,11 +25,17 @@ export declare class ScriptsController {
         limit: number;
     }>;
     getRandom(count?: string): Promise<{
+        media: {
+            id: string;
+            type: import("../generated/prisma/enums").ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
         id: string;
         slug: string;
         title: string;
         shortDescription: string;
-        gameCategory: GameCategory;
+        gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
         discountPercent: number | null;
@@ -38,11 +45,17 @@ export declare class ScriptsController {
         fileUpdatedAt: Date | null;
     }[]>;
     getPopular(limit?: string): Promise<{
+        media: {
+            id: string;
+            type: import("../generated/prisma/enums").ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
         id: string;
         slug: string;
         title: string;
         shortDescription: string;
-        gameCategory: GameCategory;
+        gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
         discountPercent: number | null;
@@ -58,7 +71,7 @@ export declare class ScriptsController {
         slug: string;
         title: string;
         shortDescription: string;
-        gameCategory: GameCategory;
+        gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
         discountPercent: number | null;

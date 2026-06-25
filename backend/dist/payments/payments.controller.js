@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentsController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const create_payment_dto_1 = require("./dto/create-payment.dto");
@@ -88,6 +89,7 @@ __decorate([
         description: 'UnitPay sends GET requests (check / pay / error). ' +
             'Public URL example: https://www.vorngames.com/api/payments/unitpay/handler',
     }),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

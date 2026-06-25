@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreatePaymentDto = void 0;
+const openapi = require("@nestjs/swagger");
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const payments_constants_1 = require("../payments.constants");
@@ -19,6 +20,9 @@ class CreatePaymentDto {
     steamid;
     amount;
     description;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { game: { required: true, type: () => String, enum: payments_constants_1.SUPPORTED_GAMES }, order_id: { required: true, type: () => String, format: "uuid" }, steamid: { required: false, type: () => String, maxLength: 32 }, amount: { required: true, type: () => Number, minimum: 1 }, description: { required: false, type: () => String, maxLength: 255 } };
+    }
 }
 exports.CreatePaymentDto = CreatePaymentDto;
 __decorate([

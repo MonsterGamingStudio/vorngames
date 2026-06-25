@@ -52,6 +52,34 @@ export class ScriptsService {
     versions: { where: { isCurrent: true }, take: 1 },
   };
 
+  private mapMediaItem(m: {
+    id: string;
+    type: ScriptMediaType;
+    url: string;
+    sortOrder: number;
+  }) {
+    return {
+      id: m.id,
+      type: m.type,
+      sortOrder: m.sortOrder,
+      url:
+        m.type === ScriptMediaType.youtube
+          ? m.url
+          : this.storage.getPublicUrl(m.url),
+    };
+  }
+
+  private mapMediaItems(
+    media: Array<{
+      id: string;
+      type: ScriptMediaType;
+      url: string;
+      sortOrder: number;
+    }>,
+  ) {
+    return media.map((m) => this.mapMediaItem(m));
+  }
+
   toListItem(script: Script & { media: { url: string; type: string }[] }) {
     const coverRaw =
       script.media.find((m) => m.type === ScriptMediaType.image)?.url ?? null;
@@ -68,6 +96,22 @@ export class ScriptsService {
       coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
       publishedAt: script.publishedAt,
       fileUpdatedAt: script.fileUpdatedAt,
+    };
+  }
+
+  toListItemWithMedia(
+    script: Script & {
+      media: Array<{
+        id: string;
+        type: ScriptMediaType;
+        url: string;
+        sortOrder: number;
+      }>;
+    },
+  ) {
+    return {
+      ...this.toListItem(script),
+      media: this.mapMediaItems(script.media),
     };
   }
 
@@ -153,7 +197,7 @@ export class ScriptsService {
       include: this.scriptInclude,
     });
 
-    return scripts.map((s) => this.toListItem(s));
+    return scripts.map((s) => this.toListItemWithMedia(s));
   }
 
   async getPopular(limit = 8) {
@@ -179,7 +223,7 @@ export class ScriptsService {
     return ids
       .map((id) => scripts.find((s) => s.id === id))
       .filter(Boolean)
-      .map((s) => this.toListItem(s!));
+      .map((s) => this.toListItemWithMedia(s!));
   }
 
   toDetail(
@@ -204,15 +248,7 @@ export class ScriptsService {
       badge: script.badge,
       instructionHtml: script.instructionHtml,
       coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
-      media: script.media.map((m) => ({
-        id: m.id,
-        type: m.type,
-        sortOrder: m.sortOrder,
-        url:
-          m.type === ScriptMediaType.youtube
-            ? m.url
-            : this.storage.getPublicUrl(m.url),
-      })),
+      media: this.mapMediaItems(script.media),
       publishedAt: script.publishedAt,
       fileUpdatedAt: script.fileUpdatedAt,
       createdAt: script.createdAt,
@@ -372,7 +408,7 @@ export class ScriptsService {
     },
   ) {
     await this.findById(scriptId);
-    return this.prisma.scriptMedia.create({
+    const created = await this.prisma.scriptMedia.create({
       data: {
         scriptId,
         type: data.type,
@@ -380,9 +416,13 @@ export class ScriptsService {
         sortOrder: data.sortOrder ?? 0,
       },
     });
+    return this.mapMediaItem(created);
   }
 
   async uploadImage(scriptId: string, file: Express.Multer.File, sortOrder = 0) {
+    if (!file) {
+      throw new BadRequestException('File is required');
+    }
     this.storage.assertSize(file.buffer);
     this.storage.assertImageMime(file.mimetype);
     const key = this.storage.buildKey(`scripts/${scriptId}/images`, file.originalname);
@@ -453,6 +493,59 @@ export class ScriptsService {
     }
 
     return version;
+  }
+
+  async listMedia(scriptId: string) {
+    const script = await this.findById(scriptId);
+    return this.mapMediaItems(script.media);
+  }
+
+  async removeMedia(scriptId: string, mediaId: string) {
+    const media = await this.prisma.scriptMedia.findFirst({
+      where: { id: mediaId, scriptId },
+    });
+
+    if (!media) {
+      throw new NotFoundException('Media not found');
+    }
+
+    if (media.type === ScriptMediaType.image) {
+      try {
+        await this.storage.delete(media.url);
+      } catch {
+        // ignore missing storage file
+      }
+    }
+
+    await this.prisma.scriptMedia.delete({ where: { id: mediaId } });
+    return { ok: true };
+  }
+
+  async reorderMedia(
+    scriptId: string,
+    items: { id: string; sortOrder: number }[],
+  ) {
+    await this.findById(scriptId);
+
+    const ids = items.map((i) => i.id);
+    const existing = await this.prisma.scriptMedia.findMany({
+      where: { scriptId, id: { in: ids } },
+    });
+
+    if (existing.length !== ids.length) {
+      throw new BadRequestException('One or more media items not found');
+    }
+
+    await this.prisma.$transaction(
+      items.map(({ id, sortOrder }) =>
+        this.prisma.scriptMedia.update({
+          where: { id },
+          data: { sortOrder },
+        }),
+      ),
+    );
+
+    return this.listMedia(scriptId);
   }
 
   async listAll() {

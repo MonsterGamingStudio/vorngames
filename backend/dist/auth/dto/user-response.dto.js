@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserResponseDto = void 0;
+const openapi = require("@nestjs/swagger");
 const swagger_1 = require("@nestjs/swagger");
 class UserResponseDto {
     id;
@@ -20,6 +21,9 @@ class UserResponseDto {
     role;
     isBlocked;
     createdAt;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, steamId: { required: true, type: () => String }, username: { required: true, type: () => String }, avatarUrl: { required: true, type: () => String }, balance: { required: true, type: () => Number }, role: { required: true, type: () => String }, isBlocked: { required: true, type: () => Boolean }, createdAt: { required: true, type: () => Date } };
+    }
 }
 exports.UserResponseDto = UserResponseDto;
 __decorate([

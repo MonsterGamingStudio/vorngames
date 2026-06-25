@@ -13,31 +13,16 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminScriptsController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const swagger_1 = require("@nestjs/swagger");
+const common_dto_1 = require("../common/dto/common.dto");
 const auth_constants_1 = require("../auth/auth.constants");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const script_dto_1 = require("./dto/script.dto");
 const scripts_service_1 = require("./scripts.service");
-class CreateScriptBodyDto {
-    title;
-    slug;
-    shortDescription;
-    gameCategory;
-    priceRub;
-    priceUsd;
-    discountPercent;
-    badge;
-    instructionHtml;
-    isPublished;
-    featuredOnHome;
-}
-class AddMediaBodyDto {
-    type;
-    url;
-    sortOrder;
-}
 let AdminScriptsController = class AdminScriptsController {
     scripts;
     constructor(scripts) {
@@ -58,11 +43,20 @@ let AdminScriptsController = class AdminScriptsController {
     addMedia(id, body) {
         return this.scripts.addMedia(id, body);
     }
-    uploadImage(id, file, sortOrder) {
-        return this.scripts.uploadImage(id, file, Number(sortOrder) || 0);
+    uploadImage(id, file, body) {
+        return this.scripts.uploadImage(id, file, body.sortOrder ?? 0);
     }
-    uploadVersion(id, file, versionLabel) {
-        return this.scripts.addVersion(id, file, versionLabel || '1.0');
+    listMedia(id) {
+        return this.scripts.listMedia(id);
+    }
+    reorderMedia(id, body) {
+        return this.scripts.reorderMedia(id, body.items);
+    }
+    removeMedia(id, mediaId) {
+        return this.scripts.removeMedia(id, mediaId);
+    }
+    uploadVersion(id, file, body) {
+        return this.scripts.addVersion(id, file, body.versionLabel || '1.0');
     }
     stats(id, from, to) {
         return this.scripts.getStats(id, from ? new Date(from) : undefined, to ? new Date(to) : undefined);
@@ -71,7 +65,8 @@ let AdminScriptsController = class AdminScriptsController {
 exports.AdminScriptsController = AdminScriptsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'List all scripts (admin)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'List all scripts including unpublished' }),
+    openapi.ApiResponse({ status: 200, type: [Object] }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
@@ -79,23 +74,30 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, swagger_1.ApiOperation)({ summary: 'Create script' }),
+    (0, swagger_1.ApiBody)({ type: script_dto_1.CreateScriptDto }),
+    openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateScriptBodyDto]),
+    __metadata("design:paramtypes", [script_dto_1.CreateScriptDto]),
     __metadata("design:returntype", void 0)
 ], AdminScriptsController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Update script' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiBody)({ type: script_dto_1.CreateScriptDto }),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, CreateScriptBodyDto]),
+    __metadata("design:paramtypes", [String, script_dto_1.CreateScriptDto]),
     __metadata("design:returntype", void 0)
 ], AdminScriptsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Unpublish script' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Unpublish script (soft delete)' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -104,37 +106,107 @@ __decorate([
 __decorate([
     (0, common_1.Post)(':id/media'),
     (0, swagger_1.ApiOperation)({ summary: 'Add media URL or YouTube link' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiBody)({ type: script_dto_1.AddScriptMediaDto }),
+    (0, swagger_1.ApiOkResponse)({ type: script_dto_1.ScriptMediaDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, AddMediaBodyDto]),
+    __metadata("design:paramtypes", [String, script_dto_1.AddScriptMediaDto]),
     __metadata("design:returntype", void 0)
 ], AdminScriptsController.prototype, "addMedia", null);
 __decorate([
     (0, common_1.Post)(':id/media/upload'),
-    (0, swagger_1.ApiOperation)({ summary: 'Upload image' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Upload image file' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({
+        schema: {
+            type: 'object',
+            required: ['file'],
+            properties: {
+                file: { type: 'string', format: 'binary' },
+                sortOrder: { type: 'number', example: 0 },
+            },
+        },
+    }),
+    (0, swagger_1.ApiOkResponse)({ type: script_dto_1.ScriptMediaDto }),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.UploadedFile)()),
-    __param(2, (0, common_1.Body)('sortOrder')),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, String]),
+    __metadata("design:paramtypes", [String, Object, script_dto_1.UploadImageBodyDto]),
     __metadata("design:returntype", void 0)
 ], AdminScriptsController.prototype, "uploadImage", null);
 __decorate([
+    (0, common_1.Get)(':id/media'),
+    (0, swagger_1.ApiOperation)({ summary: 'List script media' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiOkResponse)({ type: script_dto_1.ScriptMediaDto, isArray: true }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AdminScriptsController.prototype, "listMedia", null);
+__decorate([
+    (0, common_1.Patch)(':id/media/reorder'),
+    (0, swagger_1.ApiOperation)({ summary: 'Reorder script media' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiBody)({ type: script_dto_1.ReorderScriptMediaDto }),
+    (0, swagger_1.ApiOkResponse)({ type: script_dto_1.ScriptMediaDto, isArray: true }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, script_dto_1.ReorderScriptMediaDto]),
+    __metadata("design:returntype", void 0)
+], AdminScriptsController.prototype, "reorderMedia", null);
+__decorate([
+    (0, common_1.Delete)(':id/media/:mediaId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Delete script media' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiParam)({ name: 'mediaId', format: 'uuid' }),
+    (0, swagger_1.ApiOkResponse)({ type: common_dto_1.OkResponseDto }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)('mediaId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], AdminScriptsController.prototype, "removeMedia", null);
+__decorate([
     (0, common_1.Post)(':id/versions'),
-    (0, swagger_1.ApiOperation)({ summary: 'Upload new script version' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Upload new script version',
+        description: 'Notifies all purchasers about script_update',
+    }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({
+        schema: {
+            type: 'object',
+            required: ['file'],
+            properties: {
+                file: { type: 'string', format: 'binary', description: 'zip/rar archive' },
+                versionLabel: { type: 'string', example: '1.2.0' },
+            },
+        },
+    }),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.UploadedFile)()),
-    __param(2, (0, common_1.Body)('versionLabel')),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, String]),
+    __metadata("design:paramtypes", [String, Object, script_dto_1.UploadVersionBodyDto]),
     __metadata("design:returntype", void 0)
 ], AdminScriptsController.prototype, "uploadVersion", null);
 __decorate([
     (0, common_1.Get)(':id/stats'),
-    (0, swagger_1.ApiOperation)({ summary: 'Script statistics' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Script statistics (views, clicks, purchases, comments)' }),
+    (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
+    (0, swagger_1.ApiQuery)({ name: 'from', required: false, example: '2026-01-01' }),
+    (0, swagger_1.ApiQuery)({ name: 'to', required: false, example: '2026-12-31' }),
+    (0, swagger_1.ApiOkResponse)({ type: script_dto_1.ScriptStatsDto }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Query)('from')),
     __param(2, (0, common_1.Query)('to')),

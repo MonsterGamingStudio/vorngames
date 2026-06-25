@@ -1,12 +1,7 @@
 import type { Request } from 'express';
 import { CommentStatus, User } from '../generated/prisma/client';
+import { CreateCommentDto, ModerateCommentDto } from './dto/comment.dto';
 import { CommentsService } from './comments.service';
-declare class CreateCommentDto {
-    text: string;
-}
-declare class ModerateCommentDto {
-    status: 'approved' | 'rejected';
-}
 export declare class CommentsController {
     private readonly comments;
     constructor(comments: CommentsService);
@@ -64,4 +59,3 @@ export declare class AdminCommentsController {
         moderatedById: string | null;
     }>;
 }
-export {};

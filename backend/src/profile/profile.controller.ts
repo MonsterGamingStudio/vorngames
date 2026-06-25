@@ -1,7 +1,10 @@
 import { Controller, Get, NotFoundException, Param, Req, UseGuards } from '@nestjs/common';
 import {
   ApiCookieAuth,
+  ApiNotFoundResponse,
+  ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import type { Request } from 'express';
@@ -12,9 +15,12 @@ import { BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { getClientIp } from '../common/utils';
 import { UsersService } from '../users/users.service';
+import {
+  ProfileMeResponseDto,
+  PublicProfileResponseDto,
+} from './dto/profile.dto';
 
 @ApiTags('profile')
-@ApiCookieAuth(JWT_COOKIE_NAME)
 @Controller()
 export class ProfileController {
   constructor(
@@ -23,7 +29,9 @@ export class ProfileController {
   ) {}
 
   @Get('profile/me')
+  @ApiCookieAuth(JWT_COOKIE_NAME)
   @ApiOperation({ summary: 'Extended profile with achievements' })
+  @ApiOkResponse({ type: ProfileMeResponseDto })
   @UseGuards(JwtAuthGuard, BlockedUserGuard)
   async getMe(@Req() req: Request & { user: User }) {
     const user = await this.authService.getCurrentUser(
@@ -39,7 +47,10 @@ export class ProfileController {
   }
 
   @Get('users/:id')
-  @ApiOperation({ summary: 'Public user profile' })
+  @ApiOperation({ summary: 'Public user profile (from comments link)' })
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiOkResponse({ type: PublicProfileResponseDto })
+  @ApiNotFoundResponse({ description: 'User not found' })
   async getPublic(@Param('id') id: string) {
     const user = await this.usersService.findById(id);
     if (!user) {

@@ -17,6 +17,7 @@ import {
 } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { User } from '../generated/prisma/client';
+import { OkResponseDto } from '../common/dto/common.dto';
 import { getClientIp } from '../common/utils';
 import { JWT_COOKIE_NAME } from './auth.constants';
 import { AuthService } from './auth.service';
@@ -33,14 +34,19 @@ export class AuthController {
   ) {}
 
   @Get('steam')
-  @ApiOperation({ summary: 'Redirect to Steam OpenID login' })
+  @ApiOperation({
+    summary: 'Redirect to Steam OpenID login',
+    description: 'Browser redirect. After success sets JWT cookie and redirects to FRONTEND_URL',
+  })
+  @ApiResponse({ status: 302, description: 'Redirect to Steam' })
   @UseGuards(AuthGuard('steam'))
   steamLogin() {
     return;
   }
 
   @Get('steam/callback')
-  @ApiOperation({ summary: 'Steam OpenID callback' })
+  @ApiOperation({ summary: 'Steam OpenID callback (internal)' })
+  @ApiResponse({ status: 302, description: 'Redirect to frontend with auth cookie set' })
   @UseGuards(AuthGuard('steam'))
   steamCallback(@Req() req: Request & { user: User }, @Res() res: Response) {
     const token = this.authService.signToken(req.user);
@@ -74,6 +80,7 @@ export class AuthController {
 
   @Post('logout')
   @ApiOperation({ summary: 'Clear auth cookie' })
+  @ApiResponse({ status: 200, type: OkResponseDto })
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie(JWT_COOKIE_NAME, {
       httpOnly: true,

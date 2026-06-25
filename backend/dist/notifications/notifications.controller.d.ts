@@ -1,12 +1,13 @@
 import type { Request } from 'express';
 import { User } from '../generated/prisma/client';
+import { MarkNotificationsReadQueryDto, NotificationListQueryDto } from './dto/notification.dto';
 import { NotificationsService } from './notifications.service';
 export declare class NotificationsController {
     private readonly notifications;
     constructor(notifications: NotificationsService);
     list(req: Request & {
         user: User;
-    }, unreadOnly?: string, page?: string, limit?: string): Promise<{
+    }, query: NotificationListQueryDto): Promise<{
         items: {
             id: string;
             createdAt: Date;
@@ -27,7 +28,7 @@ export declare class NotificationsController {
     }>;
     markRead(req: Request & {
         user: User;
-    }, ids?: string): Promise<{
+    }, query: MarkNotificationsReadQueryDto): Promise<{
         ok: boolean;
     }>;
 }

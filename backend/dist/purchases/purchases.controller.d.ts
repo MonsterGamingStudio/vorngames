@@ -1,12 +1,13 @@
 import type { Request, Response } from 'express';
 import { Currency, User } from '../generated/prisma/client';
+import { CreatePurchaseQueryDto } from './dto/purchase.dto';
 import { PurchasesService } from './purchases.service';
 export declare class PurchasesController {
     private readonly purchases;
     constructor(purchases: PurchasesService);
     purchase(id: string, req: Request & {
         user: User;
-    }, currency?: string): Promise<{
+    }, query: CreatePurchaseQueryDto): Promise<{
         payment_url: string;
         payment_id: string;
     }>;

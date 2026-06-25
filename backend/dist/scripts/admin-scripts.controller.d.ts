@@ -1,23 +1,5 @@
-import { GameCategory, ScriptBadge, ScriptMediaType } from '../generated/prisma/client';
+import { AddScriptMediaDto, CreateScriptDto, ReorderScriptMediaDto, UploadImageBodyDto, UploadVersionBodyDto } from './dto/script.dto';
 import { ScriptsService } from './scripts.service';
-declare class CreateScriptBodyDto {
-    title: string;
-    slug?: string;
-    shortDescription: string;
-    gameCategory: GameCategory;
-    priceRub: number;
-    priceUsd: number;
-    discountPercent?: number;
-    badge?: ScriptBadge;
-    instructionHtml?: string;
-    isPublished?: boolean;
-    featuredOnHome?: boolean;
-}
-declare class AddMediaBodyDto {
-    type: ScriptMediaType;
-    url: string;
-    sortOrder?: number;
-}
 export declare class AdminScriptsController {
     private readonly scripts;
     constructor(scripts: ScriptsService);
@@ -26,7 +8,7 @@ export declare class AdminScriptsController {
             id: string;
             createdAt: Date;
             scriptId: string;
-            type: ScriptMediaType;
+            type: import("../generated/prisma/enums").ScriptMediaType;
             url: string;
             sortOrder: number;
         }[];
@@ -49,23 +31,23 @@ export declare class AdminScriptsController {
         slug: string;
         title: string;
         shortDescription: string;
-        gameCategory: GameCategory;
+        gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
         discountPercent: number | null;
-        badge: ScriptBadge;
+        badge: import("../generated/prisma/enums").ScriptBadge;
         instructionHtml: string;
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
         fileUpdatedAt: Date | null;
     })[]>;
-    create(body: CreateScriptBodyDto): Promise<{
+    create(body: CreateScriptDto): Promise<{
         media: {
             id: string;
             createdAt: Date;
             scriptId: string;
-            type: ScriptMediaType;
+            type: import("../generated/prisma/enums").ScriptMediaType;
             url: string;
             sortOrder: number;
         }[];
@@ -88,23 +70,23 @@ export declare class AdminScriptsController {
         slug: string;
         title: string;
         shortDescription: string;
-        gameCategory: GameCategory;
+        gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
         discountPercent: number | null;
-        badge: ScriptBadge;
+        badge: import("../generated/prisma/enums").ScriptBadge;
         instructionHtml: string;
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
-    update(id: string, body: CreateScriptBodyDto): Promise<{
+    update(id: string, body: CreateScriptDto): Promise<{
         media: {
             id: string;
             createdAt: Date;
             scriptId: string;
-            type: ScriptMediaType;
+            type: import("../generated/prisma/enums").ScriptMediaType;
             url: string;
             sortOrder: number;
         }[];
@@ -127,11 +109,11 @@ export declare class AdminScriptsController {
         slug: string;
         title: string;
         shortDescription: string;
-        gameCategory: GameCategory;
+        gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
         discountPercent: number | null;
-        badge: ScriptBadge;
+        badge: import("../generated/prisma/enums").ScriptBadge;
         instructionHtml: string;
         isPublished: boolean;
         featuredOnHome: boolean;
@@ -143,7 +125,7 @@ export declare class AdminScriptsController {
             id: string;
             createdAt: Date;
             scriptId: string;
-            type: ScriptMediaType;
+            type: import("../generated/prisma/enums").ScriptMediaType;
             url: string;
             sortOrder: number;
         }[];
@@ -166,34 +148,45 @@ export declare class AdminScriptsController {
         slug: string;
         title: string;
         shortDescription: string;
-        gameCategory: GameCategory;
+        gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
         discountPercent: number | null;
-        badge: ScriptBadge;
+        badge: import("../generated/prisma/enums").ScriptBadge;
         instructionHtml: string;
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
-    addMedia(id: string, body: AddMediaBodyDto): Promise<{
+    addMedia(id: string, body: AddScriptMediaDto): Promise<{
         id: string;
-        createdAt: Date;
-        scriptId: string;
-        type: ScriptMediaType;
-        url: string;
+        type: import("../generated/prisma/enums").ScriptMediaType;
         sortOrder: number;
+        url: string;
     }>;
-    uploadImage(id: string, file: Express.Multer.File, sortOrder?: string): Promise<{
+    uploadImage(id: string, file: Express.Multer.File, body: UploadImageBodyDto): Promise<{
         id: string;
-        createdAt: Date;
-        scriptId: string;
-        type: ScriptMediaType;
-        url: string;
+        type: import("../generated/prisma/enums").ScriptMediaType;
         sortOrder: number;
+        url: string;
     }>;
-    uploadVersion(id: string, file: Express.Multer.File, versionLabel: string): Promise<{
+    listMedia(id: string): Promise<{
+        id: string;
+        type: import("../generated/prisma/enums").ScriptMediaType;
+        sortOrder: number;
+        url: string;
+    }[]>;
+    reorderMedia(id: string, body: ReorderScriptMediaDto): Promise<{
+        id: string;
+        type: import("../generated/prisma/enums").ScriptMediaType;
+        sortOrder: number;
+        url: string;
+    }[]>;
+    removeMedia(id: string, mediaId: string): Promise<{
+        ok: boolean;
+    }>;
+    uploadVersion(id: string, file: Express.Multer.File, body: UploadVersionBodyDto): Promise<{
         id: string;
         createdAt: Date;
         scriptId: string;
@@ -212,4 +205,3 @@ export declare class AdminScriptsController {
         comments: number;
     }>;
 }
-export {};

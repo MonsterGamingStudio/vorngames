@@ -13,10 +13,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const passport_1 = require("@nestjs/passport");
 const swagger_1 = require("@nestjs/swagger");
+const common_dto_1 = require("../common/dto/common.dto");
 const utils_1 = require("../common/utils");
 const auth_constants_1 = require("./auth.constants");
 const auth_service_1 = require("./auth.service");
@@ -59,7 +61,11 @@ let AuthController = class AuthController {
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Get)('steam'),
-    (0, swagger_1.ApiOperation)({ summary: 'Redirect to Steam OpenID login' }),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Redirect to Steam OpenID login',
+        description: 'Browser redirect. After success sets JWT cookie and redirects to FRONTEND_URL',
+    }),
+    (0, swagger_1.ApiResponse)({ status: 302, description: 'Redirect to Steam' }),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('steam')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -67,7 +73,8 @@ __decorate([
 ], AuthController.prototype, "steamLogin", null);
 __decorate([
     (0, common_1.Get)('steam/callback'),
-    (0, swagger_1.ApiOperation)({ summary: 'Steam OpenID callback' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Steam OpenID callback (internal)' }),
+    (0, swagger_1.ApiResponse)({ status: 302, description: 'Redirect to frontend with auth cookie set' }),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('steam')),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
@@ -90,6 +97,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('logout'),
     (0, swagger_1.ApiOperation)({ summary: 'Clear auth cookie' }),
+    (0, swagger_1.ApiResponse)({ status: 200, type: common_dto_1.OkResponseDto }),
     __param(0, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

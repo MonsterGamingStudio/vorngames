@@ -29,12 +29,41 @@ export declare class ScriptsService {
     private readonly notifications;
     constructor(prisma: PrismaService, storage: StorageService, notifications: NotificationsService);
     private scriptInclude;
+    private mapMediaItem;
+    private mapMediaItems;
     toListItem(script: Script & {
         media: {
             url: string;
             type: string;
         }[];
     }): {
+        id: string;
+        slug: string;
+        title: string;
+        shortDescription: string;
+        gameCategory: GameCategory;
+        priceRub: number;
+        priceUsd: number;
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+    };
+    toListItemWithMedia(script: Script & {
+        media: Array<{
+            id: string;
+            type: ScriptMediaType;
+            url: string;
+            sortOrder: number;
+        }>;
+    }): {
+        media: {
+            id: string;
+            type: ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
         id: string;
         slug: string;
         title: string;
@@ -68,6 +97,12 @@ export declare class ScriptsService {
         limit: number;
     }>;
     getRandom(count?: number): Promise<{
+        media: {
+            id: string;
+            type: ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
         id: string;
         slug: string;
         title: string;
@@ -82,6 +117,12 @@ export declare class ScriptsService {
         fileUpdatedAt: Date | null;
     }[]>;
     getPopular(limit?: number): Promise<{
+        media: {
+            id: string;
+            type: ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
         id: string;
         slug: string;
         title: string;
@@ -374,19 +415,15 @@ export declare class ScriptsService {
         sortOrder?: number;
     }): Promise<{
         id: string;
-        createdAt: Date;
-        scriptId: string;
         type: ScriptMediaType;
-        url: string;
         sortOrder: number;
+        url: string;
     }>;
     uploadImage(scriptId: string, file: Express.Multer.File, sortOrder?: number): Promise<{
         id: string;
-        createdAt: Date;
-        scriptId: string;
         type: ScriptMediaType;
-        url: string;
         sortOrder: number;
+        url: string;
     }>;
     addVersion(scriptId: string, file: Express.Multer.File, versionLabel: string): Promise<{
         id: string;
@@ -400,6 +437,24 @@ export declare class ScriptsService {
         releasedAt: Date;
         isCurrent: boolean;
     }>;
+    listMedia(scriptId: string): Promise<{
+        id: string;
+        type: ScriptMediaType;
+        sortOrder: number;
+        url: string;
+    }[]>;
+    removeMedia(scriptId: string, mediaId: string): Promise<{
+        ok: boolean;
+    }>;
+    reorderMedia(scriptId: string, items: {
+        id: string;
+        sortOrder: number;
+    }[]): Promise<{
+        id: string;
+        type: ScriptMediaType;
+        sortOrder: number;
+        url: string;
+    }[]>;
     listAll(): Promise<({
         media: {
             id: string;

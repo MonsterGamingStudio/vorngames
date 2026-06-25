@@ -42,12 +42,40 @@ async function bootstrap() {
     });
     const swaggerConfig = new swagger_1.DocumentBuilder()
         .setTitle('Vorn Games API')
-        .setDescription('VornGames API: Steam auth, scripts catalog, purchases, support')
+        .setDescription('VornGames storefront API.\n\n' +
+        '**Auth:** login via `GET /api/auth/steam`, then use cookie `auth_token` (Authorize button).\n\n' +
+        '**Purchases:** require Steam login (`POST /api/scripts/:id/purchase`).\n\n' +
+        '**Admin:** endpoints under `admin/*` require `role=admin` or steamId in STEAM_ADMIN_IDS.')
         .setVersion('1.0')
-        .addCookieAuth(auth_constants_1.JWT_COOKIE_NAME)
+        .addCookieAuth(auth_constants_1.JWT_COOKIE_NAME, {
+        type: 'apiKey',
+        in: 'cookie',
+        name: auth_constants_1.JWT_COOKIE_NAME,
+        description: 'JWT set after Steam login',
+    })
+        .addTag('auth', 'Steam OpenID authentication')
+        .addTag('scripts', 'Public scripts catalog')
+        .addTag('purchases', 'Script purchases and downloads')
+        .addTag('profile', 'User profile and achievements')
+        .addTag('comments', 'Script comments')
+        .addTag('notifications', 'In-app notifications')
+        .addTag('support', 'User support tickets')
+        .addTag('payments', 'UnitPay donations (game currency)')
+        .addTag('admin', 'Admin: users, IP blocks, dashboard')
+        .addTag('admin/scripts', 'Admin: scripts CRUD and uploads')
+        .addTag('admin/comments', 'Admin: comment moderation')
+        .addTag('admin/support', 'Admin: support tickets')
         .build();
-    const document = swagger_1.SwaggerModule.createDocument(app, swaggerConfig);
-    swagger_1.SwaggerModule.setup('api/docs', app, document);
+    const document = swagger_1.SwaggerModule.createDocument(app, swaggerConfig, {
+        operationIdFactory: (controllerKey, methodKey) => methodKey,
+    });
+    swagger_1.SwaggerModule.setup('api/docs', app, document, {
+        swaggerOptions: {
+            persistAuthorization: true,
+            tagsSorter: 'alpha',
+            operationsSorter: 'alpha',
+        },
+    });
     const port = config.get('PORT', 3000);
     await app.listen(port);
     console.log(`API listening on port ${port}`);

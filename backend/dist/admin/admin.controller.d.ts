@@ -1,35 +1,24 @@
-import { Currency, UserRole } from '../generated/prisma/client';
+import { Currency } from '../generated/prisma/client';
+import { GrantPurchaseDto } from '../purchases/dto/purchase.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { PurchasesService } from '../purchases/purchases.service';
 import { ScriptsService } from '../scripts/scripts.service';
 import { UsersService } from '../users/users.service';
-declare class UpdateUserDto {
-    isBlocked?: boolean;
-    blockedReason?: string;
-    role?: UserRole;
-}
-declare class GrantPurchaseDto {
-    scriptId: string;
-    currency?: Currency;
-}
-declare class IpBlockDto {
-    ip: string;
-    reason?: string;
-}
+import { AdminDashboardDto, AdminUsersQueryDto, IpBlockDto, UpdateUserDto } from './dto/admin.dto';
 export declare class AdminController {
     private readonly users;
     private readonly purchases;
     private readonly scripts;
     private readonly prisma;
     constructor(users: UsersService, purchases: PurchasesService, scripts: ScriptsService, prisma: PrismaService);
-    listUsers(search?: string, page?: string, limit?: string): Promise<{
+    listUsers(query: AdminUsersQueryDto): Promise<{
         items: {
             id: string;
             steamId: string;
             username: string;
             avatarUrl: string;
             balance: import("@prisma/client-runtime-utils").Decimal;
-            role: UserRole;
+            role: import("../generated/prisma/enums").UserRole;
             isBlocked: boolean;
             blockedReason: string | null;
             lastLoginIp: string | null;
@@ -45,7 +34,7 @@ export declare class AdminController {
         username: string;
         avatarUrl: string;
         balance: import("@prisma/client-runtime-utils").Decimal;
-        role: UserRole;
+        role: import("../generated/prisma/enums").UserRole;
         isBlocked: boolean;
         blockedReason: string | null;
         lastLoginIp: string | null;
@@ -93,12 +82,5 @@ export declare class AdminController {
     }, never, import("@prisma/client/runtime/client").DefaultArgs, {
         omit: import("../generated/prisma/internal/prismaNamespace").GlobalOmitConfig | undefined;
     }>;
-    dashboard(): Promise<{
-        users: number;
-        scripts: number;
-        purchases: number;
-        openTickets: number;
-        pendingComments: number;
-    }>;
+    dashboard(): Promise<AdminDashboardDto>;
 }
-export {};

@@ -29,6 +29,19 @@ let ScriptsService = class ScriptsService {
         media: { orderBy: { sortOrder: 'asc' } },
         versions: { where: { isCurrent: true }, take: 1 },
     };
+    mapMediaItem(m) {
+        return {
+            id: m.id,
+            type: m.type,
+            sortOrder: m.sortOrder,
+            url: m.type === client_1.ScriptMediaType.youtube
+                ? m.url
+                : this.storage.getPublicUrl(m.url),
+        };
+    }
+    mapMediaItems(media) {
+        return media.map((m) => this.mapMediaItem(m));
+    }
     toListItem(script) {
         const coverRaw = script.media.find((m) => m.type === client_1.ScriptMediaType.image)?.url ?? null;
         return {
@@ -44,6 +57,12 @@ let ScriptsService = class ScriptsService {
             coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
             publishedAt: script.publishedAt,
             fileUpdatedAt: script.fileUpdatedAt,
+        };
+    }
+    toListItemWithMedia(script) {
+        return {
+            ...this.toListItem(script),
+            media: this.mapMediaItems(script.media),
         };
     }
     async list(query) {
@@ -115,7 +134,7 @@ let ScriptsService = class ScriptsService {
             where: { id: { in: shuffled.map((s) => s.id) } },
             include: this.scriptInclude,
         });
-        return scripts.map((s) => this.toListItem(s));
+        return scripts.map((s) => this.toListItemWithMedia(s));
     }
     async getPopular(limit = 8) {
         const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
@@ -137,7 +156,7 @@ let ScriptsService = class ScriptsService {
         return ids
             .map((id) => scripts.find((s) => s.id === id))
             .filter(Boolean)
-            .map((s) => this.toListItem(s));
+            .map((s) => this.toListItemWithMedia(s));
     }
     toDetail(script, userId) {
         const coverRaw = script.media.find((m) => m.type === client_1.ScriptMediaType.image)?.url ?? null;
@@ -153,14 +172,7 @@ let ScriptsService = class ScriptsService {
             badge: script.badge,
             instructionHtml: script.instructionHtml,
             coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
-            media: script.media.map((m) => ({
-                id: m.id,
-                type: m.type,
-                sortOrder: m.sortOrder,
-                url: m.type === client_1.ScriptMediaType.youtube
-                    ? m.url
-                    : this.storage.getPublicUrl(m.url),
-            })),
+            media: this.mapMediaItems(script.media),
             publishedAt: script.publishedAt,
             fileUpdatedAt: script.fileUpdatedAt,
             createdAt: script.createdAt,
@@ -286,7 +298,7 @@ let ScriptsService = class ScriptsService {
     }
     async addMedia(scriptId, data) {
         await this.findById(scriptId);
-        return this.prisma.scriptMedia.create({
+        const created = await this.prisma.scriptMedia.create({
             data: {
                 scriptId,
                 type: data.type,
@@ -294,8 +306,12 @@ let ScriptsService = class ScriptsService {
                 sortOrder: data.sortOrder ?? 0,
             },
         });
+        return this.mapMediaItem(created);
     }
     async uploadImage(scriptId, file, sortOrder = 0) {
+        if (!file) {
+            throw new common_1.BadRequestException('File is required');
+        }
         this.storage.assertSize(file.buffer);
         this.storage.assertImageMime(file.mimetype);
         const key = this.storage.buildKey(`scripts/${scriptId}/images`, file.originalname);
@@ -344,6 +360,42 @@ let ScriptsService = class ScriptsService {
             })));
         }
         return version;
+    }
+    async listMedia(scriptId) {
+        const script = await this.findById(scriptId);
+        return this.mapMediaItems(script.media);
+    }
+    async removeMedia(scriptId, mediaId) {
+        const media = await this.prisma.scriptMedia.findFirst({
+            where: { id: mediaId, scriptId },
+        });
+        if (!media) {
+            throw new common_1.NotFoundException('Media not found');
+        }
+        if (media.type === client_1.ScriptMediaType.image) {
+            try {
+                await this.storage.delete(media.url);
+            }
+            catch {
+            }
+        }
+        await this.prisma.scriptMedia.delete({ where: { id: mediaId } });
+        return { ok: true };
+    }
+    async reorderMedia(scriptId, items) {
+        await this.findById(scriptId);
+        const ids = items.map((i) => i.id);
+        const existing = await this.prisma.scriptMedia.findMany({
+            where: { scriptId, id: { in: ids } },
+        });
+        if (existing.length !== ids.length) {
+            throw new common_1.BadRequestException('One or more media items not found');
+        }
+        await this.prisma.$transaction(items.map(({ id, sortOrder }) => this.prisma.scriptMedia.update({
+            where: { id },
+            data: { sortOrder },
+        })));
+        return this.listMedia(scriptId);
     }
     async listAll() {
         return this.prisma.script.findMany({

@@ -13,20 +13,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminSupportController = exports.SupportController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const client_1 = require("../generated/prisma/client");
 const auth_constants_1 = require("../auth/auth.constants");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const support_dto_1 = require("./dto/support.dto");
 const support_service_1 = require("./support.service");
-class CreateTicketDto {
-    subject;
-    body;
-}
-class AddMessageDto {
-    body;
-}
 let SupportController = class SupportController {
     support;
     constructor(support) {
@@ -48,16 +43,19 @@ let SupportController = class SupportController {
 exports.SupportController = SupportController;
 __decorate([
     (0, common_1.Post)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Create support ticket' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Create support ticket from profile' }),
+    (0, swagger_1.ApiBody)({ type: support_dto_1.CreateTicketDto }),
+    (0, swagger_1.ApiOkResponse)({ type: support_dto_1.SupportTicketDto }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateTicketDto, Object]),
+    __metadata("design:paramtypes", [support_dto_1.CreateTicketDto, Object]),
     __metadata("design:returntype", void 0)
 ], SupportController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'List own tickets' }),
+    (0, swagger_1.ApiOperation)({ summary: 'List own support tickets' }),
+    (0, swagger_1.ApiOkResponse)({ type: support_dto_1.SupportTicketDto, isArray: true }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -65,7 +63,9 @@ __decorate([
 ], SupportController.prototype, "list", null);
 __decorate([
     (0, common_1.Get)(':number'),
-    (0, swagger_1.ApiOperation)({ summary: 'Get ticket with messages' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Get ticket with message history' }),
+    (0, swagger_1.ApiParam)({ name: 'number', example: 'VG-20260625-1234' }),
+    (0, swagger_1.ApiOkResponse)({ type: support_dto_1.SupportTicketDetailDto }),
     __param(0, (0, common_1.Param)('number')),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -74,12 +74,15 @@ __decorate([
 ], SupportController.prototype, "get", null);
 __decorate([
     (0, common_1.Post)(':number/messages'),
-    (0, swagger_1.ApiOperation)({ summary: 'Add message to ticket' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Add message to open ticket' }),
+    (0, swagger_1.ApiParam)({ name: 'number', example: 'VG-20260625-1234' }),
+    (0, swagger_1.ApiBody)({ type: support_dto_1.AddMessageDto }),
+    openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Param)('number')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, AddMessageDto, Object]),
+    __metadata("design:paramtypes", [String, support_dto_1.AddMessageDto, Object]),
     __metadata("design:returntype", void 0)
 ], SupportController.prototype, "addMessage", null);
 exports.SupportController = SupportController = __decorate([
@@ -111,6 +114,8 @@ exports.AdminSupportController = AdminSupportController;
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'List all support tickets' }),
+    (0, swagger_1.ApiQuery)({ name: 'status', required: false, enum: support_dto_1.SupportTicketStatusDto }),
+    (0, swagger_1.ApiOkResponse)({ type: support_dto_1.AdminSupportTicketDto, isArray: true }),
     __param(0, (0, common_1.Query)('status')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -118,7 +123,9 @@ __decorate([
 ], AdminSupportController.prototype, "list", null);
 __decorate([
     (0, common_1.Get)(':number'),
-    (0, swagger_1.ApiOperation)({ summary: 'Get ticket (admin)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Get ticket with messages (admin)' }),
+    (0, swagger_1.ApiParam)({ name: 'number', example: 'VG-20260625-1234' }),
+    (0, swagger_1.ApiOkResponse)({ type: support_dto_1.SupportTicketDetailDto }),
     __param(0, (0, common_1.Param)('number')),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -127,17 +134,22 @@ __decorate([
 ], AdminSupportController.prototype, "get", null);
 __decorate([
     (0, common_1.Post)(':number/messages'),
-    (0, swagger_1.ApiOperation)({ summary: 'Reply to ticket' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Reply to ticket (notifies user)' }),
+    (0, swagger_1.ApiParam)({ name: 'number', example: 'VG-20260625-1234' }),
+    (0, swagger_1.ApiBody)({ type: support_dto_1.AddMessageDto }),
+    openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Param)('number')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, AddMessageDto, Object]),
+    __metadata("design:paramtypes", [String, support_dto_1.AddMessageDto, Object]),
     __metadata("design:returntype", void 0)
 ], AdminSupportController.prototype, "reply", null);
 __decorate([
     (0, common_1.Patch)(':number/close'),
-    (0, swagger_1.ApiOperation)({ summary: 'Close ticket' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Close support ticket' }),
+    (0, swagger_1.ApiParam)({ name: 'number', example: 'VG-20260625-1234' }),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('number')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

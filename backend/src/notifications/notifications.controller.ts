@@ -1,7 +1,9 @@
 import { Controller, Get, Patch, Query, Req, UseGuards } from '@nestjs/common';
 import {
   ApiCookieAuth,
+  ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import type { Request } from 'express';
@@ -9,7 +11,13 @@ import { User } from '../generated/prisma/client';
 import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CountResponseDto, OkResponseDto } from '../common/dto/common.dto';
 import { parsePagination } from '../common/utils';
+import {
+  MarkNotificationsReadQueryDto,
+  NotificationListQueryDto,
+  NotificationListResponseDto,
+} from './dto/notification.dto';
 import { NotificationsService } from './notifications.service';
 
 @ApiTags('notifications')
@@ -20,16 +28,18 @@ export class NotificationsController {
   constructor(private readonly notifications: NotificationsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List notifications' })
+  @ApiOperation({ summary: 'List user notifications' })
+  @ApiOkResponse({ type: NotificationListResponseDto })
   async list(
     @Req() req: Request & { user: User },
-    @Query('unreadOnly') unreadOnly?: string,
-    @Query('page') page?: string,
-    @Query('limit') limit?: string,
+    @Query() query: NotificationListQueryDto,
   ) {
-    const pagination = parsePagination({ page, limit });
+    const pagination = parsePagination({
+      page: query.page,
+      limit: query.limit,
+    });
     const items = await this.notifications.list(req.user.id, {
-      unreadOnly: unreadOnly === 'true',
+      unreadOnly: query.unreadOnly === 'true',
       skip: pagination.skip,
       take: pagination.limit,
     });
@@ -39,6 +49,7 @@ export class NotificationsController {
 
   @Get('unread-count')
   @ApiOperation({ summary: 'Unread notifications count' })
+  @ApiOkResponse({ type: CountResponseDto })
   async unreadCount(@Req() req: Request & { user: User }) {
     const count = await this.notifications.countUnread(req.user.id);
     return { count };
@@ -46,11 +57,13 @@ export class NotificationsController {
 
   @Patch('read')
   @ApiOperation({ summary: 'Mark notifications as read' })
+  @ApiQuery({ name: 'ids', required: false, description: 'Comma-separated IDs' })
+  @ApiOkResponse({ type: OkResponseDto })
   async markRead(
     @Req() req: Request & { user: User },
-    @Query('ids') ids?: string,
+    @Query() query: MarkNotificationsReadQueryDto,
   ) {
-    const idList = ids?.split(',').filter(Boolean);
+    const idList = query.ids?.split(',').filter(Boolean);
     await this.notifications.markRead(req.user.id, idList);
     return { ok: true };
   }

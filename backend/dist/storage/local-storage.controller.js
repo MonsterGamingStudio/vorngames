@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LocalStorageController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const swagger_1 = require("@nestjs/swagger");
@@ -36,6 +37,7 @@ let LocalStorageController = class LocalStorageController {
 exports.LocalStorageController = LocalStorageController;
 __decorate([
     (0, common_1.Get)('*key'),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('key')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
