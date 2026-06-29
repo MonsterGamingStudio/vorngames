@@ -100,10 +100,12 @@ export declare class ScriptsController {
         user?: User | null;
     }): Promise<{
         ok: boolean;
+        recorded: boolean;
     }>;
     recordClick(id: string, req: Request & {
         user?: User | null;
     }): Promise<{
         ok: boolean;
+        recorded: boolean;
     }>;
 }

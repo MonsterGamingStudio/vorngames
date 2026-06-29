@@ -288,10 +288,14 @@ export declare class ScriptsService {
     }>;
     recordView(scriptId: string, userId: string | null, ipHash: string): Promise<{
         ok: boolean;
+        recorded: boolean;
     }>;
     recordClick(scriptId: string, userId: string | null, ipHash: string): Promise<{
         ok: boolean;
+        recorded: boolean;
     }>;
+    private readonly analyticsDedupeMs;
+    private recordAnalytics;
     create(input: CreateScriptInput): Promise<{
         media: {
             id: string;

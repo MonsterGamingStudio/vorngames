@@ -24,6 +24,7 @@ import { CommentStatus, User } from '../generated/prisma/client';
 import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { AdminGuard, BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiDocs } from '../common/swagger/api-docs';
 import {
   CommentDto,
   CreateCommentDto,
@@ -39,7 +40,7 @@ export class CommentsController {
   constructor(private readonly comments: CommentsService) {}
 
   @Get('scripts/:slug/comments')
-  @ApiOperation({ summary: 'List approved comments for a script' })
+  @ApiOperation(ApiDocs.comments.list)
   @ApiParam({ name: 'slug', example: 'shop-tycoon' })
   @ApiOkResponse({ type: CommentDto, isArray: true })
   list(@Param('slug') slug: string) {
@@ -48,7 +49,7 @@ export class CommentsController {
 
   @Post('scripts/:slug/comments')
   @ApiCookieAuth(JWT_COOKIE_NAME)
-  @ApiOperation({ summary: 'Create comment (sent to moderation)' })
+  @ApiOperation(ApiDocs.comments.create)
   @ApiParam({ name: 'slug', example: 'shop-tycoon' })
   @ApiBody({ type: CreateCommentDto })
   @ApiOkResponse({ type: CreateCommentResponseDto })
@@ -71,7 +72,7 @@ export class AdminCommentsController {
   constructor(private readonly comments: CommentsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List pending comments for moderation' })
+  @ApiOperation(ApiDocs.comments.listPending)
   @ApiQuery({ name: 'status', required: false, example: 'pending' })
   @ApiOkResponse({ type: PendingCommentDto, isArray: true })
   list(@Query('status') status?: string) {
@@ -82,7 +83,7 @@ export class AdminCommentsController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Approve or reject comment' })
+  @ApiOperation(ApiDocs.comments.moderate)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiBody({ type: ModerateCommentDto })
   moderate(

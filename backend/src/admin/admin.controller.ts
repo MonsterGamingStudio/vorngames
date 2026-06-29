@@ -15,13 +15,13 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
-  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { Currency } from '../generated/prisma/client';
 import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { AdminGuard, BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiDocs } from '../common/swagger/api-docs';
 import { parsePagination } from '../common/utils';
 import { GrantPurchaseDto } from '../purchases/dto/purchase.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -48,7 +48,7 @@ export class AdminController {
   ) {}
 
   @Get('users')
-  @ApiOperation({ summary: 'List users with search and pagination' })
+  @ApiOperation(ApiDocs.admin.listUsers)
   @ApiOkResponse({
     schema: {
       properties: {
@@ -70,7 +70,7 @@ export class AdminController {
   }
 
   @Patch('users/:id')
-  @ApiOperation({ summary: 'Block/unblock user or change role' })
+  @ApiOperation(ApiDocs.admin.updateUser)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiBody({ type: UpdateUserDto })
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
@@ -78,7 +78,7 @@ export class AdminController {
   }
 
   @Post('users/:id/purchases/grant')
-  @ApiOperation({ summary: 'Grant script purchase to user (admin)' })
+  @ApiOperation(ApiDocs.admin.grantPurchase)
   @ApiParam({ name: 'id', format: 'uuid', description: 'User ID' })
   @ApiBody({ type: GrantPurchaseDto })
   grantPurchase(@Param('id') id: string, @Body() body: GrantPurchaseDto) {
@@ -90,7 +90,7 @@ export class AdminController {
   }
 
   @Delete('users/:userId/purchases/:purchaseId')
-  @ApiOperation({ summary: 'Revoke purchase from user' })
+  @ApiOperation(ApiDocs.admin.revokePurchase)
   @ApiParam({ name: 'userId', format: 'uuid' })
   @ApiParam({ name: 'purchaseId', format: 'uuid' })
   revokePurchase(@Param('purchaseId') purchaseId: string) {
@@ -98,7 +98,7 @@ export class AdminController {
   }
 
   @Post('ip-blocks')
-  @ApiOperation({ summary: 'Block IP address' })
+  @ApiOperation(ApiDocs.admin.blockIp)
   @ApiBody({ type: IpBlockDto })
   async blockIp(@Body() body: IpBlockDto) {
     return this.prisma.ipBlock.upsert({
@@ -109,14 +109,14 @@ export class AdminController {
   }
 
   @Delete('ip-blocks/:ip')
-  @ApiOperation({ summary: 'Unblock IP address' })
+  @ApiOperation(ApiDocs.admin.unblockIp)
   @ApiParam({ name: 'ip', example: '203.0.113.10' })
   unblockIp(@Param('ip') ip: string) {
     return this.prisma.ipBlock.delete({ where: { ip } });
   }
 
   @Get('dashboard')
-  @ApiOperation({ summary: 'Admin dashboard aggregates' })
+  @ApiOperation(ApiDocs.admin.dashboard)
   @ApiOkResponse({ type: AdminDashboardDto })
   async dashboard(): Promise<AdminDashboardDto> {
     const [users, scripts, purchases, openTickets, pendingComments] =

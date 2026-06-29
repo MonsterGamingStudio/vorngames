@@ -7,6 +7,18 @@ export class OkResponseDto {
   ok!: boolean;
 }
 
+export class AnalyticsRecordResponseDto {
+  @ApiProperty({ example: true })
+  ok!: boolean;
+
+  @ApiProperty({
+    example: true,
+    description:
+      'false — событие уже учтено за последние 24 ч (дедупликация по userId или IP)',
+  })
+  recorded!: boolean;
+}
+
 export class PaginationQueryDto {
   @ApiPropertyOptional({ example: 1, minimum: 1 })
   @IsOptional()

@@ -18,6 +18,7 @@ import {
 import type { Request, Response } from 'express';
 import { User } from '../generated/prisma/client';
 import { OkResponseDto } from '../common/dto/common.dto';
+import { ApiDocs } from '../common/swagger/api-docs';
 import { getClientIp } from '../common/utils';
 import { JWT_COOKIE_NAME } from './auth.constants';
 import { AuthService } from './auth.service';
@@ -34,10 +35,7 @@ export class AuthController {
   ) {}
 
   @Get('steam')
-  @ApiOperation({
-    summary: 'Redirect to Steam OpenID login',
-    description: 'Browser redirect. After success sets JWT cookie and redirects to FRONTEND_URL',
-  })
+  @ApiOperation(ApiDocs.auth.steamLogin)
   @ApiResponse({ status: 302, description: 'Redirect to Steam' })
   @UseGuards(AuthGuard('steam'))
   steamLogin() {
@@ -45,7 +43,7 @@ export class AuthController {
   }
 
   @Get('steam/callback')
-  @ApiOperation({ summary: 'Steam OpenID callback (internal)' })
+  @ApiOperation(ApiDocs.auth.steamCallback)
   @ApiResponse({ status: 302, description: 'Redirect to frontend with auth cookie set' })
   @UseGuards(AuthGuard('steam'))
   steamCallback(@Req() req: Request & { user: User }, @Res() res: Response) {
@@ -64,7 +62,7 @@ export class AuthController {
 
   @Get('me')
   @ApiCookieAuth(JWT_COOKIE_NAME)
-  @ApiOperation({ summary: 'Get current authenticated user' })
+  @ApiOperation(ApiDocs.auth.me)
   @ApiResponse({ status: 200, type: UserResponseDto })
   @ApiUnauthorizedResponse({ description: 'Not authenticated' })
   @UseGuards(JwtAuthGuard, BlockedUserGuard)
@@ -79,7 +77,7 @@ export class AuthController {
   }
 
   @Post('logout')
-  @ApiOperation({ summary: 'Clear auth cookie' })
+  @ApiOperation(ApiDocs.auth.logout)
   @ApiResponse({ status: 200, type: OkResponseDto })
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie(JWT_COOKIE_NAME, {

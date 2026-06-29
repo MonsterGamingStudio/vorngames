@@ -20,6 +20,7 @@ const client_1 = require("../generated/prisma/client");
 const auth_constants_1 = require("../auth/auth.constants");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const api_docs_1 = require("../common/swagger/api-docs");
 const comment_dto_1 = require("./dto/comment.dto");
 const comments_service_1 = require("./comments.service");
 let CommentsController = class CommentsController {
@@ -37,7 +38,7 @@ let CommentsController = class CommentsController {
 exports.CommentsController = CommentsController;
 __decorate([
     (0, common_1.Get)('scripts/:slug/comments'),
-    (0, swagger_1.ApiOperation)({ summary: 'List approved comments for a script' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.comments.list),
     (0, swagger_1.ApiParam)({ name: 'slug', example: 'shop-tycoon' }),
     (0, swagger_1.ApiOkResponse)({ type: comment_dto_1.CommentDto, isArray: true }),
     __param(0, (0, common_1.Param)('slug')),
@@ -48,7 +49,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('scripts/:slug/comments'),
     (0, swagger_1.ApiCookieAuth)(auth_constants_1.JWT_COOKIE_NAME),
-    (0, swagger_1.ApiOperation)({ summary: 'Create comment (sent to moderation)' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.comments.create),
     (0, swagger_1.ApiParam)({ name: 'slug', example: 'shop-tycoon' }),
     (0, swagger_1.ApiBody)({ type: comment_dto_1.CreateCommentDto }),
     (0, swagger_1.ApiOkResponse)({ type: comment_dto_1.CreateCommentResponseDto }),
@@ -87,7 +88,7 @@ let AdminCommentsController = class AdminCommentsController {
 exports.AdminCommentsController = AdminCommentsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'List pending comments for moderation' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.comments.listPending),
     (0, swagger_1.ApiQuery)({ name: 'status', required: false, example: 'pending' }),
     (0, swagger_1.ApiOkResponse)({ type: comment_dto_1.PendingCommentDto, isArray: true }),
     __param(0, (0, common_1.Query)('status')),
@@ -97,7 +98,7 @@ __decorate([
 ], AdminCommentsController.prototype, "list", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Approve or reject comment' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.comments.moderate),
     (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
     (0, swagger_1.ApiBody)({ type: comment_dto_1.ModerateCommentDto }),
     openapi.ApiResponse({ status: 200 }),

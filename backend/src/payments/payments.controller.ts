@@ -13,12 +13,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import type { Request } from 'express';
+import { ApiDocs } from '../common/swagger/api-docs';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { CreatePaymentResponseDto } from './dto/create-payment-response.dto';
 import { PaymentsApiSecretGuard } from './guards/payments-api-secret.guard';
 import {
   PAYMENTS_API_SECRET_HEADER,
-  SUPPORTED_GAMES,
 } from './payments.constants';
 import { PaymentsService } from './payments.service';
 import type { UnitPayHandlerParams } from './unitpay.service';
@@ -30,12 +30,7 @@ export class PaymentsController {
 
   @Post('create')
   @UseGuards(PaymentsApiSecretGuard)
-  @ApiOperation({
-    summary: 'Create payment and get UnitPay redirect URL',
-    description:
-      `Supported games: ${SUPPORTED_GAMES.join(', ')}. ` +
-      'Requires shared secret in `X-Webhook-Secret` header or `Authorization: Bearer <secret>`.',
-  })
+  @ApiOperation(ApiDocs.payments.create)
   @ApiHeader({
     name: PAYMENTS_API_SECRET_HEADER,
     required: true,
@@ -49,12 +44,7 @@ export class PaymentsController {
   }
 
   @Get('unitpay/handler')
-  @ApiOperation({
-    summary: 'UnitPay payment handler (configure this URL in UnitPay dashboard)',
-    description:
-      'UnitPay sends GET requests (check / pay / error). ' +
-      'Public URL example: https://www.vorngames.com/api/payments/unitpay/handler',
-  })
+  @ApiOperation(ApiDocs.payments.unitpayHandler)
   async unitpayHandler(@Req() req: Request) {
     const method = String(req.query.method ?? '');
     const params = this.parseUnitpayParams(req.query);

@@ -12,6 +12,7 @@ import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CountResponseDto, OkResponseDto } from '../common/dto/common.dto';
+import { ApiDocs } from '../common/swagger/api-docs';
 import { parsePagination } from '../common/utils';
 import {
   MarkNotificationsReadQueryDto,
@@ -28,7 +29,7 @@ export class NotificationsController {
   constructor(private readonly notifications: NotificationsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List user notifications' })
+  @ApiOperation(ApiDocs.notifications.list)
   @ApiOkResponse({ type: NotificationListResponseDto })
   async list(
     @Req() req: Request & { user: User },
@@ -48,7 +49,7 @@ export class NotificationsController {
   }
 
   @Get('unread-count')
-  @ApiOperation({ summary: 'Unread notifications count' })
+  @ApiOperation(ApiDocs.notifications.unreadCount)
   @ApiOkResponse({ type: CountResponseDto })
   async unreadCount(@Req() req: Request & { user: User }) {
     const count = await this.notifications.countUnread(req.user.id);
@@ -56,8 +57,8 @@ export class NotificationsController {
   }
 
   @Patch('read')
-  @ApiOperation({ summary: 'Mark notifications as read' })
-  @ApiQuery({ name: 'ids', required: false, description: 'Comma-separated IDs' })
+  @ApiOperation(ApiDocs.notifications.markRead)
+  @ApiQuery({ name: 'ids', required: false, description: 'Comma-separated UUIDs' })
   @ApiOkResponse({ type: OkResponseDto })
   async markRead(
     @Req() req: Request & { user: User },

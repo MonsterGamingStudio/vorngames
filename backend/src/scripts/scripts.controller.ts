@@ -19,7 +19,8 @@ import {
 import type { Request } from 'express';
 import { User } from '../generated/prisma/client';
 import { OptionalJwtAuthGuard } from '../auth/guards';
-import { OkResponseDto } from '../common/dto/common.dto';
+import { AnalyticsRecordResponseDto } from '../common/dto/common.dto';
+import { ApiDocs } from '../common/swagger/api-docs';
 import { getClientIp, hashIp, parsePagination } from '../common/utils';
 import {
   ScriptDetailDto,
@@ -35,7 +36,7 @@ export class ScriptsController {
   constructor(private readonly scripts: ScriptsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List published scripts with search, filters and sort' })
+  @ApiOperation(ApiDocs.scripts.list)
   @ApiOkResponse({ type: ScriptListResponseDto })
   list(@Query() query: ScriptListQueryDto) {
     const pagination = parsePagination({
@@ -52,7 +53,7 @@ export class ScriptsController {
   }
 
   @Get('home/random')
-  @ApiOperation({ summary: 'Random scripts for homepage (default 4)' })
+  @ApiOperation(ApiDocs.scripts.random)
   @ApiQuery({ name: 'count', required: false, example: 4 })
   @ApiOkResponse({ type: ScriptListItemWithMediaDto, isArray: true })
   getRandom(@Query('count') count?: string) {
@@ -60,7 +61,7 @@ export class ScriptsController {
   }
 
   @Get('home/popular')
-  @ApiOperation({ summary: 'Popular scripts by views in last 24 hours' })
+  @ApiOperation(ApiDocs.scripts.popular)
   @ApiQuery({ name: 'limit', required: false, example: 8 })
   @ApiOkResponse({ type: ScriptListItemWithMediaDto, isArray: true })
   getPopular(@Query('limit') limit?: string) {
@@ -68,11 +69,7 @@ export class ScriptsController {
   }
 
   @Get(':slug')
-  @ApiOperation({
-    summary: 'Get script card by slug',
-    description:
-      'Optional auth via cookie: returns isAuthenticated, isPurchased, requiresAuthToPurchase',
-  })
+  @ApiOperation(ApiDocs.scripts.bySlug)
   @ApiParam({ name: 'slug', example: 'shop-tycoon' })
   @ApiOkResponse({ type: ScriptDetailDto })
   @UseGuards(OptionalJwtAuthGuard)
@@ -86,9 +83,9 @@ export class ScriptsController {
   }
 
   @Post(':id/view')
-  @ApiOperation({ summary: 'Record script page view (analytics)' })
+  @ApiOperation(ApiDocs.scripts.recordView)
   @ApiParam({ name: 'id', format: 'uuid' })
-  @ApiOkResponse({ type: OkResponseDto })
+  @ApiOkResponse({ type: AnalyticsRecordResponseDto })
   @UseGuards(OptionalJwtAuthGuard)
   recordView(
     @Param('id') id: string,
@@ -99,9 +96,9 @@ export class ScriptsController {
   }
 
   @Post(':id/click')
-  @ApiOperation({ summary: 'Record buy button click (analytics)' })
+  @ApiOperation(ApiDocs.scripts.recordClick)
   @ApiParam({ name: 'id', format: 'uuid' })
-  @ApiOkResponse({ type: OkResponseDto })
+  @ApiOkResponse({ type: AnalyticsRecordResponseDto })
   @UseGuards(OptionalJwtAuthGuard)
   recordClick(
     @Param('id') id: string,

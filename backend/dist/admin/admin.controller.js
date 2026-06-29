@@ -20,6 +20,7 @@ const client_1 = require("../generated/prisma/client");
 const auth_constants_1 = require("../auth/auth.constants");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const api_docs_1 = require("../common/swagger/api-docs");
 const utils_1 = require("../common/utils");
 const purchase_dto_1 = require("../purchases/dto/purchase.dto");
 const prisma_service_1 = require("../prisma/prisma.service");
@@ -82,7 +83,7 @@ let AdminController = class AdminController {
 exports.AdminController = AdminController;
 __decorate([
     (0, common_1.Get)('users'),
-    (0, swagger_1.ApiOperation)({ summary: 'List users with search and pagination' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.admin.listUsers),
     (0, swagger_1.ApiOkResponse)({
         schema: {
             properties: {
@@ -98,7 +99,7 @@ __decorate([
 ], AdminController.prototype, "listUsers", null);
 __decorate([
     (0, common_1.Patch)('users/:id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Block/unblock user or change role' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.admin.updateUser),
     (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
     (0, swagger_1.ApiBody)({ type: admin_dto_1.UpdateUserDto }),
     openapi.ApiResponse({ status: 200 }),
@@ -110,7 +111,7 @@ __decorate([
 ], AdminController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Post)('users/:id/purchases/grant'),
-    (0, swagger_1.ApiOperation)({ summary: 'Grant script purchase to user (admin)' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.admin.grantPurchase),
     (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid', description: 'User ID' }),
     (0, swagger_1.ApiBody)({ type: purchase_dto_1.GrantPurchaseDto }),
     openapi.ApiResponse({ status: 201 }),
@@ -122,7 +123,7 @@ __decorate([
 ], AdminController.prototype, "grantPurchase", null);
 __decorate([
     (0, common_1.Delete)('users/:userId/purchases/:purchaseId'),
-    (0, swagger_1.ApiOperation)({ summary: 'Revoke purchase from user' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.admin.revokePurchase),
     (0, swagger_1.ApiParam)({ name: 'userId', format: 'uuid' }),
     (0, swagger_1.ApiParam)({ name: 'purchaseId', format: 'uuid' }),
     openapi.ApiResponse({ status: 200 }),
@@ -133,7 +134,7 @@ __decorate([
 ], AdminController.prototype, "revokePurchase", null);
 __decorate([
     (0, common_1.Post)('ip-blocks'),
-    (0, swagger_1.ApiOperation)({ summary: 'Block IP address' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.admin.blockIp),
     (0, swagger_1.ApiBody)({ type: admin_dto_1.IpBlockDto }),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Body)()),
@@ -143,7 +144,7 @@ __decorate([
 ], AdminController.prototype, "blockIp", null);
 __decorate([
     (0, common_1.Delete)('ip-blocks/:ip'),
-    (0, swagger_1.ApiOperation)({ summary: 'Unblock IP address' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.admin.unblockIp),
     (0, swagger_1.ApiParam)({ name: 'ip', example: '203.0.113.10' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('ip')),
@@ -153,7 +154,7 @@ __decorate([
 ], AdminController.prototype, "unblockIp", null);
 __decorate([
     (0, common_1.Get)('dashboard'),
-    (0, swagger_1.ApiOperation)({ summary: 'Admin dashboard aggregates' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.admin.dashboard),
     (0, swagger_1.ApiOkResponse)({ type: admin_dto_1.AdminDashboardDto }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

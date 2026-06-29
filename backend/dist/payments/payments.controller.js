@@ -16,6 +16,7 @@ exports.PaymentsController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const api_docs_1 = require("../common/swagger/api-docs");
 const create_payment_dto_1 = require("./dto/create-payment.dto");
 const create_payment_response_dto_1 = require("./dto/create-payment-response.dto");
 const payments_api_secret_guard_1 = require("./guards/payments-api-secret.guard");
@@ -66,11 +67,7 @@ exports.PaymentsController = PaymentsController;
 __decorate([
     (0, common_1.Post)('create'),
     (0, common_1.UseGuards)(payments_api_secret_guard_1.PaymentsApiSecretGuard),
-    (0, swagger_1.ApiOperation)({
-        summary: 'Create payment and get UnitPay redirect URL',
-        description: `Supported games: ${payments_constants_1.SUPPORTED_GAMES.join(', ')}. ` +
-            'Requires shared secret in `X-Webhook-Secret` header or `Authorization: Bearer <secret>`.',
-    }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.payments.create),
     (0, swagger_1.ApiHeader)({
         name: payments_constants_1.PAYMENTS_API_SECRET_HEADER,
         required: true,
@@ -84,11 +81,7 @@ __decorate([
 ], PaymentsController.prototype, "createPayment", null);
 __decorate([
     (0, common_1.Get)('unitpay/handler'),
-    (0, swagger_1.ApiOperation)({
-        summary: 'UnitPay payment handler (configure this URL in UnitPay dashboard)',
-        description: 'UnitPay sends GET requests (check / pay / error). ' +
-            'Public URL example: https://www.vorngames.com/api/payments/unitpay/handler',
-    }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.payments.unitpayHandler),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),

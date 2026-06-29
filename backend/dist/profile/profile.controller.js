@@ -20,6 +20,7 @@ const auth_constants_1 = require("../auth/auth.constants");
 const auth_service_1 = require("../auth/auth.service");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const api_docs_1 = require("../common/swagger/api-docs");
 const utils_1 = require("../common/utils");
 const users_service_1 = require("../users/users.service");
 const profile_dto_1 = require("./dto/profile.dto");
@@ -54,7 +55,7 @@ exports.ProfileController = ProfileController;
 __decorate([
     (0, common_1.Get)('profile/me'),
     (0, swagger_1.ApiCookieAuth)(auth_constants_1.JWT_COOKIE_NAME),
-    (0, swagger_1.ApiOperation)({ summary: 'Extended profile with achievements' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.profile.me),
     (0, swagger_1.ApiOkResponse)({ type: profile_dto_1.ProfileMeResponseDto }),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, guards_1.BlockedUserGuard),
     __param(0, (0, common_1.Req)()),
@@ -64,7 +65,7 @@ __decorate([
 ], ProfileController.prototype, "getMe", null);
 __decorate([
     (0, common_1.Get)('users/:id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Public user profile (from comments link)' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.profile.public),
     (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
     (0, swagger_1.ApiOkResponse)({ type: profile_dto_1.PublicProfileResponseDto }),
     (0, swagger_1.ApiNotFoundResponse)({ description: 'User not found' }),

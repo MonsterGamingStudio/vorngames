@@ -18,6 +18,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const guards_1 = require("../auth/guards");
 const common_dto_1 = require("../common/dto/common.dto");
+const api_docs_1 = require("../common/swagger/api-docs");
 const utils_1 = require("../common/utils");
 const script_dto_1 = require("./dto/script.dto");
 const scripts_service_1 = require("./scripts.service");
@@ -62,7 +63,7 @@ let ScriptsController = class ScriptsController {
 exports.ScriptsController = ScriptsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'List published scripts with search, filters and sort' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.scripts.list),
     (0, swagger_1.ApiOkResponse)({ type: script_dto_1.ScriptListResponseDto }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -71,7 +72,7 @@ __decorate([
 ], ScriptsController.prototype, "list", null);
 __decorate([
     (0, common_1.Get)('home/random'),
-    (0, swagger_1.ApiOperation)({ summary: 'Random scripts for homepage (default 4)' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.scripts.random),
     (0, swagger_1.ApiQuery)({ name: 'count', required: false, example: 4 }),
     (0, swagger_1.ApiOkResponse)({ type: script_dto_1.ScriptListItemWithMediaDto, isArray: true }),
     __param(0, (0, common_1.Query)('count')),
@@ -81,7 +82,7 @@ __decorate([
 ], ScriptsController.prototype, "getRandom", null);
 __decorate([
     (0, common_1.Get)('home/popular'),
-    (0, swagger_1.ApiOperation)({ summary: 'Popular scripts by views in last 24 hours' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.scripts.popular),
     (0, swagger_1.ApiQuery)({ name: 'limit', required: false, example: 8 }),
     (0, swagger_1.ApiOkResponse)({ type: script_dto_1.ScriptListItemWithMediaDto, isArray: true }),
     __param(0, (0, common_1.Query)('limit')),
@@ -91,10 +92,7 @@ __decorate([
 ], ScriptsController.prototype, "getPopular", null);
 __decorate([
     (0, common_1.Get)(':slug'),
-    (0, swagger_1.ApiOperation)({
-        summary: 'Get script card by slug',
-        description: 'Optional auth via cookie: returns isAuthenticated, isPurchased, requiresAuthToPurchase',
-    }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.scripts.bySlug),
     (0, swagger_1.ApiParam)({ name: 'slug', example: 'shop-tycoon' }),
     (0, swagger_1.ApiOkResponse)({ type: script_dto_1.ScriptDetailDto }),
     (0, common_1.UseGuards)(guards_1.OptionalJwtAuthGuard),
@@ -106,9 +104,9 @@ __decorate([
 ], ScriptsController.prototype, "getBySlug", null);
 __decorate([
     (0, common_1.Post)(':id/view'),
-    (0, swagger_1.ApiOperation)({ summary: 'Record script page view (analytics)' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.scripts.recordView),
     (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
-    (0, swagger_1.ApiOkResponse)({ type: common_dto_1.OkResponseDto }),
+    (0, swagger_1.ApiOkResponse)({ type: common_dto_1.AnalyticsRecordResponseDto }),
     (0, common_1.UseGuards)(guards_1.OptionalJwtAuthGuard),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),
@@ -118,9 +116,9 @@ __decorate([
 ], ScriptsController.prototype, "recordView", null);
 __decorate([
     (0, common_1.Post)(':id/click'),
-    (0, swagger_1.ApiOperation)({ summary: 'Record buy button click (analytics)' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.scripts.recordClick),
     (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid' }),
-    (0, swagger_1.ApiOkResponse)({ type: common_dto_1.OkResponseDto }),
+    (0, swagger_1.ApiOkResponse)({ type: common_dto_1.AnalyticsRecordResponseDto }),
     (0, common_1.UseGuards)(guards_1.OptionalJwtAuthGuard),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),

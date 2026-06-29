@@ -317,27 +317,54 @@ export class ScriptsService {
   }
 
   async recordView(scriptId: string, userId: string | null, ipHash: string) {
-    await this.prisma.script.findFirstOrThrow({
-      where: { id: scriptId, isPublished: true },
-    });
-
-    await this.prisma.scriptView.create({
-      data: { scriptId, userId, ipHash },
-    });
-
-    return { ok: true };
+    return this.recordAnalytics('view', scriptId, userId, ipHash);
   }
 
   async recordClick(scriptId: string, userId: string | null, ipHash: string) {
+    return this.recordAnalytics('click', scriptId, userId, ipHash);
+  }
+
+  private readonly analyticsDedupeMs = 24 * 60 * 60 * 1000;
+
+  private async recordAnalytics(
+    type: 'view' | 'click',
+    scriptId: string,
+    userId: string | null,
+    ipHash: string,
+  ) {
     await this.prisma.script.findFirstOrThrow({
       where: { id: scriptId, isPublished: true },
     });
 
-    await this.prisma.scriptClick.create({
-      data: { scriptId, userId, ipHash },
-    });
+    const since = new Date(Date.now() - this.analyticsDedupeMs);
 
-    return { ok: true };
+    if (type === 'view') {
+      const existing = await this.prisma.scriptView.findFirst({
+        where: userId
+          ? { scriptId, userId, createdAt: { gte: since } }
+          : { scriptId, userId: null, ipHash, createdAt: { gte: since } },
+      });
+      if (existing) {
+        return { ok: true, recorded: false };
+      }
+      await this.prisma.scriptView.create({
+        data: { scriptId, userId, ipHash },
+      });
+    } else {
+      const existing = await this.prisma.scriptClick.findFirst({
+        where: userId
+          ? { scriptId, userId, createdAt: { gte: since } }
+          : { scriptId, userId: null, ipHash, createdAt: { gte: since } },
+      });
+      if (existing) {
+        return { ok: true, recorded: false };
+      }
+      await this.prisma.scriptClick.create({
+        data: { scriptId, userId, ipHash },
+      });
+    }
+
+    return { ok: true, recorded: true };
   }
 
   async create(input: CreateScriptInput) {

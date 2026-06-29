@@ -19,6 +19,7 @@ const config_1 = require("@nestjs/config");
 const passport_1 = require("@nestjs/passport");
 const swagger_1 = require("@nestjs/swagger");
 const common_dto_1 = require("../common/dto/common.dto");
+const api_docs_1 = require("../common/swagger/api-docs");
 const utils_1 = require("../common/utils");
 const auth_constants_1 = require("./auth.constants");
 const auth_service_1 = require("./auth.service");
@@ -61,10 +62,7 @@ let AuthController = class AuthController {
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Get)('steam'),
-    (0, swagger_1.ApiOperation)({
-        summary: 'Redirect to Steam OpenID login',
-        description: 'Browser redirect. After success sets JWT cookie and redirects to FRONTEND_URL',
-    }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.auth.steamLogin),
     (0, swagger_1.ApiResponse)({ status: 302, description: 'Redirect to Steam' }),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('steam')),
     __metadata("design:type", Function),
@@ -73,7 +71,7 @@ __decorate([
 ], AuthController.prototype, "steamLogin", null);
 __decorate([
     (0, common_1.Get)('steam/callback'),
-    (0, swagger_1.ApiOperation)({ summary: 'Steam OpenID callback (internal)' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.auth.steamCallback),
     (0, swagger_1.ApiResponse)({ status: 302, description: 'Redirect to frontend with auth cookie set' }),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('steam')),
     __param(0, (0, common_1.Req)()),
@@ -85,7 +83,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('me'),
     (0, swagger_1.ApiCookieAuth)(auth_constants_1.JWT_COOKIE_NAME),
-    (0, swagger_1.ApiOperation)({ summary: 'Get current authenticated user' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.auth.me),
     (0, swagger_1.ApiResponse)({ status: 200, type: user_response_dto_1.UserResponseDto }),
     (0, swagger_1.ApiUnauthorizedResponse)({ description: 'Not authenticated' }),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, guards_1.BlockedUserGuard),
@@ -96,7 +94,7 @@ __decorate([
 ], AuthController.prototype, "getMe", null);
 __decorate([
     (0, common_1.Post)('logout'),
-    (0, swagger_1.ApiOperation)({ summary: 'Clear auth cookie' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.auth.logout),
     (0, swagger_1.ApiResponse)({ status: 200, type: common_dto_1.OkResponseDto }),
     __param(0, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),

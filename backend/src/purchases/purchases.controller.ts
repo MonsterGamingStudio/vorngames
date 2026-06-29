@@ -13,6 +13,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiProduces,
   ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -22,6 +23,7 @@ import { Currency, User } from '../generated/prisma/client';
 import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiDocs } from '../common/swagger/api-docs';
 import {
   CreatePurchaseQueryDto,
   CreatePurchaseResponseDto,
@@ -37,11 +39,7 @@ export class PurchasesController {
   constructor(private readonly purchases: PurchasesService) {}
 
   @Post('scripts/:id/purchase')
-  @ApiOperation({
-    summary: 'Create script purchase payment',
-    description:
-      'Requires Steam login. Returns UnitPay payment URL. Guests receive 401.',
-  })
+  @ApiOperation(ApiDocs.purchases.create)
   @ApiParam({ name: 'id', format: 'uuid', description: 'Script ID' })
   @ApiQuery({ name: 'currency', required: false, enum: ['RUB', 'USD'] })
   @ApiOkResponse({ type: CreatePurchaseResponseDto })
@@ -59,18 +57,16 @@ export class PurchasesController {
   }
 
   @Get('profile/purchases')
-  @ApiOperation({ summary: 'List purchased scripts with needsUpdate flag' })
+  @ApiOperation(ApiDocs.purchases.list)
   @ApiOkResponse({ type: PurchaseItemDto, isArray: true })
   list(@Req() req: Request & { user: User }) {
     return this.purchases.listUserPurchases(req.user.id);
   }
 
   @Get('purchases/:id/download')
-  @ApiOperation({
-    summary: 'Download purchased script file',
-    description: 'Streams the current version of the script archive',
-  })
+  @ApiOperation(ApiDocs.purchases.download)
   @ApiParam({ name: 'id', format: 'uuid', description: 'Purchase ID' })
+  @ApiProduces('application/octet-stream')
   async download(
     @Param('id') id: string,
     @Req() req: Request & { user: User },

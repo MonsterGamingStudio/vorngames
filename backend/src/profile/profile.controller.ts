@@ -13,6 +13,7 @@ import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { AuthService } from '../auth/auth.service';
 import { BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiDocs } from '../common/swagger/api-docs';
 import { getClientIp } from '../common/utils';
 import { UsersService } from '../users/users.service';
 import {
@@ -30,7 +31,7 @@ export class ProfileController {
 
   @Get('profile/me')
   @ApiCookieAuth(JWT_COOKIE_NAME)
-  @ApiOperation({ summary: 'Extended profile with achievements' })
+  @ApiOperation(ApiDocs.profile.me)
   @ApiOkResponse({ type: ProfileMeResponseDto })
   @UseGuards(JwtAuthGuard, BlockedUserGuard)
   async getMe(@Req() req: Request & { user: User }) {
@@ -47,7 +48,7 @@ export class ProfileController {
   }
 
   @Get('users/:id')
-  @ApiOperation({ summary: 'Public user profile (from comments link)' })
+  @ApiOperation(ApiDocs.profile.public)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiOkResponse({ type: PublicProfileResponseDto })
   @ApiNotFoundResponse({ description: 'User not found' })

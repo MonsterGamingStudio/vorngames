@@ -23,6 +23,7 @@ import { SupportTicketStatus, User } from '../generated/prisma/client';
 import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { AdminGuard, BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiDocs } from '../common/swagger/api-docs';
 import {
   AddMessageDto,
   AdminSupportTicketDto,
@@ -41,7 +42,7 @@ export class SupportController {
   constructor(private readonly support: SupportService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create support ticket from profile' })
+  @ApiOperation(ApiDocs.support.create)
   @ApiBody({ type: CreateTicketDto })
   @ApiOkResponse({ type: SupportTicketDto })
   create(
@@ -52,14 +53,14 @@ export class SupportController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'List own support tickets' })
+  @ApiOperation(ApiDocs.support.list)
   @ApiOkResponse({ type: SupportTicketDto, isArray: true })
   list(@Req() req: Request & { user: User }) {
     return this.support.listUserTickets(req.user.id);
   }
 
   @Get(':number')
-  @ApiOperation({ summary: 'Get ticket with message history' })
+  @ApiOperation(ApiDocs.support.get)
   @ApiParam({ name: 'number', example: 'VG-20260625-1234' })
   @ApiOkResponse({ type: SupportTicketDetailDto })
   get(
@@ -70,7 +71,7 @@ export class SupportController {
   }
 
   @Post(':number/messages')
-  @ApiOperation({ summary: 'Add message to open ticket' })
+  @ApiOperation(ApiDocs.support.addMessage)
   @ApiParam({ name: 'number', example: 'VG-20260625-1234' })
   @ApiBody({ type: AddMessageDto })
   addMessage(
@@ -90,7 +91,7 @@ export class AdminSupportController {
   constructor(private readonly support: SupportService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List all support tickets' })
+  @ApiOperation(ApiDocs.support.adminList)
   @ApiQuery({ name: 'status', required: false, enum: SupportTicketStatusDto })
   @ApiOkResponse({ type: AdminSupportTicketDto, isArray: true })
   list(@Query('status') status?: SupportTicketStatus) {
@@ -98,7 +99,7 @@ export class AdminSupportController {
   }
 
   @Get(':number')
-  @ApiOperation({ summary: 'Get ticket with messages (admin)' })
+  @ApiOperation(ApiDocs.support.adminGet)
   @ApiParam({ name: 'number', example: 'VG-20260625-1234' })
   @ApiOkResponse({ type: SupportTicketDetailDto })
   get(
@@ -109,7 +110,7 @@ export class AdminSupportController {
   }
 
   @Post(':number/messages')
-  @ApiOperation({ summary: 'Reply to ticket (notifies user)' })
+  @ApiOperation(ApiDocs.support.adminReply)
   @ApiParam({ name: 'number', example: 'VG-20260625-1234' })
   @ApiBody({ type: AddMessageDto })
   reply(
@@ -121,7 +122,7 @@ export class AdminSupportController {
   }
 
   @Patch(':number/close')
-  @ApiOperation({ summary: 'Close support ticket' })
+  @ApiOperation(ApiDocs.support.adminClose)
   @ApiParam({ name: 'number', example: 'VG-20260625-1234' })
   close(@Param('number') number: string) {
     return this.support.closeTicket(number);

@@ -20,6 +20,7 @@ const client_1 = require("../generated/prisma/client");
 const auth_constants_1 = require("../auth/auth.constants");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const api_docs_1 = require("../common/swagger/api-docs");
 const purchase_dto_1 = require("./dto/purchase.dto");
 const purchases_service_1 = require("./purchases.service");
 let PurchasesController = class PurchasesController {
@@ -41,10 +42,7 @@ let PurchasesController = class PurchasesController {
 exports.PurchasesController = PurchasesController;
 __decorate([
     (0, common_1.Post)('scripts/:id/purchase'),
-    (0, swagger_1.ApiOperation)({
-        summary: 'Create script purchase payment',
-        description: 'Requires Steam login. Returns UnitPay payment URL. Guests receive 401.',
-    }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.purchases.create),
     (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid', description: 'Script ID' }),
     (0, swagger_1.ApiQuery)({ name: 'currency', required: false, enum: ['RUB', 'USD'] }),
     (0, swagger_1.ApiOkResponse)({ type: purchase_dto_1.CreatePurchaseResponseDto }),
@@ -60,7 +58,7 @@ __decorate([
 ], PurchasesController.prototype, "purchase", null);
 __decorate([
     (0, common_1.Get)('profile/purchases'),
-    (0, swagger_1.ApiOperation)({ summary: 'List purchased scripts with needsUpdate flag' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.purchases.list),
     (0, swagger_1.ApiOkResponse)({ type: purchase_dto_1.PurchaseItemDto, isArray: true }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -69,11 +67,9 @@ __decorate([
 ], PurchasesController.prototype, "list", null);
 __decorate([
     (0, common_1.Get)('purchases/:id/download'),
-    (0, swagger_1.ApiOperation)({
-        summary: 'Download purchased script file',
-        description: 'Streams the current version of the script archive',
-    }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.purchases.download),
     (0, swagger_1.ApiParam)({ name: 'id', format: 'uuid', description: 'Purchase ID' }),
+    (0, swagger_1.ApiProduces)('application/octet-stream'),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),

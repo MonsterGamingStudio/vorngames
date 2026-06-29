@@ -228,22 +228,44 @@ let ScriptsService = class ScriptsService {
         return script;
     }
     async recordView(scriptId, userId, ipHash) {
-        await this.prisma.script.findFirstOrThrow({
-            where: { id: scriptId, isPublished: true },
-        });
-        await this.prisma.scriptView.create({
-            data: { scriptId, userId, ipHash },
-        });
-        return { ok: true };
+        return this.recordAnalytics('view', scriptId, userId, ipHash);
     }
     async recordClick(scriptId, userId, ipHash) {
+        return this.recordAnalytics('click', scriptId, userId, ipHash);
+    }
+    analyticsDedupeMs = 24 * 60 * 60 * 1000;
+    async recordAnalytics(type, scriptId, userId, ipHash) {
         await this.prisma.script.findFirstOrThrow({
             where: { id: scriptId, isPublished: true },
         });
-        await this.prisma.scriptClick.create({
-            data: { scriptId, userId, ipHash },
-        });
-        return { ok: true };
+        const since = new Date(Date.now() - this.analyticsDedupeMs);
+        if (type === 'view') {
+            const existing = await this.prisma.scriptView.findFirst({
+                where: userId
+                    ? { scriptId, userId, createdAt: { gte: since } }
+                    : { scriptId, userId: null, ipHash, createdAt: { gte: since } },
+            });
+            if (existing) {
+                return { ok: true, recorded: false };
+            }
+            await this.prisma.scriptView.create({
+                data: { scriptId, userId, ipHash },
+            });
+        }
+        else {
+            const existing = await this.prisma.scriptClick.findFirst({
+                where: userId
+                    ? { scriptId, userId, createdAt: { gte: since } }
+                    : { scriptId, userId: null, ipHash, createdAt: { gte: since } },
+            });
+            if (existing) {
+                return { ok: true, recorded: false };
+            }
+            await this.prisma.scriptClick.create({
+                data: { scriptId, userId, ipHash },
+            });
+        }
+        return { ok: true, recorded: true };
     }
     async create(input) {
         const slug = input.slug?.trim() || (0, utils_1.slugify)(input.title);

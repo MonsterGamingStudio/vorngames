@@ -23,6 +23,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { OkResponseDto } from '../common/dto/common.dto';
+import { ApiDocs } from '../common/swagger/api-docs';
 import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { AdminGuard, BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -45,20 +46,20 @@ export class AdminScriptsController {
   constructor(private readonly scripts: ScriptsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List all scripts including unpublished' })
+  @ApiOperation(ApiDocs.adminScripts.listAll)
   listAll() {
     return this.scripts.listAll();
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create script' })
+  @ApiOperation(ApiDocs.adminScripts.create)
   @ApiBody({ type: CreateScriptDto })
   create(@Body() body: CreateScriptDto) {
     return this.scripts.create(body);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update script' })
+  @ApiOperation(ApiDocs.adminScripts.update)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiBody({ type: CreateScriptDto })
   update(@Param('id') id: string, @Body() body: CreateScriptDto) {
@@ -66,14 +67,14 @@ export class AdminScriptsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Unpublish script (soft delete)' })
+  @ApiOperation(ApiDocs.adminScripts.unpublish)
   @ApiParam({ name: 'id', format: 'uuid' })
   remove(@Param('id') id: string) {
     return this.scripts.unpublish(id);
   }
 
   @Post(':id/media')
-  @ApiOperation({ summary: 'Add media URL or YouTube link' })
+  @ApiOperation(ApiDocs.adminScripts.addMedia)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiBody({ type: AddScriptMediaDto })
   @ApiOkResponse({ type: ScriptMediaDto })
@@ -82,7 +83,7 @@ export class AdminScriptsController {
   }
 
   @Post(':id/media/upload')
-  @ApiOperation({ summary: 'Upload image file' })
+  @ApiOperation(ApiDocs.adminScripts.uploadImage)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -106,7 +107,7 @@ export class AdminScriptsController {
   }
 
   @Get(':id/media')
-  @ApiOperation({ summary: 'List script media' })
+  @ApiOperation(ApiDocs.adminScripts.listMedia)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiOkResponse({ type: ScriptMediaDto, isArray: true })
   listMedia(@Param('id') id: string) {
@@ -114,7 +115,7 @@ export class AdminScriptsController {
   }
 
   @Patch(':id/media/reorder')
-  @ApiOperation({ summary: 'Reorder script media' })
+  @ApiOperation(ApiDocs.adminScripts.reorderMedia)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiBody({ type: ReorderScriptMediaDto })
   @ApiOkResponse({ type: ScriptMediaDto, isArray: true })
@@ -123,7 +124,7 @@ export class AdminScriptsController {
   }
 
   @Delete(':id/media/:mediaId')
-  @ApiOperation({ summary: 'Delete script media' })
+  @ApiOperation(ApiDocs.adminScripts.removeMedia)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiParam({ name: 'mediaId', format: 'uuid' })
   @ApiOkResponse({ type: OkResponseDto })
@@ -132,10 +133,7 @@ export class AdminScriptsController {
   }
 
   @Post(':id/versions')
-  @ApiOperation({
-    summary: 'Upload new script version',
-    description: 'Notifies all purchasers about script_update',
-  })
+  @ApiOperation(ApiDocs.adminScripts.uploadVersion)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -158,7 +156,7 @@ export class AdminScriptsController {
   }
 
   @Get(':id/stats')
-  @ApiOperation({ summary: 'Script statistics (views, clicks, purchases, comments)' })
+  @ApiOperation(ApiDocs.adminScripts.stats)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiQuery({ name: 'from', required: false, example: '2026-01-01' })
   @ApiQuery({ name: 'to', required: false, example: '2026-12-31' })

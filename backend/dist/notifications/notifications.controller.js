@@ -20,6 +20,7 @@ const auth_constants_1 = require("../auth/auth.constants");
 const guards_1 = require("../auth/guards");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const common_dto_1 = require("../common/dto/common.dto");
+const api_docs_1 = require("../common/swagger/api-docs");
 const utils_1 = require("../common/utils");
 const notification_dto_1 = require("./dto/notification.dto");
 const notifications_service_1 = require("./notifications.service");
@@ -53,7 +54,7 @@ let NotificationsController = class NotificationsController {
 exports.NotificationsController = NotificationsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'List user notifications' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.notifications.list),
     (0, swagger_1.ApiOkResponse)({ type: notification_dto_1.NotificationListResponseDto }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Query)()),
@@ -63,7 +64,7 @@ __decorate([
 ], NotificationsController.prototype, "list", null);
 __decorate([
     (0, common_1.Get)('unread-count'),
-    (0, swagger_1.ApiOperation)({ summary: 'Unread notifications count' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.notifications.unreadCount),
     (0, swagger_1.ApiOkResponse)({ type: common_dto_1.CountResponseDto }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -72,8 +73,8 @@ __decorate([
 ], NotificationsController.prototype, "unreadCount", null);
 __decorate([
     (0, common_1.Patch)('read'),
-    (0, swagger_1.ApiOperation)({ summary: 'Mark notifications as read' }),
-    (0, swagger_1.ApiQuery)({ name: 'ids', required: false, description: 'Comma-separated IDs' }),
+    (0, swagger_1.ApiOperation)(api_docs_1.ApiDocs.notifications.markRead),
+    (0, swagger_1.ApiQuery)({ name: 'ids', required: false, description: 'Comma-separated UUIDs' }),
     (0, swagger_1.ApiOkResponse)({ type: common_dto_1.OkResponseDto }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Query)()),
