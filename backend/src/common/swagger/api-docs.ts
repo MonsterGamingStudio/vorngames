@@ -78,12 +78,12 @@ export const ApiDocs = {
     me: {
       summary: 'Мой профиль с достижениями',
       description:
-        'Расширенный профиль: данные пользователя + массив достижений (top_commentator, active_buyer, sandbox_lover) с флагом unlocked и описанием условий.',
+        'Расширенный профиль: данные пользователя + массив достижений (top_commentator, active_buyer, sandbox_lover) с флагом unlocked и ключами перевода titleKey/descriptionKey.',
     },
     public: {
       summary: 'Публичный профиль пользователя',
       description:
-        'Для перехода из комментариев: username, avatarUrl, createdAt, достижения. Без приватных данных (balance, steamId).',
+        'Для перехода из комментариев: username, avatarUrl, steamId (для ссылки на Steam-профиль), createdAt, достижения с ключами перевода. Без приватных данных (balance).',
     },
   },
 
@@ -171,6 +171,42 @@ export const ApiDocs = {
       summary: 'Webhook UnitPay',
       description:
         'URL для личного кабинета UnitPay. Методы: check, pay, error. Для type=donate — callback на WS; для type=script — выдача Purchase.',
+    },
+  },
+
+  tebex: {
+    webhook: {
+      summary: 'Webhook Tebex',
+      description:
+        'URL для панели Tebex (GMod / FiveM): `POST /api/tebex/webhook`. Проверка IP Tebex + заголовок `X-Signature`. События: validation.webhook (ответ `{ id }`), payment.completed (выдача лицензии и Purchase), payment.refunded (отзыв). Маппинг package ID → скрипт настраивается в админке (`/api/admin/tebex-packages`).',
+    },
+    adminList: {
+      summary: '[Админ] Список Tebex-покупок',
+      description:
+        'Покупки через Tebex: email, продукт, transaction ID, license key, статус. Поиск по email, license key, transaction ID, названию пакета.',
+    },
+    adminUpdate: {
+      summary: '[Админ] Включить/отключить Tebex-лицензию',
+      description:
+        'Тело: `{ "active": true | false }`. При отключении удаляется Purchase (нет доступа к скачиванию). При включении — восстанавливается, если пользователь привязан.',
+    },
+    adminPackagesList: {
+      summary: '[Админ] Маппинг Tebex package → скрипт',
+      description:
+        'Список привязок package ID (Tebex) к скриптам VornGames. Фильтр `store`: gmod | fivem. Настраивается через админку вместо env.',
+    },
+    adminPackagesCreate: {
+      summary: '[Админ] Добавить маппинг Tebex package',
+      description:
+        'Тело: `{ store, packageId, scriptId, packageName? }`. store: gmod | fivem. packageId — ID пакета в Tebex, scriptId — UUID скрипта в каталоге.',
+    },
+    adminPackagesUpdate: {
+      summary: '[Админ] Изменить маппинг Tebex package',
+      description: 'Частичное обновление: packageId, packageName, scriptId.',
+    },
+    adminPackagesDelete: {
+      summary: '[Админ] Удалить маппинг Tebex package',
+      description: 'Удаляет привязку package ID → скрипт. Существующие лицензии не затрагиваются.',
     },
   },
 

@@ -11,4 +11,6 @@ export type * from './models/SupportTicket';
 export type * from './models/SupportMessage';
 export type * from './models/Notification';
 export type * from './models/Payment';
+export type * from './models/TebexLicense';
+export type * from './models/TebexPackageMapping';
 export type * from './commonInputTypes';

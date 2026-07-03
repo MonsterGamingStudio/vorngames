@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Currency = exports.NotificationType = exports.SupportTicketStatus = exports.CommentStatus = exports.ScriptMediaType = exports.ScriptBadge = exports.GameCategory = exports.UserRole = exports.PaymentType = exports.PaymentStatus = void 0;
+exports.TebexLicenseStatus = exports.TebexStore = exports.Currency = exports.NotificationType = exports.SupportTicketStatus = exports.CommentStatus = exports.ScriptMediaType = exports.ScriptBadge = exports.GameCategory = exports.UserRole = exports.PaymentType = exports.PaymentStatus = void 0;
 exports.PaymentStatus = {
     pending: 'pending',
     paid: 'paid',
@@ -50,5 +50,13 @@ exports.NotificationType = {
 exports.Currency = {
     RUB: 'RUB',
     USD: 'USD'
+};
+exports.TebexStore = {
+    gmod: 'gmod',
+    fivem: 'fivem'
+};
+exports.TebexLicenseStatus = {
+    active: 'active',
+    revoked: 'revoked'
 };
 //# sourceMappingURL=enums.js.map

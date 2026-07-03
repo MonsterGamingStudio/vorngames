@@ -13,7 +13,9 @@ const express_session_1 = __importDefault(require("express-session"));
 const app_module_1 = require("./app.module");
 const auth_constants_1 = require("./auth/auth.constants");
 async function bootstrap() {
-    const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    const app = await core_1.NestFactory.create(app_module_1.AppModule, {
+        rawBody: true,
+    });
     const config = app.get(config_1.ConfigService);
     const isProduction = config.get('NODE_ENV') === 'production';
     if (isProduction) {
@@ -61,6 +63,7 @@ async function bootstrap() {
         .addTag('notifications', 'In-app notifications')
         .addTag('support', 'User support tickets')
         .addTag('payments', 'UnitPay donations (game currency)')
+        .addTag('tebex', 'Tebex webhooks and license management')
         .addTag('admin', 'Admin: users, IP blocks, dashboard')
         .addTag('admin/scripts', 'Admin: scripts CRUD and uploads')
         .addTag('admin/comments', 'Admin: comment moderation')

@@ -8,8 +8,8 @@ export type SteamProfileInput = {
 };
 export type AchievementDto = {
     id: string;
-    title: string;
-    description: string;
+    titleKey: string;
+    descriptionKey: string;
     unlocked: boolean;
     color: string;
 };
@@ -69,6 +69,7 @@ export declare class UsersService {
         id: string;
         username: string;
         avatarUrl: string;
+        steamId: string;
         createdAt: Date;
     };
 }

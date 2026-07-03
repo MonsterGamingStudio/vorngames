@@ -17,8 +17,8 @@ const admin_sync_service_1 = require("./admin-sync.service");
 const ACHIEVEMENTS = [
     {
         id: 'top_commentator',
-        title: 'Топ комментатор',
-        description: '15 комментариев под разными скриптами',
+        titleKey: 'achievements.topCommentator.title',
+        descriptionKey: 'achievements.topCommentator.description',
         color: 'orange',
         check: async (prisma, userId) => {
             const groups = await prisma.comment.groupBy({
@@ -30,8 +30,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'active_buyer',
-        title: 'Активный покупатель',
-        description: '10 покупок',
+        titleKey: 'achievements.activeBuyer.title',
+        descriptionKey: 'achievements.activeBuyer.description',
         color: 'green',
         check: async (prisma, userId) => {
             const count = await prisma.purchase.count({ where: { userId } });
@@ -40,8 +40,8 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'sandbox_lover',
-        title: 'Любитель песочниц',
-        description: '1 покупка в категории gmod',
+        titleKey: 'achievements.sandboxLover.title',
+        descriptionKey: 'achievements.sandboxLover.description',
         color: 'purple',
         check: async (prisma, userId) => {
             const count = await prisma.purchase.count({
@@ -111,8 +111,8 @@ let UsersService = class UsersService {
     async getAchievements(userId) {
         return Promise.all(ACHIEVEMENTS.map(async (achievement) => ({
             id: achievement.id,
-            title: achievement.title,
-            description: achievement.description,
+            titleKey: achievement.titleKey,
+            descriptionKey: achievement.descriptionKey,
             color: achievement.color,
             unlocked: await achievement.check(this.prisma, userId),
         })));
@@ -150,6 +150,7 @@ let UsersService = class UsersService {
             id: user.id,
             username: user.username,
             avatarUrl: user.avatarUrl,
+            steamId: user.steamId,
             createdAt: user.createdAt,
         };
     }

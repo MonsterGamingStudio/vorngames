@@ -170,6 +170,8 @@ export declare const ModelName: {
     readonly SupportMessage: "SupportMessage";
     readonly Notification: "Notification";
     readonly Payment: "Payment";
+    readonly TebexLicense: "TebexLicense";
+    readonly TebexPackageMapping: "TebexPackageMapping";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -182,7 +184,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "ipBlock" | "script" | "scriptMedia" | "scriptVersion" | "purchase" | "scriptView" | "scriptClick" | "comment" | "supportTicket" | "supportMessage" | "notification" | "payment";
+        modelProps: "user" | "ipBlock" | "script" | "scriptMedia" | "scriptVersion" | "purchase" | "scriptView" | "scriptClick" | "comment" | "supportTicket" | "supportMessage" | "notification" | "payment" | "tebexLicense" | "tebexPackageMapping";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1148,6 +1150,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        TebexLicense: {
+            payload: Prisma.$TebexLicensePayload<ExtArgs>;
+            fields: Prisma.TebexLicenseFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.TebexLicenseFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.TebexLicenseFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload>;
+                };
+                findFirst: {
+                    args: Prisma.TebexLicenseFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.TebexLicenseFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload>;
+                };
+                findMany: {
+                    args: Prisma.TebexLicenseFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload>[];
+                };
+                create: {
+                    args: Prisma.TebexLicenseCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload>;
+                };
+                createMany: {
+                    args: Prisma.TebexLicenseCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.TebexLicenseCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload>[];
+                };
+                delete: {
+                    args: Prisma.TebexLicenseDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload>;
+                };
+                update: {
+                    args: Prisma.TebexLicenseUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload>;
+                };
+                deleteMany: {
+                    args: Prisma.TebexLicenseDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.TebexLicenseUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.TebexLicenseUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload>[];
+                };
+                upsert: {
+                    args: Prisma.TebexLicenseUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexLicensePayload>;
+                };
+                aggregate: {
+                    args: Prisma.TebexLicenseAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateTebexLicense>;
+                };
+                groupBy: {
+                    args: Prisma.TebexLicenseGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.TebexLicenseGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.TebexLicenseCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.TebexLicenseCountAggregateOutputType> | number;
+                };
+            };
+        };
+        TebexPackageMapping: {
+            payload: Prisma.$TebexPackageMappingPayload<ExtArgs>;
+            fields: Prisma.TebexPackageMappingFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.TebexPackageMappingFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.TebexPackageMappingFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload>;
+                };
+                findFirst: {
+                    args: Prisma.TebexPackageMappingFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.TebexPackageMappingFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload>;
+                };
+                findMany: {
+                    args: Prisma.TebexPackageMappingFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload>[];
+                };
+                create: {
+                    args: Prisma.TebexPackageMappingCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload>;
+                };
+                createMany: {
+                    args: Prisma.TebexPackageMappingCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.TebexPackageMappingCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload>[];
+                };
+                delete: {
+                    args: Prisma.TebexPackageMappingDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload>;
+                };
+                update: {
+                    args: Prisma.TebexPackageMappingUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.TebexPackageMappingDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.TebexPackageMappingUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.TebexPackageMappingUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload>[];
+                };
+                upsert: {
+                    args: Prisma.TebexPackageMappingUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$TebexPackageMappingPayload>;
+                };
+                aggregate: {
+                    args: Prisma.TebexPackageMappingAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateTebexPackageMapping>;
+                };
+                groupBy: {
+                    args: Prisma.TebexPackageMappingGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.TebexPackageMappingGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.TebexPackageMappingCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.TebexPackageMappingCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -1332,6 +1482,37 @@ export declare const PaymentScalarFieldEnum: {
     readonly wsNotifiedAt: "wsNotifiedAt";
 };
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum];
+export declare const TebexLicenseScalarFieldEnum: {
+    readonly id: "id";
+    readonly tebexTransactionId: "tebexTransactionId";
+    readonly store: "store";
+    readonly packageId: "packageId";
+    readonly packageName: "packageName";
+    readonly scriptId: "scriptId";
+    readonly customerEmail: "customerEmail";
+    readonly customerUsername: "customerUsername";
+    readonly customerSteamId: "customerSteamId";
+    readonly priceAmount: "priceAmount";
+    readonly priceCurrency: "priceCurrency";
+    readonly licenseKey: "licenseKey";
+    readonly status: "status";
+    readonly userId: "userId";
+    readonly purchaseId: "purchaseId";
+    readonly purchasedAt: "purchasedAt";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type TebexLicenseScalarFieldEnum = (typeof TebexLicenseScalarFieldEnum)[keyof typeof TebexLicenseScalarFieldEnum];
+export declare const TebexPackageMappingScalarFieldEnum: {
+    readonly id: "id";
+    readonly store: "store";
+    readonly packageId: "packageId";
+    readonly packageName: "packageName";
+    readonly scriptId: "scriptId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type TebexPackageMappingScalarFieldEnum = (typeof TebexPackageMappingScalarFieldEnum)[keyof typeof TebexPackageMappingScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -1389,6 +1570,10 @@ export type EnumPaymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 export type ListEnumPaymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentType[]'>;
 export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>;
 export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>;
+export type EnumTebexStoreFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TebexStore'>;
+export type ListEnumTebexStoreFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TebexStore[]'>;
+export type EnumTebexLicenseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TebexLicenseStatus'>;
+export type ListEnumTebexLicenseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TebexLicenseStatus[]'>;
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 export type BatchPayload = {
@@ -1429,6 +1614,8 @@ export type GlobalOmitConfig = {
     supportMessage?: Prisma.SupportMessageOmit;
     notification?: Prisma.NotificationOmit;
     payment?: Prisma.PaymentOmit;
+    tebexLicense?: Prisma.TebexLicenseOmit;
+    tebexPackageMapping?: Prisma.TebexPackageMappingOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

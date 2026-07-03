@@ -58,3 +58,13 @@ export declare const Currency: {
     readonly USD: "USD";
 };
 export type Currency = (typeof Currency)[keyof typeof Currency];
+export declare const TebexStore: {
+    readonly gmod: "gmod";
+    readonly fivem: "fivem";
+};
+export type TebexStore = (typeof TebexStore)[keyof typeof TebexStore];
+export declare const TebexLicenseStatus: {
+    readonly active: "active";
+    readonly revoked: "revoked";
+};
+export type TebexLicenseStatus = (typeof TebexLicenseStatus)[keyof typeof TebexLicenseStatus];

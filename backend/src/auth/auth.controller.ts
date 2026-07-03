@@ -25,6 +25,7 @@ import { AuthService } from './auth.service';
 import { UserResponseDto } from './dto/user-response.dto';
 import { BlockedUserGuard } from './guards';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { TebexService } from '../tebex/tebex.service';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -32,6 +33,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly config: ConfigService,
+    private readonly tebexService: TebexService,
   ) {}
 
   @Get('steam')
@@ -46,7 +48,9 @@ export class AuthController {
   @ApiOperation(ApiDocs.auth.steamCallback)
   @ApiResponse({ status: 302, description: 'Redirect to frontend with auth cookie set' })
   @UseGuards(AuthGuard('steam'))
-  steamCallback(@Req() req: Request & { user: User }, @Res() res: Response) {
+  async steamCallback(@Req() req: Request & { user: User }, @Res() res: Response) {
+    await this.tebexService.linkPendingLicenses(req.user);
+
     const token = this.authService.signToken(req.user);
     const isProduction = this.config.get('NODE_ENV') === 'production';
 

@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineExtension = exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.NullableJsonNullValueInput = exports.SortOrder = exports.PaymentScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.SupportMessageScalarFieldEnum = exports.SupportTicketScalarFieldEnum = exports.CommentScalarFieldEnum = exports.ScriptClickScalarFieldEnum = exports.ScriptViewScalarFieldEnum = exports.PurchaseScalarFieldEnum = exports.ScriptVersionScalarFieldEnum = exports.ScriptMediaScalarFieldEnum = exports.ScriptScalarFieldEnum = exports.IpBlockScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
+exports.defineExtension = exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.NullableJsonNullValueInput = exports.SortOrder = exports.TebexPackageMappingScalarFieldEnum = exports.TebexLicenseScalarFieldEnum = exports.PaymentScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.SupportMessageScalarFieldEnum = exports.SupportTicketScalarFieldEnum = exports.CommentScalarFieldEnum = exports.ScriptClickScalarFieldEnum = exports.ScriptViewScalarFieldEnum = exports.PurchaseScalarFieldEnum = exports.ScriptVersionScalarFieldEnum = exports.ScriptMediaScalarFieldEnum = exports.ScriptScalarFieldEnum = exports.IpBlockScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/client"));
 exports.PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError;
 exports.PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError;
@@ -72,7 +72,9 @@ exports.ModelName = {
     SupportTicket: 'SupportTicket',
     SupportMessage: 'SupportMessage',
     Notification: 'Notification',
-    Payment: 'Payment'
+    Payment: 'Payment',
+    TebexLicense: 'TebexLicense',
+    TebexPackageMapping: 'TebexPackageMapping'
 };
 exports.TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -219,6 +221,35 @@ exports.PaymentScalarFieldEnum = {
     updatedAt: 'updatedAt',
     paidAt: 'paidAt',
     wsNotifiedAt: 'wsNotifiedAt'
+};
+exports.TebexLicenseScalarFieldEnum = {
+    id: 'id',
+    tebexTransactionId: 'tebexTransactionId',
+    store: 'store',
+    packageId: 'packageId',
+    packageName: 'packageName',
+    scriptId: 'scriptId',
+    customerEmail: 'customerEmail',
+    customerUsername: 'customerUsername',
+    customerSteamId: 'customerSteamId',
+    priceAmount: 'priceAmount',
+    priceCurrency: 'priceCurrency',
+    licenseKey: 'licenseKey',
+    status: 'status',
+    userId: 'userId',
+    purchaseId: 'purchaseId',
+    purchasedAt: 'purchasedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.TebexPackageMappingScalarFieldEnum = {
+    id: 'id',
+    store: 'store',
+    packageId: 'packageId',
+    packageName: 'packageName',
+    scriptId: 'scriptId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 exports.SortOrder = {
     asc: 'asc',

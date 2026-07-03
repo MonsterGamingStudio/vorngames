@@ -24,6 +24,8 @@ export declare const ModelName: {
     readonly SupportMessage: "SupportMessage";
     readonly Notification: "Notification";
     readonly Payment: "Payment";
+    readonly TebexLicense: "TebexLicense";
+    readonly TebexPackageMapping: "TebexPackageMapping";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -186,6 +188,37 @@ export declare const PaymentScalarFieldEnum: {
     readonly wsNotifiedAt: "wsNotifiedAt";
 };
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum];
+export declare const TebexLicenseScalarFieldEnum: {
+    readonly id: "id";
+    readonly tebexTransactionId: "tebexTransactionId";
+    readonly store: "store";
+    readonly packageId: "packageId";
+    readonly packageName: "packageName";
+    readonly scriptId: "scriptId";
+    readonly customerEmail: "customerEmail";
+    readonly customerUsername: "customerUsername";
+    readonly customerSteamId: "customerSteamId";
+    readonly priceAmount: "priceAmount";
+    readonly priceCurrency: "priceCurrency";
+    readonly licenseKey: "licenseKey";
+    readonly status: "status";
+    readonly userId: "userId";
+    readonly purchaseId: "purchaseId";
+    readonly purchasedAt: "purchasedAt";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type TebexLicenseScalarFieldEnum = (typeof TebexLicenseScalarFieldEnum)[keyof typeof TebexLicenseScalarFieldEnum];
+export declare const TebexPackageMappingScalarFieldEnum: {
+    readonly id: "id";
+    readonly store: "store";
+    readonly packageId: "packageId";
+    readonly packageName: "packageName";
+    readonly scriptId: "scriptId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type TebexPackageMappingScalarFieldEnum = (typeof TebexPackageMappingScalarFieldEnum)[keyof typeof TebexPackageMappingScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

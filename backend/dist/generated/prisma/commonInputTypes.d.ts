@@ -386,6 +386,36 @@ export type EnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
     _min?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>;
 };
+export type EnumTebexStoreFilter<$PrismaModel = never> = {
+    equals?: $Enums.TebexStore | Prisma.EnumTebexStoreFieldRefInput<$PrismaModel>;
+    in?: $Enums.TebexStore[] | Prisma.ListEnumTebexStoreFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.TebexStore[] | Prisma.ListEnumTebexStoreFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumTebexStoreFilter<$PrismaModel> | $Enums.TebexStore;
+};
+export type EnumTebexLicenseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TebexLicenseStatus | Prisma.EnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    in?: $Enums.TebexLicenseStatus[] | Prisma.ListEnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.TebexLicenseStatus[] | Prisma.ListEnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumTebexLicenseStatusFilter<$PrismaModel> | $Enums.TebexLicenseStatus;
+};
+export type EnumTebexStoreWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TebexStore | Prisma.EnumTebexStoreFieldRefInput<$PrismaModel>;
+    in?: $Enums.TebexStore[] | Prisma.ListEnumTebexStoreFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.TebexStore[] | Prisma.ListEnumTebexStoreFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumTebexStoreWithAggregatesFilter<$PrismaModel> | $Enums.TebexStore;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumTebexStoreFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumTebexStoreFilter<$PrismaModel>;
+};
+export type EnumTebexLicenseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TebexLicenseStatus | Prisma.EnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    in?: $Enums.TebexLicenseStatus[] | Prisma.ListEnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.TebexLicenseStatus[] | Prisma.ListEnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumTebexLicenseStatusWithAggregatesFilter<$PrismaModel> | $Enums.TebexLicenseStatus;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumTebexLicenseStatusFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumTebexLicenseStatusFilter<$PrismaModel>;
+};
 export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | Prisma.StringFieldRefInput<$PrismaModel>;
     in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>;
@@ -762,4 +792,34 @@ export type NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = 
     _count?: Prisma.NestedIntFilter<$PrismaModel>;
     _min?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>;
+};
+export type NestedEnumTebexStoreFilter<$PrismaModel = never> = {
+    equals?: $Enums.TebexStore | Prisma.EnumTebexStoreFieldRefInput<$PrismaModel>;
+    in?: $Enums.TebexStore[] | Prisma.ListEnumTebexStoreFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.TebexStore[] | Prisma.ListEnumTebexStoreFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumTebexStoreFilter<$PrismaModel> | $Enums.TebexStore;
+};
+export type NestedEnumTebexLicenseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TebexLicenseStatus | Prisma.EnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    in?: $Enums.TebexLicenseStatus[] | Prisma.ListEnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.TebexLicenseStatus[] | Prisma.ListEnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumTebexLicenseStatusFilter<$PrismaModel> | $Enums.TebexLicenseStatus;
+};
+export type NestedEnumTebexStoreWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TebexStore | Prisma.EnumTebexStoreFieldRefInput<$PrismaModel>;
+    in?: $Enums.TebexStore[] | Prisma.ListEnumTebexStoreFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.TebexStore[] | Prisma.ListEnumTebexStoreFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumTebexStoreWithAggregatesFilter<$PrismaModel> | $Enums.TebexStore;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumTebexStoreFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumTebexStoreFilter<$PrismaModel>;
+};
+export type NestedEnumTebexLicenseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TebexLicenseStatus | Prisma.EnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    in?: $Enums.TebexLicenseStatus[] | Prisma.ListEnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.TebexLicenseStatus[] | Prisma.ListEnumTebexLicenseStatusFieldRefInput<$PrismaModel>;
+    not?: Prisma.NestedEnumTebexLicenseStatusWithAggregatesFilter<$PrismaModel> | $Enums.TebexLicenseStatus;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumTebexLicenseStatusFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumTebexLicenseStatusFilter<$PrismaModel>;
 };

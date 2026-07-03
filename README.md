@@ -133,8 +133,27 @@ cd backend
 | POST | `/api/auth/logout` | Выход |
 | POST | `/api/payments/create` | Создание платежа UnitPay (секрет в заголовке) |
 | GET | `/api/payments/unitpay/handler` | Webhook UnitPay (check / pay / error) |
+| POST | `/api/tebex/webhook` | Webhook Tebex — выдача скриптов после покупки |
+| GET | `/api/admin/tebex-licenses` | [Админ] Список Tebex-покупок |
+| PATCH | `/api/admin/tebex-licenses/:id` | [Админ] Включить/отключить лицензию |
+| GET | `/api/admin/tebex-packages` | [Админ] Маппинг Tebex package → скрипт |
+| POST | `/api/admin/tebex-packages` | [Админ] Добавить маппинг |
+| PATCH | `/api/admin/tebex-packages/:id` | [Админ] Изменить маппинг |
+| DELETE | `/api/admin/tebex-packages/:id` | [Админ] Удалить маппинг |
 
 Пользователь в БД: `username`, `avatarUrl`, `balance` (RUB).
+
+### Tebex (покупка скриптов)
+
+Webhook URL в панели Tebex (для GMod и FiveM проектов):
+
+`https://vorngames.com/api/tebex/webhook`
+
+Секреты webhook — в `TEBEX_GMOD_WEBHOOK_SECRET` и `TEBEX_FIVEM_WEBHOOK_SECRET`.  
+Маппинг package ID → скрипт настраивается в админке через `/api/admin/tebex-packages`.
+
+После `payment.completed` создаётся лицензия (`VG-XXXX-XXXX-XXXX-XXXX`) и Purchase для пользователя с совпадающим Steam ID.  
+Документация: [Tebex Webhooks](https://docs.tebex.io/developers/webhooks/overview).
 
 ### Платежи (UnitPay)
 
@@ -195,3 +214,6 @@ cd backend
 | `UNITPAY_PAYMENT_TYPE` | Код ПС, например `card` |
 | `UNITPAY_SKIP_IP_CHECK` | `true` локально; в prod — `false` |
 | `WS_CALLBACK_URL` | URL вашего WS-сервера для начисления валюты |
+| `TEBEX_GMOD_WEBHOOK_SECRET` | Secret Key webhook Tebex (GMod) |
+| `TEBEX_FIVEM_WEBHOOK_SECRET` | Secret Key webhook Tebex (FiveM) |
+| `TEBEX_SKIP_IP_CHECK` | `true` локально; в prod — `false` |

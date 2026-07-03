@@ -153,6 +153,7 @@ export type PurchaseWhereInput = {
     script?: Prisma.XOR<Prisma.ScriptScalarRelationFilter, Prisma.ScriptWhereInput>;
     payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null;
     lastDownloadedVersion?: Prisma.XOR<Prisma.ScriptVersionNullableScalarRelationFilter, Prisma.ScriptVersionWhereInput> | null;
+    tebexLicense?: Prisma.XOR<Prisma.TebexLicenseNullableScalarRelationFilter, Prisma.TebexLicenseWhereInput> | null;
 };
 export type PurchaseOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -168,6 +169,7 @@ export type PurchaseOrderByWithRelationInput = {
     script?: Prisma.ScriptOrderByWithRelationInput;
     payment?: Prisma.PaymentOrderByWithRelationInput;
     lastDownloadedVersion?: Prisma.ScriptVersionOrderByWithRelationInput;
+    tebexLicense?: Prisma.TebexLicenseOrderByWithRelationInput;
 };
 export type PurchaseWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -187,6 +189,7 @@ export type PurchaseWhereUniqueInput = Prisma.AtLeast<{
     script?: Prisma.XOR<Prisma.ScriptScalarRelationFilter, Prisma.ScriptWhereInput>;
     payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null;
     lastDownloadedVersion?: Prisma.XOR<Prisma.ScriptVersionNullableScalarRelationFilter, Prisma.ScriptVersionWhereInput> | null;
+    tebexLicense?: Prisma.XOR<Prisma.TebexLicenseNullableScalarRelationFilter, Prisma.TebexLicenseWhereInput> | null;
 }, "id" | "paymentId" | "userId_scriptId">;
 export type PurchaseOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -228,6 +231,7 @@ export type PurchaseCreateInput = {
     script: Prisma.ScriptCreateNestedOneWithoutPurchasesInput;
     payment?: Prisma.PaymentCreateNestedOneWithoutPurchaseInput;
     lastDownloadedVersion?: Prisma.ScriptVersionCreateNestedOneWithoutPurchasesLastDownloadedInput;
+    tebexLicense?: Prisma.TebexLicenseCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseUncheckedCreateInput = {
     id?: string;
@@ -239,6 +243,7 @@ export type PurchaseUncheckedCreateInput = {
     purchasedAt?: Date | string;
     lastDownloadedVersionId?: string | null;
     grantedByAdmin?: boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -250,6 +255,7 @@ export type PurchaseUpdateInput = {
     script?: Prisma.ScriptUpdateOneRequiredWithoutPurchasesNestedInput;
     payment?: Prisma.PaymentUpdateOneWithoutPurchaseNestedInput;
     lastDownloadedVersion?: Prisma.ScriptVersionUpdateOneWithoutPurchasesLastDownloadedNestedInput;
+    tebexLicense?: Prisma.TebexLicenseUpdateOneWithoutPurchaseNestedInput;
 };
 export type PurchaseUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -261,6 +267,7 @@ export type PurchaseUncheckedUpdateInput = {
     purchasedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastDownloadedVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     grantedByAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedUpdateOneWithoutPurchaseNestedInput;
 };
 export type PurchaseCreateManyInput = {
     id?: string;
@@ -491,6 +498,20 @@ export type PurchaseUncheckedUpdateOneWithoutPaymentNestedInput = {
     connect?: Prisma.PurchaseWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.PurchaseUpdateToOneWithWhereWithoutPaymentInput, Prisma.PurchaseUpdateWithoutPaymentInput>, Prisma.PurchaseUncheckedUpdateWithoutPaymentInput>;
 };
+export type PurchaseCreateNestedOneWithoutTebexLicenseInput = {
+    create?: Prisma.XOR<Prisma.PurchaseCreateWithoutTebexLicenseInput, Prisma.PurchaseUncheckedCreateWithoutTebexLicenseInput>;
+    connectOrCreate?: Prisma.PurchaseCreateOrConnectWithoutTebexLicenseInput;
+    connect?: Prisma.PurchaseWhereUniqueInput;
+};
+export type PurchaseUpdateOneWithoutTebexLicenseNestedInput = {
+    create?: Prisma.XOR<Prisma.PurchaseCreateWithoutTebexLicenseInput, Prisma.PurchaseUncheckedCreateWithoutTebexLicenseInput>;
+    connectOrCreate?: Prisma.PurchaseCreateOrConnectWithoutTebexLicenseInput;
+    upsert?: Prisma.PurchaseUpsertWithoutTebexLicenseInput;
+    disconnect?: Prisma.PurchaseWhereInput | boolean;
+    delete?: Prisma.PurchaseWhereInput | boolean;
+    connect?: Prisma.PurchaseWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.PurchaseUpdateToOneWithWhereWithoutTebexLicenseInput, Prisma.PurchaseUpdateWithoutTebexLicenseInput>, Prisma.PurchaseUncheckedUpdateWithoutTebexLicenseInput>;
+};
 export type PurchaseCreateWithoutUserInput = {
     id?: string;
     pricePaid: number;
@@ -500,6 +521,7 @@ export type PurchaseCreateWithoutUserInput = {
     script: Prisma.ScriptCreateNestedOneWithoutPurchasesInput;
     payment?: Prisma.PaymentCreateNestedOneWithoutPurchaseInput;
     lastDownloadedVersion?: Prisma.ScriptVersionCreateNestedOneWithoutPurchasesLastDownloadedInput;
+    tebexLicense?: Prisma.TebexLicenseCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseUncheckedCreateWithoutUserInput = {
     id?: string;
@@ -510,6 +532,7 @@ export type PurchaseUncheckedCreateWithoutUserInput = {
     purchasedAt?: Date | string;
     lastDownloadedVersionId?: string | null;
     grantedByAdmin?: boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseCreateOrConnectWithoutUserInput = {
     where: Prisma.PurchaseWhereUniqueInput;
@@ -555,6 +578,7 @@ export type PurchaseCreateWithoutScriptInput = {
     user: Prisma.UserCreateNestedOneWithoutPurchasesInput;
     payment?: Prisma.PaymentCreateNestedOneWithoutPurchaseInput;
     lastDownloadedVersion?: Prisma.ScriptVersionCreateNestedOneWithoutPurchasesLastDownloadedInput;
+    tebexLicense?: Prisma.TebexLicenseCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseUncheckedCreateWithoutScriptInput = {
     id?: string;
@@ -565,6 +589,7 @@ export type PurchaseUncheckedCreateWithoutScriptInput = {
     purchasedAt?: Date | string;
     lastDownloadedVersionId?: string | null;
     grantedByAdmin?: boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseCreateOrConnectWithoutScriptInput = {
     where: Prisma.PurchaseWhereUniqueInput;
@@ -596,6 +621,7 @@ export type PurchaseCreateWithoutLastDownloadedVersionInput = {
     user: Prisma.UserCreateNestedOneWithoutPurchasesInput;
     script: Prisma.ScriptCreateNestedOneWithoutPurchasesInput;
     payment?: Prisma.PaymentCreateNestedOneWithoutPurchaseInput;
+    tebexLicense?: Prisma.TebexLicenseCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseUncheckedCreateWithoutLastDownloadedVersionInput = {
     id?: string;
@@ -606,6 +632,7 @@ export type PurchaseUncheckedCreateWithoutLastDownloadedVersionInput = {
     currency: $Enums.Currency;
     purchasedAt?: Date | string;
     grantedByAdmin?: boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseCreateOrConnectWithoutLastDownloadedVersionInput = {
     where: Prisma.PurchaseWhereUniqueInput;
@@ -637,6 +664,7 @@ export type PurchaseCreateWithoutPaymentInput = {
     user: Prisma.UserCreateNestedOneWithoutPurchasesInput;
     script: Prisma.ScriptCreateNestedOneWithoutPurchasesInput;
     lastDownloadedVersion?: Prisma.ScriptVersionCreateNestedOneWithoutPurchasesLastDownloadedInput;
+    tebexLicense?: Prisma.TebexLicenseCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseUncheckedCreateWithoutPaymentInput = {
     id?: string;
@@ -647,6 +675,7 @@ export type PurchaseUncheckedCreateWithoutPaymentInput = {
     purchasedAt?: Date | string;
     lastDownloadedVersionId?: string | null;
     grantedByAdmin?: boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedCreateNestedOneWithoutPurchaseInput;
 };
 export type PurchaseCreateOrConnectWithoutPaymentInput = {
     where: Prisma.PurchaseWhereUniqueInput;
@@ -670,11 +699,70 @@ export type PurchaseUpdateWithoutPaymentInput = {
     user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput;
     script?: Prisma.ScriptUpdateOneRequiredWithoutPurchasesNestedInput;
     lastDownloadedVersion?: Prisma.ScriptVersionUpdateOneWithoutPurchasesLastDownloadedNestedInput;
+    tebexLicense?: Prisma.TebexLicenseUpdateOneWithoutPurchaseNestedInput;
 };
 export type PurchaseUncheckedUpdateWithoutPaymentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     scriptId?: Prisma.StringFieldUpdateOperationsInput | string;
+    pricePaid?: Prisma.IntFieldUpdateOperationsInput | number;
+    currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    purchasedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    lastDownloadedVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    grantedByAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedUpdateOneWithoutPurchaseNestedInput;
+};
+export type PurchaseCreateWithoutTebexLicenseInput = {
+    id?: string;
+    pricePaid: number;
+    currency: $Enums.Currency;
+    purchasedAt?: Date | string;
+    grantedByAdmin?: boolean;
+    user: Prisma.UserCreateNestedOneWithoutPurchasesInput;
+    script: Prisma.ScriptCreateNestedOneWithoutPurchasesInput;
+    payment?: Prisma.PaymentCreateNestedOneWithoutPurchaseInput;
+    lastDownloadedVersion?: Prisma.ScriptVersionCreateNestedOneWithoutPurchasesLastDownloadedInput;
+};
+export type PurchaseUncheckedCreateWithoutTebexLicenseInput = {
+    id?: string;
+    userId: string;
+    scriptId: string;
+    paymentId?: string | null;
+    pricePaid: number;
+    currency: $Enums.Currency;
+    purchasedAt?: Date | string;
+    lastDownloadedVersionId?: string | null;
+    grantedByAdmin?: boolean;
+};
+export type PurchaseCreateOrConnectWithoutTebexLicenseInput = {
+    where: Prisma.PurchaseWhereUniqueInput;
+    create: Prisma.XOR<Prisma.PurchaseCreateWithoutTebexLicenseInput, Prisma.PurchaseUncheckedCreateWithoutTebexLicenseInput>;
+};
+export type PurchaseUpsertWithoutTebexLicenseInput = {
+    update: Prisma.XOR<Prisma.PurchaseUpdateWithoutTebexLicenseInput, Prisma.PurchaseUncheckedUpdateWithoutTebexLicenseInput>;
+    create: Prisma.XOR<Prisma.PurchaseCreateWithoutTebexLicenseInput, Prisma.PurchaseUncheckedCreateWithoutTebexLicenseInput>;
+    where?: Prisma.PurchaseWhereInput;
+};
+export type PurchaseUpdateToOneWithWhereWithoutTebexLicenseInput = {
+    where?: Prisma.PurchaseWhereInput;
+    data: Prisma.XOR<Prisma.PurchaseUpdateWithoutTebexLicenseInput, Prisma.PurchaseUncheckedUpdateWithoutTebexLicenseInput>;
+};
+export type PurchaseUpdateWithoutTebexLicenseInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    pricePaid?: Prisma.IntFieldUpdateOperationsInput | number;
+    currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    purchasedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    grantedByAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput;
+    script?: Prisma.ScriptUpdateOneRequiredWithoutPurchasesNestedInput;
+    payment?: Prisma.PaymentUpdateOneWithoutPurchaseNestedInput;
+    lastDownloadedVersion?: Prisma.ScriptVersionUpdateOneWithoutPurchasesLastDownloadedNestedInput;
+};
+export type PurchaseUncheckedUpdateWithoutTebexLicenseInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    scriptId?: Prisma.StringFieldUpdateOperationsInput | string;
+    paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     pricePaid?: Prisma.IntFieldUpdateOperationsInput | number;
     currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
     purchasedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -700,6 +788,7 @@ export type PurchaseUpdateWithoutUserInput = {
     script?: Prisma.ScriptUpdateOneRequiredWithoutPurchasesNestedInput;
     payment?: Prisma.PaymentUpdateOneWithoutPurchaseNestedInput;
     lastDownloadedVersion?: Prisma.ScriptVersionUpdateOneWithoutPurchasesLastDownloadedNestedInput;
+    tebexLicense?: Prisma.TebexLicenseUpdateOneWithoutPurchaseNestedInput;
 };
 export type PurchaseUncheckedUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -710,6 +799,7 @@ export type PurchaseUncheckedUpdateWithoutUserInput = {
     purchasedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastDownloadedVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     grantedByAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedUpdateOneWithoutPurchaseNestedInput;
 };
 export type PurchaseUncheckedUpdateManyWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -740,6 +830,7 @@ export type PurchaseUpdateWithoutScriptInput = {
     user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput;
     payment?: Prisma.PaymentUpdateOneWithoutPurchaseNestedInput;
     lastDownloadedVersion?: Prisma.ScriptVersionUpdateOneWithoutPurchasesLastDownloadedNestedInput;
+    tebexLicense?: Prisma.TebexLicenseUpdateOneWithoutPurchaseNestedInput;
 };
 export type PurchaseUncheckedUpdateWithoutScriptInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -750,6 +841,7 @@ export type PurchaseUncheckedUpdateWithoutScriptInput = {
     purchasedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastDownloadedVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     grantedByAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedUpdateOneWithoutPurchaseNestedInput;
 };
 export type PurchaseUncheckedUpdateManyWithoutScriptInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -780,6 +872,7 @@ export type PurchaseUpdateWithoutLastDownloadedVersionInput = {
     user?: Prisma.UserUpdateOneRequiredWithoutPurchasesNestedInput;
     script?: Prisma.ScriptUpdateOneRequiredWithoutPurchasesNestedInput;
     payment?: Prisma.PaymentUpdateOneWithoutPurchaseNestedInput;
+    tebexLicense?: Prisma.TebexLicenseUpdateOneWithoutPurchaseNestedInput;
 };
 export type PurchaseUncheckedUpdateWithoutLastDownloadedVersionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -790,6 +883,7 @@ export type PurchaseUncheckedUpdateWithoutLastDownloadedVersionInput = {
     currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
     purchasedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     grantedByAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    tebexLicense?: Prisma.TebexLicenseUncheckedUpdateOneWithoutPurchaseNestedInput;
 };
 export type PurchaseUncheckedUpdateManyWithoutLastDownloadedVersionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -815,6 +909,7 @@ export type PurchaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
     script?: boolean | Prisma.ScriptDefaultArgs<ExtArgs>;
     payment?: boolean | Prisma.Purchase$paymentArgs<ExtArgs>;
     lastDownloadedVersion?: boolean | Prisma.Purchase$lastDownloadedVersionArgs<ExtArgs>;
+    tebexLicense?: boolean | Prisma.Purchase$tebexLicenseArgs<ExtArgs>;
 }, ExtArgs["result"]["purchase"]>;
 export type PurchaseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -863,6 +958,7 @@ export type PurchaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
     script?: boolean | Prisma.ScriptDefaultArgs<ExtArgs>;
     payment?: boolean | Prisma.Purchase$paymentArgs<ExtArgs>;
     lastDownloadedVersion?: boolean | Prisma.Purchase$lastDownloadedVersionArgs<ExtArgs>;
+    tebexLicense?: boolean | Prisma.Purchase$tebexLicenseArgs<ExtArgs>;
 };
 export type PurchaseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
@@ -883,6 +979,7 @@ export type $PurchasePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
         script: Prisma.$ScriptPayload<ExtArgs>;
         payment: Prisma.$PaymentPayload<ExtArgs> | null;
         lastDownloadedVersion: Prisma.$ScriptVersionPayload<ExtArgs> | null;
+        tebexLicense: Prisma.$TebexLicensePayload<ExtArgs> | null;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -950,6 +1047,7 @@ export interface Prisma__PurchaseClient<T, Null = never, ExtArgs extends runtime
     script<T extends Prisma.ScriptDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScriptDefaultArgs<ExtArgs>>): Prisma.Prisma__ScriptClient<runtime.Types.Result.GetResult<Prisma.$ScriptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     payment<T extends Prisma.Purchase$paymentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$paymentArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     lastDownloadedVersion<T extends Prisma.Purchase$lastDownloadedVersionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$lastDownloadedVersionArgs<ExtArgs>>): Prisma.Prisma__ScriptVersionClient<runtime.Types.Result.GetResult<Prisma.$ScriptVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    tebexLicense<T extends Prisma.Purchase$tebexLicenseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Purchase$tebexLicenseArgs<ExtArgs>>): Prisma.Prisma__TebexLicenseClient<runtime.Types.Result.GetResult<Prisma.$TebexLicensePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1076,6 +1174,12 @@ export type Purchase$lastDownloadedVersionArgs<ExtArgs extends runtime.Types.Ext
     omit?: Prisma.ScriptVersionOmit<ExtArgs> | null;
     include?: Prisma.ScriptVersionInclude<ExtArgs> | null;
     where?: Prisma.ScriptVersionWhereInput;
+};
+export type Purchase$tebexLicenseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.TebexLicenseSelect<ExtArgs> | null;
+    omit?: Prisma.TebexLicenseOmit<ExtArgs> | null;
+    include?: Prisma.TebexLicenseInclude<ExtArgs> | null;
+    where?: Prisma.TebexLicenseWhereInput;
 };
 export type PurchaseDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.PurchaseSelect<ExtArgs> | null;

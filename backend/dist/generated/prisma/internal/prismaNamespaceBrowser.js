@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.NullableJsonNullValueInput = exports.SortOrder = exports.PaymentScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.SupportMessageScalarFieldEnum = exports.SupportTicketScalarFieldEnum = exports.CommentScalarFieldEnum = exports.ScriptClickScalarFieldEnum = exports.ScriptViewScalarFieldEnum = exports.PurchaseScalarFieldEnum = exports.ScriptVersionScalarFieldEnum = exports.ScriptMediaScalarFieldEnum = exports.ScriptScalarFieldEnum = exports.IpBlockScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.NullableJsonNullValueInput = exports.SortOrder = exports.TebexPackageMappingScalarFieldEnum = exports.TebexLicenseScalarFieldEnum = exports.PaymentScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.SupportMessageScalarFieldEnum = exports.SupportTicketScalarFieldEnum = exports.CommentScalarFieldEnum = exports.ScriptClickScalarFieldEnum = exports.ScriptViewScalarFieldEnum = exports.PurchaseScalarFieldEnum = exports.ScriptVersionScalarFieldEnum = exports.ScriptMediaScalarFieldEnum = exports.ScriptScalarFieldEnum = exports.IpBlockScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -57,7 +57,9 @@ exports.ModelName = {
     SupportTicket: 'SupportTicket',
     SupportMessage: 'SupportMessage',
     Notification: 'Notification',
-    Payment: 'Payment'
+    Payment: 'Payment',
+    TebexLicense: 'TebexLicense',
+    TebexPackageMapping: 'TebexPackageMapping'
 };
 exports.TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -204,6 +206,35 @@ exports.PaymentScalarFieldEnum = {
     updatedAt: 'updatedAt',
     paidAt: 'paidAt',
     wsNotifiedAt: 'wsNotifiedAt'
+};
+exports.TebexLicenseScalarFieldEnum = {
+    id: 'id',
+    tebexTransactionId: 'tebexTransactionId',
+    store: 'store',
+    packageId: 'packageId',
+    packageName: 'packageName',
+    scriptId: 'scriptId',
+    customerEmail: 'customerEmail',
+    customerUsername: 'customerUsername',
+    customerSteamId: 'customerSteamId',
+    priceAmount: 'priceAmount',
+    priceCurrency: 'priceCurrency',
+    licenseKey: 'licenseKey',
+    status: 'status',
+    userId: 'userId',
+    purchaseId: 'purchaseId',
+    purchasedAt: 'purchasedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.TebexPackageMappingScalarFieldEnum = {
+    id: 'id',
+    store: 'store',
+    packageId: 'packageId',
+    packageName: 'packageName',
+    scriptId: 'scriptId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 exports.SortOrder = {
     asc: 'asc',

@@ -11,6 +11,7 @@ import { PurchasesModule } from './purchases/purchases.module';
 import { ScriptsModule } from './scripts/scripts.module';
 import { StorageModule } from './storage/storage.module';
 import { SupportModule } from './support/support.module';
+import { TebexModule } from './tebex/tebex.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module';
     ProfileModule,
     SupportModule,
     AdminModule,
+    TebexModule,
   ],
 })
 export class AppModule {}

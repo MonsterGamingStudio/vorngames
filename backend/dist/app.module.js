@@ -20,6 +20,7 @@ const purchases_module_1 = require("./purchases/purchases.module");
 const scripts_module_1 = require("./scripts/scripts.module");
 const storage_module_1 = require("./storage/storage.module");
 const support_module_1 = require("./support/support.module");
+const tebex_module_1 = require("./tebex/tebex.module");
 const users_module_1 = require("./users/users.module");
 let AppModule = class AppModule {
 };
@@ -42,6 +43,7 @@ exports.AppModule = AppModule = __decorate([
             profile_module_1.ProfileModule,
             support_module_1.SupportModule,
             admin_module_1.AdminModule,
+            tebex_module_1.TebexModule,
         ],
     })
 ], AppModule);

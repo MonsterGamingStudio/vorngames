@@ -69,5 +69,11 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get payment(): Prisma.PaymentDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get tebexLicense(): Prisma.TebexLicenseDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    get tebexPackageMapping(): Prisma.TebexPackageMappingDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;

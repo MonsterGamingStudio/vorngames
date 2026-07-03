@@ -220,6 +220,8 @@ export type ScriptWhereInput = {
     clicks?: Prisma.ScriptClickListRelationFilter;
     comments?: Prisma.CommentListRelationFilter;
     payments?: Prisma.PaymentListRelationFilter;
+    tebexLicenses?: Prisma.TebexLicenseListRelationFilter;
+    tebexPackageMappings?: Prisma.TebexPackageMappingListRelationFilter;
 };
 export type ScriptOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -245,6 +247,8 @@ export type ScriptOrderByWithRelationInput = {
     clicks?: Prisma.ScriptClickOrderByRelationAggregateInput;
     comments?: Prisma.CommentOrderByRelationAggregateInput;
     payments?: Prisma.PaymentOrderByRelationAggregateInput;
+    tebexLicenses?: Prisma.TebexLicenseOrderByRelationAggregateInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingOrderByRelationAggregateInput;
 };
 export type ScriptWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -273,6 +277,8 @@ export type ScriptWhereUniqueInput = Prisma.AtLeast<{
     clicks?: Prisma.ScriptClickListRelationFilter;
     comments?: Prisma.CommentListRelationFilter;
     payments?: Prisma.PaymentListRelationFilter;
+    tebexLicenses?: Prisma.TebexLicenseListRelationFilter;
+    tebexPackageMappings?: Prisma.TebexPackageMappingListRelationFilter;
 }, "id" | "slug">;
 export type ScriptOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -342,6 +348,8 @@ export type ScriptCreateInput = {
     clicks?: Prisma.ScriptClickCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingCreateNestedManyWithoutScriptInput;
 };
 export type ScriptUncheckedCreateInput = {
     id?: string;
@@ -367,6 +375,8 @@ export type ScriptUncheckedCreateInput = {
     clicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedCreateNestedManyWithoutScriptInput;
 };
 export type ScriptUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -392,6 +402,8 @@ export type ScriptUpdateInput = {
     clicks?: Prisma.ScriptClickUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -417,6 +429,8 @@ export type ScriptUncheckedUpdateInput = {
     clicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptCreateManyInput = {
     id?: string;
@@ -650,6 +664,30 @@ export type ScriptUpdateOneWithoutPaymentsNestedInput = {
     connect?: Prisma.ScriptWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ScriptUpdateToOneWithWhereWithoutPaymentsInput, Prisma.ScriptUpdateWithoutPaymentsInput>, Prisma.ScriptUncheckedUpdateWithoutPaymentsInput>;
 };
+export type ScriptCreateNestedOneWithoutTebexLicensesInput = {
+    create?: Prisma.XOR<Prisma.ScriptCreateWithoutTebexLicensesInput, Prisma.ScriptUncheckedCreateWithoutTebexLicensesInput>;
+    connectOrCreate?: Prisma.ScriptCreateOrConnectWithoutTebexLicensesInput;
+    connect?: Prisma.ScriptWhereUniqueInput;
+};
+export type ScriptUpdateOneRequiredWithoutTebexLicensesNestedInput = {
+    create?: Prisma.XOR<Prisma.ScriptCreateWithoutTebexLicensesInput, Prisma.ScriptUncheckedCreateWithoutTebexLicensesInput>;
+    connectOrCreate?: Prisma.ScriptCreateOrConnectWithoutTebexLicensesInput;
+    upsert?: Prisma.ScriptUpsertWithoutTebexLicensesInput;
+    connect?: Prisma.ScriptWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ScriptUpdateToOneWithWhereWithoutTebexLicensesInput, Prisma.ScriptUpdateWithoutTebexLicensesInput>, Prisma.ScriptUncheckedUpdateWithoutTebexLicensesInput>;
+};
+export type ScriptCreateNestedOneWithoutTebexPackageMappingsInput = {
+    create?: Prisma.XOR<Prisma.ScriptCreateWithoutTebexPackageMappingsInput, Prisma.ScriptUncheckedCreateWithoutTebexPackageMappingsInput>;
+    connectOrCreate?: Prisma.ScriptCreateOrConnectWithoutTebexPackageMappingsInput;
+    connect?: Prisma.ScriptWhereUniqueInput;
+};
+export type ScriptUpdateOneRequiredWithoutTebexPackageMappingsNestedInput = {
+    create?: Prisma.XOR<Prisma.ScriptCreateWithoutTebexPackageMappingsInput, Prisma.ScriptUncheckedCreateWithoutTebexPackageMappingsInput>;
+    connectOrCreate?: Prisma.ScriptCreateOrConnectWithoutTebexPackageMappingsInput;
+    upsert?: Prisma.ScriptUpsertWithoutTebexPackageMappingsInput;
+    connect?: Prisma.ScriptWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ScriptUpdateToOneWithWhereWithoutTebexPackageMappingsInput, Prisma.ScriptUpdateWithoutTebexPackageMappingsInput>, Prisma.ScriptUncheckedUpdateWithoutTebexPackageMappingsInput>;
+};
 export type ScriptCreateWithoutMediaInput = {
     id?: string;
     slug: string;
@@ -673,6 +711,8 @@ export type ScriptCreateWithoutMediaInput = {
     clicks?: Prisma.ScriptClickCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingCreateNestedManyWithoutScriptInput;
 };
 export type ScriptUncheckedCreateWithoutMediaInput = {
     id?: string;
@@ -697,6 +737,8 @@ export type ScriptUncheckedCreateWithoutMediaInput = {
     clicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedCreateNestedManyWithoutScriptInput;
 };
 export type ScriptCreateOrConnectWithoutMediaInput = {
     where: Prisma.ScriptWhereUniqueInput;
@@ -734,6 +776,8 @@ export type ScriptUpdateWithoutMediaInput = {
     clicks?: Prisma.ScriptClickUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptUncheckedUpdateWithoutMediaInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -758,6 +802,8 @@ export type ScriptUncheckedUpdateWithoutMediaInput = {
     clicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptCreateWithoutVersionsInput = {
     id?: string;
@@ -782,6 +828,8 @@ export type ScriptCreateWithoutVersionsInput = {
     clicks?: Prisma.ScriptClickCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingCreateNestedManyWithoutScriptInput;
 };
 export type ScriptUncheckedCreateWithoutVersionsInput = {
     id?: string;
@@ -806,6 +854,8 @@ export type ScriptUncheckedCreateWithoutVersionsInput = {
     clicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedCreateNestedManyWithoutScriptInput;
 };
 export type ScriptCreateOrConnectWithoutVersionsInput = {
     where: Prisma.ScriptWhereUniqueInput;
@@ -843,6 +893,8 @@ export type ScriptUpdateWithoutVersionsInput = {
     clicks?: Prisma.ScriptClickUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptUncheckedUpdateWithoutVersionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -867,6 +919,8 @@ export type ScriptUncheckedUpdateWithoutVersionsInput = {
     clicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptCreateWithoutPurchasesInput = {
     id?: string;
@@ -891,6 +945,8 @@ export type ScriptCreateWithoutPurchasesInput = {
     clicks?: Prisma.ScriptClickCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingCreateNestedManyWithoutScriptInput;
 };
 export type ScriptUncheckedCreateWithoutPurchasesInput = {
     id?: string;
@@ -915,6 +971,8 @@ export type ScriptUncheckedCreateWithoutPurchasesInput = {
     clicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedCreateNestedManyWithoutScriptInput;
 };
 export type ScriptCreateOrConnectWithoutPurchasesInput = {
     where: Prisma.ScriptWhereUniqueInput;
@@ -952,6 +1010,8 @@ export type ScriptUpdateWithoutPurchasesInput = {
     clicks?: Prisma.ScriptClickUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptUncheckedUpdateWithoutPurchasesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -976,6 +1036,8 @@ export type ScriptUncheckedUpdateWithoutPurchasesInput = {
     clicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptCreateWithoutViewsInput = {
     id?: string;
@@ -1000,6 +1062,8 @@ export type ScriptCreateWithoutViewsInput = {
     clicks?: Prisma.ScriptClickCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingCreateNestedManyWithoutScriptInput;
 };
 export type ScriptUncheckedCreateWithoutViewsInput = {
     id?: string;
@@ -1024,6 +1088,8 @@ export type ScriptUncheckedCreateWithoutViewsInput = {
     clicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedCreateNestedManyWithoutScriptInput;
 };
 export type ScriptCreateOrConnectWithoutViewsInput = {
     where: Prisma.ScriptWhereUniqueInput;
@@ -1061,6 +1127,8 @@ export type ScriptUpdateWithoutViewsInput = {
     clicks?: Prisma.ScriptClickUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptUncheckedUpdateWithoutViewsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1085,6 +1153,8 @@ export type ScriptUncheckedUpdateWithoutViewsInput = {
     clicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptCreateWithoutClicksInput = {
     id?: string;
@@ -1109,6 +1179,8 @@ export type ScriptCreateWithoutClicksInput = {
     views?: Prisma.ScriptViewCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingCreateNestedManyWithoutScriptInput;
 };
 export type ScriptUncheckedCreateWithoutClicksInput = {
     id?: string;
@@ -1133,6 +1205,8 @@ export type ScriptUncheckedCreateWithoutClicksInput = {
     views?: Prisma.ScriptViewUncheckedCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedCreateNestedManyWithoutScriptInput;
 };
 export type ScriptCreateOrConnectWithoutClicksInput = {
     where: Prisma.ScriptWhereUniqueInput;
@@ -1170,6 +1244,8 @@ export type ScriptUpdateWithoutClicksInput = {
     views?: Prisma.ScriptViewUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptUncheckedUpdateWithoutClicksInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1194,6 +1270,8 @@ export type ScriptUncheckedUpdateWithoutClicksInput = {
     views?: Prisma.ScriptViewUncheckedUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptCreateWithoutCommentsInput = {
     id?: string;
@@ -1218,6 +1296,8 @@ export type ScriptCreateWithoutCommentsInput = {
     views?: Prisma.ScriptViewCreateNestedManyWithoutScriptInput;
     clicks?: Prisma.ScriptClickCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingCreateNestedManyWithoutScriptInput;
 };
 export type ScriptUncheckedCreateWithoutCommentsInput = {
     id?: string;
@@ -1242,6 +1322,8 @@ export type ScriptUncheckedCreateWithoutCommentsInput = {
     views?: Prisma.ScriptViewUncheckedCreateNestedManyWithoutScriptInput;
     clicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutScriptInput;
     payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedCreateNestedManyWithoutScriptInput;
 };
 export type ScriptCreateOrConnectWithoutCommentsInput = {
     where: Prisma.ScriptWhereUniqueInput;
@@ -1279,6 +1361,8 @@ export type ScriptUpdateWithoutCommentsInput = {
     views?: Prisma.ScriptViewUpdateManyWithoutScriptNestedInput;
     clicks?: Prisma.ScriptClickUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptUncheckedUpdateWithoutCommentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1303,6 +1387,8 @@ export type ScriptUncheckedUpdateWithoutCommentsInput = {
     views?: Prisma.ScriptViewUncheckedUpdateManyWithoutScriptNestedInput;
     clicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutScriptNestedInput;
     payments?: Prisma.PaymentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptCreateWithoutPaymentsInput = {
     id?: string;
@@ -1327,6 +1413,8 @@ export type ScriptCreateWithoutPaymentsInput = {
     views?: Prisma.ScriptViewCreateNestedManyWithoutScriptInput;
     clicks?: Prisma.ScriptClickCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingCreateNestedManyWithoutScriptInput;
 };
 export type ScriptUncheckedCreateWithoutPaymentsInput = {
     id?: string;
@@ -1351,6 +1439,8 @@ export type ScriptUncheckedCreateWithoutPaymentsInput = {
     views?: Prisma.ScriptViewUncheckedCreateNestedManyWithoutScriptInput;
     clicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutScriptInput;
     comments?: Prisma.CommentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedCreateNestedManyWithoutScriptInput;
 };
 export type ScriptCreateOrConnectWithoutPaymentsInput = {
     where: Prisma.ScriptWhereUniqueInput;
@@ -1388,6 +1478,8 @@ export type ScriptUpdateWithoutPaymentsInput = {
     views?: Prisma.ScriptViewUpdateManyWithoutScriptNestedInput;
     clicks?: Prisma.ScriptClickUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptUncheckedUpdateWithoutPaymentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1412,6 +1504,242 @@ export type ScriptUncheckedUpdateWithoutPaymentsInput = {
     views?: Prisma.ScriptViewUncheckedUpdateManyWithoutScriptNestedInput;
     clicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutScriptNestedInput;
     comments?: Prisma.CommentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedUpdateManyWithoutScriptNestedInput;
+};
+export type ScriptCreateWithoutTebexLicensesInput = {
+    id?: string;
+    slug: string;
+    title: string;
+    shortDescription: string;
+    gameCategory: $Enums.GameCategory;
+    priceRub: number;
+    priceUsd: number;
+    discountPercent?: number | null;
+    badge?: $Enums.ScriptBadge;
+    instructionHtml?: string;
+    isPublished?: boolean;
+    featuredOnHome?: boolean;
+    publishedAt?: Date | string | null;
+    fileUpdatedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    media?: Prisma.ScriptMediaCreateNestedManyWithoutScriptInput;
+    versions?: Prisma.ScriptVersionCreateNestedManyWithoutScriptInput;
+    purchases?: Prisma.PurchaseCreateNestedManyWithoutScriptInput;
+    views?: Prisma.ScriptViewCreateNestedManyWithoutScriptInput;
+    clicks?: Prisma.ScriptClickCreateNestedManyWithoutScriptInput;
+    comments?: Prisma.CommentCreateNestedManyWithoutScriptInput;
+    payments?: Prisma.PaymentCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingCreateNestedManyWithoutScriptInput;
+};
+export type ScriptUncheckedCreateWithoutTebexLicensesInput = {
+    id?: string;
+    slug: string;
+    title: string;
+    shortDescription: string;
+    gameCategory: $Enums.GameCategory;
+    priceRub: number;
+    priceUsd: number;
+    discountPercent?: number | null;
+    badge?: $Enums.ScriptBadge;
+    instructionHtml?: string;
+    isPublished?: boolean;
+    featuredOnHome?: boolean;
+    publishedAt?: Date | string | null;
+    fileUpdatedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    media?: Prisma.ScriptMediaUncheckedCreateNestedManyWithoutScriptInput;
+    versions?: Prisma.ScriptVersionUncheckedCreateNestedManyWithoutScriptInput;
+    purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutScriptInput;
+    views?: Prisma.ScriptViewUncheckedCreateNestedManyWithoutScriptInput;
+    clicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutScriptInput;
+    comments?: Prisma.CommentUncheckedCreateNestedManyWithoutScriptInput;
+    payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedCreateNestedManyWithoutScriptInput;
+};
+export type ScriptCreateOrConnectWithoutTebexLicensesInput = {
+    where: Prisma.ScriptWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ScriptCreateWithoutTebexLicensesInput, Prisma.ScriptUncheckedCreateWithoutTebexLicensesInput>;
+};
+export type ScriptUpsertWithoutTebexLicensesInput = {
+    update: Prisma.XOR<Prisma.ScriptUpdateWithoutTebexLicensesInput, Prisma.ScriptUncheckedUpdateWithoutTebexLicensesInput>;
+    create: Prisma.XOR<Prisma.ScriptCreateWithoutTebexLicensesInput, Prisma.ScriptUncheckedCreateWithoutTebexLicensesInput>;
+    where?: Prisma.ScriptWhereInput;
+};
+export type ScriptUpdateToOneWithWhereWithoutTebexLicensesInput = {
+    where?: Prisma.ScriptWhereInput;
+    data: Prisma.XOR<Prisma.ScriptUpdateWithoutTebexLicensesInput, Prisma.ScriptUncheckedUpdateWithoutTebexLicensesInput>;
+};
+export type ScriptUpdateWithoutTebexLicensesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    shortDescription?: Prisma.StringFieldUpdateOperationsInput | string;
+    gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
+    priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
+    priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
+    instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
+    isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    media?: Prisma.ScriptMediaUpdateManyWithoutScriptNestedInput;
+    versions?: Prisma.ScriptVersionUpdateManyWithoutScriptNestedInput;
+    purchases?: Prisma.PurchaseUpdateManyWithoutScriptNestedInput;
+    views?: Prisma.ScriptViewUpdateManyWithoutScriptNestedInput;
+    clicks?: Prisma.ScriptClickUpdateManyWithoutScriptNestedInput;
+    comments?: Prisma.CommentUpdateManyWithoutScriptNestedInput;
+    payments?: Prisma.PaymentUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUpdateManyWithoutScriptNestedInput;
+};
+export type ScriptUncheckedUpdateWithoutTebexLicensesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    shortDescription?: Prisma.StringFieldUpdateOperationsInput | string;
+    gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
+    priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
+    priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
+    instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
+    isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    media?: Prisma.ScriptMediaUncheckedUpdateManyWithoutScriptNestedInput;
+    versions?: Prisma.ScriptVersionUncheckedUpdateManyWithoutScriptNestedInput;
+    purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutScriptNestedInput;
+    views?: Prisma.ScriptViewUncheckedUpdateManyWithoutScriptNestedInput;
+    clicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutScriptNestedInput;
+    comments?: Prisma.CommentUncheckedUpdateManyWithoutScriptNestedInput;
+    payments?: Prisma.PaymentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexPackageMappings?: Prisma.TebexPackageMappingUncheckedUpdateManyWithoutScriptNestedInput;
+};
+export type ScriptCreateWithoutTebexPackageMappingsInput = {
+    id?: string;
+    slug: string;
+    title: string;
+    shortDescription: string;
+    gameCategory: $Enums.GameCategory;
+    priceRub: number;
+    priceUsd: number;
+    discountPercent?: number | null;
+    badge?: $Enums.ScriptBadge;
+    instructionHtml?: string;
+    isPublished?: boolean;
+    featuredOnHome?: boolean;
+    publishedAt?: Date | string | null;
+    fileUpdatedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    media?: Prisma.ScriptMediaCreateNestedManyWithoutScriptInput;
+    versions?: Prisma.ScriptVersionCreateNestedManyWithoutScriptInput;
+    purchases?: Prisma.PurchaseCreateNestedManyWithoutScriptInput;
+    views?: Prisma.ScriptViewCreateNestedManyWithoutScriptInput;
+    clicks?: Prisma.ScriptClickCreateNestedManyWithoutScriptInput;
+    comments?: Prisma.CommentCreateNestedManyWithoutScriptInput;
+    payments?: Prisma.PaymentCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutScriptInput;
+};
+export type ScriptUncheckedCreateWithoutTebexPackageMappingsInput = {
+    id?: string;
+    slug: string;
+    title: string;
+    shortDescription: string;
+    gameCategory: $Enums.GameCategory;
+    priceRub: number;
+    priceUsd: number;
+    discountPercent?: number | null;
+    badge?: $Enums.ScriptBadge;
+    instructionHtml?: string;
+    isPublished?: boolean;
+    featuredOnHome?: boolean;
+    publishedAt?: Date | string | null;
+    fileUpdatedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    media?: Prisma.ScriptMediaUncheckedCreateNestedManyWithoutScriptInput;
+    versions?: Prisma.ScriptVersionUncheckedCreateNestedManyWithoutScriptInput;
+    purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutScriptInput;
+    views?: Prisma.ScriptViewUncheckedCreateNestedManyWithoutScriptInput;
+    clicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutScriptInput;
+    comments?: Prisma.CommentUncheckedCreateNestedManyWithoutScriptInput;
+    payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutScriptInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutScriptInput;
+};
+export type ScriptCreateOrConnectWithoutTebexPackageMappingsInput = {
+    where: Prisma.ScriptWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ScriptCreateWithoutTebexPackageMappingsInput, Prisma.ScriptUncheckedCreateWithoutTebexPackageMappingsInput>;
+};
+export type ScriptUpsertWithoutTebexPackageMappingsInput = {
+    update: Prisma.XOR<Prisma.ScriptUpdateWithoutTebexPackageMappingsInput, Prisma.ScriptUncheckedUpdateWithoutTebexPackageMappingsInput>;
+    create: Prisma.XOR<Prisma.ScriptCreateWithoutTebexPackageMappingsInput, Prisma.ScriptUncheckedCreateWithoutTebexPackageMappingsInput>;
+    where?: Prisma.ScriptWhereInput;
+};
+export type ScriptUpdateToOneWithWhereWithoutTebexPackageMappingsInput = {
+    where?: Prisma.ScriptWhereInput;
+    data: Prisma.XOR<Prisma.ScriptUpdateWithoutTebexPackageMappingsInput, Prisma.ScriptUncheckedUpdateWithoutTebexPackageMappingsInput>;
+};
+export type ScriptUpdateWithoutTebexPackageMappingsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    shortDescription?: Prisma.StringFieldUpdateOperationsInput | string;
+    gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
+    priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
+    priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
+    instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
+    isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    media?: Prisma.ScriptMediaUpdateManyWithoutScriptNestedInput;
+    versions?: Prisma.ScriptVersionUpdateManyWithoutScriptNestedInput;
+    purchases?: Prisma.PurchaseUpdateManyWithoutScriptNestedInput;
+    views?: Prisma.ScriptViewUpdateManyWithoutScriptNestedInput;
+    clicks?: Prisma.ScriptClickUpdateManyWithoutScriptNestedInput;
+    comments?: Prisma.CommentUpdateManyWithoutScriptNestedInput;
+    payments?: Prisma.PaymentUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutScriptNestedInput;
+};
+export type ScriptUncheckedUpdateWithoutTebexPackageMappingsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    slug?: Prisma.StringFieldUpdateOperationsInput | string;
+    title?: Prisma.StringFieldUpdateOperationsInput | string;
+    shortDescription?: Prisma.StringFieldUpdateOperationsInput | string;
+    gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
+    priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
+    priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
+    instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
+    isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    media?: Prisma.ScriptMediaUncheckedUpdateManyWithoutScriptNestedInput;
+    versions?: Prisma.ScriptVersionUncheckedUpdateManyWithoutScriptNestedInput;
+    purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutScriptNestedInput;
+    views?: Prisma.ScriptViewUncheckedUpdateManyWithoutScriptNestedInput;
+    clicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutScriptNestedInput;
+    comments?: Prisma.CommentUncheckedUpdateManyWithoutScriptNestedInput;
+    payments?: Prisma.PaymentUncheckedUpdateManyWithoutScriptNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutScriptNestedInput;
 };
 export type ScriptCountOutputType = {
     media: number;
@@ -1421,6 +1749,8 @@ export type ScriptCountOutputType = {
     clicks: number;
     comments: number;
     payments: number;
+    tebexLicenses: number;
+    tebexPackageMappings: number;
 };
 export type ScriptCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     media?: boolean | ScriptCountOutputTypeCountMediaArgs;
@@ -1430,6 +1760,8 @@ export type ScriptCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
     clicks?: boolean | ScriptCountOutputTypeCountClicksArgs;
     comments?: boolean | ScriptCountOutputTypeCountCommentsArgs;
     payments?: boolean | ScriptCountOutputTypeCountPaymentsArgs;
+    tebexLicenses?: boolean | ScriptCountOutputTypeCountTebexLicensesArgs;
+    tebexPackageMappings?: boolean | ScriptCountOutputTypeCountTebexPackageMappingsArgs;
 };
 export type ScriptCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ScriptCountOutputTypeSelect<ExtArgs> | null;
@@ -1455,6 +1787,12 @@ export type ScriptCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types
 export type ScriptCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.PaymentWhereInput;
 };
+export type ScriptCountOutputTypeCountTebexLicensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.TebexLicenseWhereInput;
+};
+export type ScriptCountOutputTypeCountTebexPackageMappingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.TebexPackageMappingWhereInput;
+};
 export type ScriptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     slug?: boolean;
@@ -1479,6 +1817,8 @@ export type ScriptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     clicks?: boolean | Prisma.Script$clicksArgs<ExtArgs>;
     comments?: boolean | Prisma.Script$commentsArgs<ExtArgs>;
     payments?: boolean | Prisma.Script$paymentsArgs<ExtArgs>;
+    tebexLicenses?: boolean | Prisma.Script$tebexLicensesArgs<ExtArgs>;
+    tebexPackageMappings?: boolean | Prisma.Script$tebexPackageMappingsArgs<ExtArgs>;
     _count?: boolean | Prisma.ScriptCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["script"]>;
 export type ScriptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1544,6 +1884,8 @@ export type ScriptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     clicks?: boolean | Prisma.Script$clicksArgs<ExtArgs>;
     comments?: boolean | Prisma.Script$commentsArgs<ExtArgs>;
     payments?: boolean | Prisma.Script$paymentsArgs<ExtArgs>;
+    tebexLicenses?: boolean | Prisma.Script$tebexLicensesArgs<ExtArgs>;
+    tebexPackageMappings?: boolean | Prisma.Script$tebexPackageMappingsArgs<ExtArgs>;
     _count?: boolean | Prisma.ScriptCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ScriptIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -1558,6 +1900,8 @@ export type $ScriptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         clicks: Prisma.$ScriptClickPayload<ExtArgs>[];
         comments: Prisma.$CommentPayload<ExtArgs>[];
         payments: Prisma.$PaymentPayload<ExtArgs>[];
+        tebexLicenses: Prisma.$TebexLicensePayload<ExtArgs>[];
+        tebexPackageMappings: Prisma.$TebexPackageMappingPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1635,6 +1979,8 @@ export interface Prisma__ScriptClient<T, Null = never, ExtArgs extends runtime.T
     clicks<T extends Prisma.Script$clicksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Script$clicksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScriptClickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     comments<T extends Prisma.Script$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Script$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     payments<T extends Prisma.Script$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Script$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    tebexLicenses<T extends Prisma.Script$tebexLicensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Script$tebexLicensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TebexLicensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    tebexPackageMappings<T extends Prisma.Script$tebexPackageMappingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Script$tebexPackageMappingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TebexPackageMappingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -1831,6 +2177,28 @@ export type Script$paymentsArgs<ExtArgs extends runtime.Types.Extensions.Interna
     take?: number;
     skip?: number;
     distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[];
+};
+export type Script$tebexLicensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.TebexLicenseSelect<ExtArgs> | null;
+    omit?: Prisma.TebexLicenseOmit<ExtArgs> | null;
+    include?: Prisma.TebexLicenseInclude<ExtArgs> | null;
+    where?: Prisma.TebexLicenseWhereInput;
+    orderBy?: Prisma.TebexLicenseOrderByWithRelationInput | Prisma.TebexLicenseOrderByWithRelationInput[];
+    cursor?: Prisma.TebexLicenseWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.TebexLicenseScalarFieldEnum | Prisma.TebexLicenseScalarFieldEnum[];
+};
+export type Script$tebexPackageMappingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.TebexPackageMappingSelect<ExtArgs> | null;
+    omit?: Prisma.TebexPackageMappingOmit<ExtArgs> | null;
+    include?: Prisma.TebexPackageMappingInclude<ExtArgs> | null;
+    where?: Prisma.TebexPackageMappingWhereInput;
+    orderBy?: Prisma.TebexPackageMappingOrderByWithRelationInput | Prisma.TebexPackageMappingOrderByWithRelationInput[];
+    cursor?: Prisma.TebexPackageMappingWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.TebexPackageMappingScalarFieldEnum | Prisma.TebexPackageMappingScalarFieldEnum[];
 };
 export type ScriptDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.ScriptSelect<ExtArgs> | null;

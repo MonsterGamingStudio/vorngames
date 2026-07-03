@@ -26,17 +26,21 @@ const auth_service_1 = require("./auth.service");
 const user_response_dto_1 = require("./dto/user-response.dto");
 const guards_1 = require("./guards");
 const jwt_auth_guard_1 = require("./jwt-auth.guard");
+const tebex_service_1 = require("../tebex/tebex.service");
 let AuthController = class AuthController {
     authService;
     config;
-    constructor(authService, config) {
+    tebexService;
+    constructor(authService, config, tebexService) {
         this.authService = authService;
         this.config = config;
+        this.tebexService = tebexService;
     }
     steamLogin() {
         return;
     }
-    steamCallback(req, res) {
+    async steamCallback(req, res) {
+        await this.tebexService.linkPendingLicenses(req.user);
         const token = this.authService.signToken(req.user);
         const isProduction = this.config.get('NODE_ENV') === 'production';
         res.cookie(auth_constants_1.JWT_COOKIE_NAME, token, {
@@ -78,7 +82,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "steamCallback", null);
 __decorate([
     (0, common_1.Get)('me'),
@@ -105,6 +109,7 @@ exports.AuthController = AuthController = __decorate([
     (0, swagger_1.ApiTags)('auth'),
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
-        config_1.ConfigService])
+        config_1.ConfigService,
+        tebex_service_1.TebexService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

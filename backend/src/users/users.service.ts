@@ -18,8 +18,8 @@ export type SteamProfileInput = {
 
 export type AchievementDto = {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   unlocked: boolean;
   color: string;
 };
@@ -27,8 +27,8 @@ export type AchievementDto = {
 const ACHIEVEMENTS = [
   {
     id: 'top_commentator',
-    title: 'Топ комментатор',
-    description: '15 комментариев под разными скриптами',
+    titleKey: 'achievements.topCommentator.title',
+    descriptionKey: 'achievements.topCommentator.description',
     color: 'orange',
     check: async (prisma: PrismaService, userId: string) => {
       const groups = await prisma.comment.groupBy({
@@ -40,8 +40,8 @@ const ACHIEVEMENTS = [
   },
   {
     id: 'active_buyer',
-    title: 'Активный покупатель',
-    description: '10 покупок',
+    titleKey: 'achievements.activeBuyer.title',
+    descriptionKey: 'achievements.activeBuyer.description',
     color: 'green',
     check: async (prisma: PrismaService, userId: string) => {
       const count = await prisma.purchase.count({ where: { userId } });
@@ -50,8 +50,8 @@ const ACHIEVEMENTS = [
   },
   {
     id: 'sandbox_lover',
-    title: 'Любитель песочниц',
-    description: '1 покупка в категории gmod',
+    titleKey: 'achievements.sandboxLover.title',
+    descriptionKey: 'achievements.sandboxLover.description',
     color: 'purple',
     check: async (prisma: PrismaService, userId: string) => {
       const count = await prisma.purchase.count({
@@ -132,8 +132,8 @@ export class UsersService {
     return Promise.all(
       ACHIEVEMENTS.map(async (achievement) => ({
         id: achievement.id,
-        title: achievement.title,
-        description: achievement.description,
+        titleKey: achievement.titleKey,
+        descriptionKey: achievement.descriptionKey,
         color: achievement.color,
         unlocked: await achievement.check(this.prisma, userId),
       })),
@@ -189,6 +189,7 @@ export class UsersService {
       id: user.id,
       username: user.username,
       avatarUrl: user.avatarUrl,
+      steamId: user.steamId,
       createdAt: user.createdAt,
     };
   }

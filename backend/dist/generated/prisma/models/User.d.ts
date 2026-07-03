@@ -183,6 +183,7 @@ export type UserWhereInput = {
     supportTickets?: Prisma.SupportTicketListRelationFilter;
     supportMessages?: Prisma.SupportMessageListRelationFilter;
     ipBlocksCreated?: Prisma.IpBlockListRelationFilter;
+    tebexLicenses?: Prisma.TebexLicenseListRelationFilter;
 };
 export type UserOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -207,6 +208,7 @@ export type UserOrderByWithRelationInput = {
     supportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput;
     supportMessages?: Prisma.SupportMessageOrderByRelationAggregateInput;
     ipBlocksCreated?: Prisma.IpBlockOrderByRelationAggregateInput;
+    tebexLicenses?: Prisma.TebexLicenseOrderByRelationAggregateInput;
 };
 export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -234,6 +236,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     supportTickets?: Prisma.SupportTicketListRelationFilter;
     supportMessages?: Prisma.SupportMessageListRelationFilter;
     ipBlocksCreated?: Prisma.IpBlockListRelationFilter;
+    tebexLicenses?: Prisma.TebexLicenseListRelationFilter;
 }, "id" | "steamId">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -294,6 +297,7 @@ export type UserCreateInput = {
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateInput = {
     id?: string;
@@ -318,6 +322,7 @@ export type UserUncheckedCreateInput = {
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -342,6 +347,7 @@ export type UserUpdateInput = {
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -366,6 +372,7 @@ export type UserUncheckedUpdateInput = {
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateManyInput = {
     id?: string;
@@ -620,6 +627,20 @@ export type UserUpdateOneWithoutPaymentsNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentsInput, Prisma.UserUpdateWithoutPaymentsInput>, Prisma.UserUncheckedUpdateWithoutPaymentsInput>;
 };
+export type UserCreateNestedOneWithoutTebexLicensesInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutTebexLicensesInput, Prisma.UserUncheckedCreateWithoutTebexLicensesInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutTebexLicensesInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneWithoutTebexLicensesNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutTebexLicensesInput, Prisma.UserUncheckedCreateWithoutTebexLicensesInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutTebexLicensesInput;
+    upsert?: Prisma.UserUpsertWithoutTebexLicensesInput;
+    disconnect?: Prisma.UserWhereInput | boolean;
+    delete?: Prisma.UserWhereInput | boolean;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTebexLicensesInput, Prisma.UserUpdateWithoutTebexLicensesInput>, Prisma.UserUncheckedUpdateWithoutTebexLicensesInput>;
+};
 export type UserCreateWithoutIpBlocksCreatedInput = {
     id?: string;
     steamId: string;
@@ -642,6 +663,7 @@ export type UserCreateWithoutIpBlocksCreatedInput = {
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutIpBlocksCreatedInput = {
     id?: string;
@@ -665,6 +687,7 @@ export type UserUncheckedCreateWithoutIpBlocksCreatedInput = {
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutIpBlocksCreatedInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -701,6 +724,7 @@ export type UserUpdateWithoutIpBlocksCreatedInput = {
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutIpBlocksCreatedInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -724,6 +748,7 @@ export type UserUncheckedUpdateWithoutIpBlocksCreatedInput = {
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutPurchasesInput = {
     id?: string;
@@ -747,6 +772,7 @@ export type UserCreateWithoutPurchasesInput = {
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutPurchasesInput = {
     id?: string;
@@ -770,6 +796,7 @@ export type UserUncheckedCreateWithoutPurchasesInput = {
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutPurchasesInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -806,6 +833,7 @@ export type UserUpdateWithoutPurchasesInput = {
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutPurchasesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -829,6 +857,7 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutScriptViewsInput = {
     id?: string;
@@ -852,6 +881,7 @@ export type UserCreateWithoutScriptViewsInput = {
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutScriptViewsInput = {
     id?: string;
@@ -875,6 +905,7 @@ export type UserUncheckedCreateWithoutScriptViewsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutScriptViewsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -911,6 +942,7 @@ export type UserUpdateWithoutScriptViewsInput = {
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutScriptViewsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -934,6 +966,7 @@ export type UserUncheckedUpdateWithoutScriptViewsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutScriptClicksInput = {
     id?: string;
@@ -957,6 +990,7 @@ export type UserCreateWithoutScriptClicksInput = {
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutScriptClicksInput = {
     id?: string;
@@ -980,6 +1014,7 @@ export type UserUncheckedCreateWithoutScriptClicksInput = {
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutScriptClicksInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1016,6 +1051,7 @@ export type UserUpdateWithoutScriptClicksInput = {
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutScriptClicksInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1039,6 +1075,7 @@ export type UserUncheckedUpdateWithoutScriptClicksInput = {
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutCommentsInput = {
     id?: string;
@@ -1062,6 +1099,7 @@ export type UserCreateWithoutCommentsInput = {
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutCommentsInput = {
     id?: string;
@@ -1085,6 +1123,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutCommentsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1112,6 +1151,7 @@ export type UserCreateWithoutModeratedCommentsInput = {
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutModeratedCommentsInput = {
     id?: string;
@@ -1135,6 +1175,7 @@ export type UserUncheckedCreateWithoutModeratedCommentsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutModeratedCommentsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1171,6 +1212,7 @@ export type UserUpdateWithoutCommentsInput = {
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutCommentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1194,6 +1236,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserUpsertWithoutModeratedCommentsInput = {
     update: Prisma.XOR<Prisma.UserUpdateWithoutModeratedCommentsInput, Prisma.UserUncheckedUpdateWithoutModeratedCommentsInput>;
@@ -1226,6 +1269,7 @@ export type UserUpdateWithoutModeratedCommentsInput = {
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutModeratedCommentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1249,6 +1293,7 @@ export type UserUncheckedUpdateWithoutModeratedCommentsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutSupportTicketsInput = {
     id?: string;
@@ -1272,6 +1317,7 @@ export type UserCreateWithoutSupportTicketsInput = {
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutSupportTicketsInput = {
     id?: string;
@@ -1295,6 +1341,7 @@ export type UserUncheckedCreateWithoutSupportTicketsInput = {
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutSupportTicketsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1331,6 +1378,7 @@ export type UserUpdateWithoutSupportTicketsInput = {
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutSupportTicketsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1354,6 +1402,7 @@ export type UserUncheckedUpdateWithoutSupportTicketsInput = {
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutSupportMessagesInput = {
     id?: string;
@@ -1377,6 +1426,7 @@ export type UserCreateWithoutSupportMessagesInput = {
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutSupportMessagesInput = {
     id?: string;
@@ -1400,6 +1450,7 @@ export type UserUncheckedCreateWithoutSupportMessagesInput = {
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutSupportMessagesInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1436,6 +1487,7 @@ export type UserUpdateWithoutSupportMessagesInput = {
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutSupportMessagesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1459,6 +1511,7 @@ export type UserUncheckedUpdateWithoutSupportMessagesInput = {
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutNotificationsInput = {
     id?: string;
@@ -1482,6 +1535,7 @@ export type UserCreateWithoutNotificationsInput = {
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutNotificationsInput = {
     id?: string;
@@ -1505,6 +1559,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutNotificationsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1541,6 +1596,7 @@ export type UserUpdateWithoutNotificationsInput = {
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutNotificationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1564,6 +1620,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutPaymentsInput = {
     id?: string;
@@ -1587,6 +1644,7 @@ export type UserCreateWithoutPaymentsInput = {
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutPaymentsInput = {
     id?: string;
@@ -1610,6 +1668,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutPaymentsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1646,6 +1705,7 @@ export type UserUpdateWithoutPaymentsInput = {
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutPaymentsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1669,6 +1729,116 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
     ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
+    tebexLicenses?: Prisma.TebexLicenseUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutTebexLicensesInput = {
+    id?: string;
+    steamId: string;
+    username: string;
+    avatarUrl: string;
+    balance?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    role?: $Enums.UserRole;
+    isBlocked?: boolean;
+    blockedReason?: string | null;
+    lastLoginIp?: string | null;
+    lastLoginAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentCreateNestedManyWithoutUserInput;
+    moderatedComments?: Prisma.CommentCreateNestedManyWithoutModeratedByInput;
+    scriptViews?: Prisma.ScriptViewCreateNestedManyWithoutUserInput;
+    scriptClicks?: Prisma.ScriptClickCreateNestedManyWithoutUserInput;
+    payments?: Prisma.PaymentCreateNestedManyWithoutUserInput;
+    notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+    supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
+    supportMessages?: Prisma.SupportMessageCreateNestedManyWithoutAuthorInput;
+    ipBlocksCreated?: Prisma.IpBlockCreateNestedManyWithoutCreatedByInput;
+};
+export type UserUncheckedCreateWithoutTebexLicensesInput = {
+    id?: string;
+    steamId: string;
+    username: string;
+    avatarUrl: string;
+    balance?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+    role?: $Enums.UserRole;
+    isBlocked?: boolean;
+    blockedReason?: string | null;
+    lastLoginIp?: string | null;
+    lastLoginAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput;
+    comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput;
+    moderatedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutModeratedByInput;
+    scriptViews?: Prisma.ScriptViewUncheckedCreateNestedManyWithoutUserInput;
+    scriptClicks?: Prisma.ScriptClickUncheckedCreateNestedManyWithoutUserInput;
+    payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput;
+    notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+    supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
+    supportMessages?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorInput;
+    ipBlocksCreated?: Prisma.IpBlockUncheckedCreateNestedManyWithoutCreatedByInput;
+};
+export type UserCreateOrConnectWithoutTebexLicensesInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutTebexLicensesInput, Prisma.UserUncheckedCreateWithoutTebexLicensesInput>;
+};
+export type UserUpsertWithoutTebexLicensesInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutTebexLicensesInput, Prisma.UserUncheckedUpdateWithoutTebexLicensesInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutTebexLicensesInput, Prisma.UserUncheckedCreateWithoutTebexLicensesInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutTebexLicensesInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutTebexLicensesInput, Prisma.UserUncheckedUpdateWithoutTebexLicensesInput>;
+};
+export type UserUpdateWithoutTebexLicensesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.StringFieldUpdateOperationsInput | string;
+    username?: Prisma.StringFieldUpdateOperationsInput | string;
+    avatarUrl?: Prisma.StringFieldUpdateOperationsInput | string;
+    balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUpdateManyWithoutUserNestedInput;
+    moderatedComments?: Prisma.CommentUpdateManyWithoutModeratedByNestedInput;
+    scriptViews?: Prisma.ScriptViewUpdateManyWithoutUserNestedInput;
+    scriptClicks?: Prisma.ScriptClickUpdateManyWithoutUserNestedInput;
+    payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput;
+    notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+    supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
+    supportMessages?: Prisma.SupportMessageUpdateManyWithoutAuthorNestedInput;
+    ipBlocksCreated?: Prisma.IpBlockUpdateManyWithoutCreatedByNestedInput;
+};
+export type UserUncheckedUpdateWithoutTebexLicensesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    steamId?: Prisma.StringFieldUpdateOperationsInput | string;
+    username?: Prisma.StringFieldUpdateOperationsInput | string;
+    avatarUrl?: Prisma.StringFieldUpdateOperationsInput | string;
+    balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string;
+    role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput;
+    comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput;
+    moderatedComments?: Prisma.CommentUncheckedUpdateManyWithoutModeratedByNestedInput;
+    scriptViews?: Prisma.ScriptViewUncheckedUpdateManyWithoutUserNestedInput;
+    scriptClicks?: Prisma.ScriptClickUncheckedUpdateManyWithoutUserNestedInput;
+    payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput;
+    notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+    supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
+    supportMessages?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput;
+    ipBlocksCreated?: Prisma.IpBlockUncheckedUpdateManyWithoutCreatedByNestedInput;
 };
 export type UserCountOutputType = {
     purchases: number;
@@ -1681,6 +1851,7 @@ export type UserCountOutputType = {
     supportTickets: number;
     supportMessages: number;
     ipBlocksCreated: number;
+    tebexLicenses: number;
 };
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     purchases?: boolean | UserCountOutputTypeCountPurchasesArgs;
@@ -1693,6 +1864,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
     supportTickets?: boolean | UserCountOutputTypeCountSupportTicketsArgs;
     supportMessages?: boolean | UserCountOutputTypeCountSupportMessagesArgs;
     ipBlocksCreated?: boolean | UserCountOutputTypeCountIpBlocksCreatedArgs;
+    tebexLicenses?: boolean | UserCountOutputTypeCountTebexLicensesArgs;
 };
 export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null;
@@ -1727,6 +1899,9 @@ export type UserCountOutputTypeCountSupportMessagesArgs<ExtArgs extends runtime.
 export type UserCountOutputTypeCountIpBlocksCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.IpBlockWhereInput;
 };
+export type UserCountOutputTypeCountTebexLicensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.TebexLicenseWhereInput;
+};
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     steamId?: boolean;
@@ -1750,6 +1925,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>;
     supportMessages?: boolean | Prisma.User$supportMessagesArgs<ExtArgs>;
     ipBlocksCreated?: boolean | Prisma.User$ipBlocksCreatedArgs<ExtArgs>;
+    tebexLicenses?: boolean | Prisma.User$tebexLicensesArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1806,6 +1982,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>;
     supportMessages?: boolean | Prisma.User$supportMessagesArgs<ExtArgs>;
     ipBlocksCreated?: boolean | Prisma.User$ipBlocksCreatedArgs<ExtArgs>;
+    tebexLicenses?: boolean | Prisma.User$tebexLicensesArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -1823,6 +2000,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[];
         supportMessages: Prisma.$SupportMessagePayload<ExtArgs>[];
         ipBlocksCreated: Prisma.$IpBlockPayload<ExtArgs>[];
+        tebexLicenses: Prisma.$TebexLicensePayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1899,6 +2077,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     supportTickets<T extends Prisma.User$supportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     supportMessages<T extends Prisma.User$supportMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     ipBlocksCreated<T extends Prisma.User$ipBlocksCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ipBlocksCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IpBlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    tebexLicenses<T extends Prisma.User$tebexLicensesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tebexLicensesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TebexLicensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -2124,6 +2303,17 @@ export type User$ipBlocksCreatedArgs<ExtArgs extends runtime.Types.Extensions.In
     take?: number;
     skip?: number;
     distinct?: Prisma.IpBlockScalarFieldEnum | Prisma.IpBlockScalarFieldEnum[];
+};
+export type User$tebexLicensesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.TebexLicenseSelect<ExtArgs> | null;
+    omit?: Prisma.TebexLicenseOmit<ExtArgs> | null;
+    include?: Prisma.TebexLicenseInclude<ExtArgs> | null;
+    where?: Prisma.TebexLicenseWhereInput;
+    orderBy?: Prisma.TebexLicenseOrderByWithRelationInput | Prisma.TebexLicenseOrderByWithRelationInput[];
+    cursor?: Prisma.TebexLicenseWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.TebexLicenseScalarFieldEnum | Prisma.TebexLicenseScalarFieldEnum[];
 };
 export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.UserSelect<ExtArgs> | null;

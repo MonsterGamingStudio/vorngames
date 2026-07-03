@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
+import { TebexModule } from '../tebex/tebex.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { AdminGuard, BlockedUserGuard, OptionalJwtAuthGuard } from './guards';
@@ -13,6 +14,7 @@ import { SteamStrategy } from './steam.strategy';
   imports: [
     ConfigModule,
     UsersModule,
+    TebexModule,
     PassportModule.register({ session: true }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

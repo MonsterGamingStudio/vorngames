@@ -24,6 +24,7 @@ export declare class ProfileController {
         id: string;
         username: string;
         avatarUrl: string;
+        steamId: string;
         createdAt: Date;
     }>;
 }

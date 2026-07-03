@@ -15,3 +15,5 @@ export type SupportTicket = Prisma.SupportTicketModel;
 export type SupportMessage = Prisma.SupportMessageModel;
 export type Notification = Prisma.NotificationModel;
 export type Payment = Prisma.PaymentModel;
+export type TebexLicense = Prisma.TebexLicenseModel;
+export type TebexPackageMapping = Prisma.TebexPackageMappingModel;

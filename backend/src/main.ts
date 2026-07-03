@@ -10,7 +10,9 @@ import { AppModule } from './app.module';
 import { JWT_COOKIE_NAME } from './auth/auth.constants';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    rawBody: true,
+  });
   const config = app.get(ConfigService);
   const isProduction = config.get('NODE_ENV') === 'production';
 
@@ -69,6 +71,7 @@ async function bootstrap() {
     .addTag('notifications', 'In-app notifications')
     .addTag('support', 'User support tickets')
     .addTag('payments', 'UnitPay donations (game currency)')
+    .addTag('tebex', 'Tebex webhooks and license management')
     .addTag('admin', 'Admin: users, IP blocks, dashboard')
     .addTag('admin/scripts', 'Admin: scripts CRUD and uploads')
     .addTag('admin/comments', 'Admin: comment moderation')

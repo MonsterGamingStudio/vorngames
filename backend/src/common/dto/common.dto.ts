@@ -45,11 +45,11 @@ export class AchievementDto {
   @ApiProperty({ example: 'top_commentator' })
   id!: string;
 
-  @ApiProperty({ example: 'Топ комментатор' })
-  title!: string;
+  @ApiProperty({ example: 'achievements.topCommentator.title' })
+  titleKey!: string;
 
-  @ApiProperty({ example: '15 комментариев под разными скриптами' })
-  description!: string;
+  @ApiProperty({ example: 'achievements.topCommentator.description' })
+  descriptionKey!: string;
 
   @ApiProperty({ example: true })
   unlocked!: boolean;
@@ -67,6 +67,9 @@ export class PublicUserDto {
 
   @ApiProperty({ example: 'https://avatars.steamstatic.com/abc_full.jpg' })
   avatarUrl!: string;
+
+  @ApiProperty({ example: '76561198000000000' })
+  steamId!: string;
 
   @ApiProperty({ example: '2025-01-15T12:00:00.000Z' })
   createdAt!: Date;
