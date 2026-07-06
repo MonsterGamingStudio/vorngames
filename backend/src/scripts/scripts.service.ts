@@ -52,6 +52,11 @@ export class ScriptsService {
     versions: { where: { isCurrent: true }, take: 1 },
   };
 
+  private readonly catalogWhere: Prisma.ScriptWhereInput = {
+    isPublished: true,
+    deletedAt: null,
+  };
+
   private mapMediaItem(m: {
     id: string;
     type: ScriptMediaType;
@@ -116,7 +121,7 @@ export class ScriptsService {
   }
 
   async list(query: ScriptListQuery) {
-    const where: Prisma.ScriptWhereInput = { isPublished: true };
+    const where: Prisma.ScriptWhereInput = { ...this.catalogWhere };
 
     if (query.search) {
       where.title = { contains: query.search, mode: 'insensitive' };
@@ -144,7 +149,7 @@ export class ScriptsService {
       }
 
       const scripts = await this.prisma.script.findMany({
-        where: { id: { in: ids }, isPublished: true },
+        where: { id: { in: ids }, ...this.catalogWhere },
         include: this.scriptInclude,
       });
       const ordered = ids
@@ -187,7 +192,7 @@ export class ScriptsService {
 
   async getRandom(count = 4) {
     const published = await this.prisma.script.findMany({
-      where: { isPublished: true },
+      where: { ...this.catalogWhere },
       select: { id: true },
     });
 
@@ -216,7 +221,7 @@ export class ScriptsService {
     }
 
     const scripts = await this.prisma.script.findMany({
-      where: { id: { in: ids }, isPublished: true },
+      where: { id: { in: ids }, ...this.catalogWhere },
       include: this.scriptInclude,
     });
 
@@ -286,7 +291,7 @@ export class ScriptsService {
 
   async findBySlug(slug: string) {
     const script = await this.prisma.script.findFirst({
-      where: { slug, isPublished: true },
+      where: { slug, ...this.catalogWhere },
       include: {
         media: { orderBy: { sortOrder: 'asc' } },
         versions: { where: { isCurrent: true }, take: 1 },
@@ -309,7 +314,7 @@ export class ScriptsService {
       },
     });
 
-    if (!script) {
+    if (!script || script.deletedAt) {
       throw new NotFoundException('Script not found');
     }
 
@@ -333,7 +338,7 @@ export class ScriptsService {
     ipHash: string,
   ) {
     await this.prisma.script.findFirstOrThrow({
-      where: { id: scriptId, isPublished: true },
+      where: { id: scriptId, ...this.catalogWhere },
     });
 
     const since = new Date(Date.now() - this.analyticsDedupeMs);
@@ -369,7 +374,9 @@ export class ScriptsService {
 
   async create(input: CreateScriptInput) {
     const slug = input.slug?.trim() || slugify(input.title);
-    const existing = await this.prisma.script.findUnique({ where: { slug } });
+    const existing = await this.prisma.script.findFirst({
+      where: { slug, deletedAt: null },
+    });
     if (existing) {
       throw new BadRequestException('Slug already exists');
     }
@@ -397,8 +404,8 @@ export class ScriptsService {
     const current = await this.findById(id);
 
     if (input.slug && input.slug !== current.slug) {
-      const existing = await this.prisma.script.findUnique({
-        where: { slug: input.slug },
+      const existing = await this.prisma.script.findFirst({
+        where: { slug: input.slug, deletedAt: null, NOT: { id } },
       });
       if (existing) {
         throw new BadRequestException('Slug already exists');
@@ -419,9 +426,14 @@ export class ScriptsService {
   }
 
   async unpublish(id: string) {
+    await this.findById(id);
+
     return this.prisma.script.update({
       where: { id },
-      data: { isPublished: false },
+      data: {
+        isPublished: false,
+        deletedAt: new Date(),
+      },
       include: this.scriptInclude,
     });
   }
@@ -577,6 +589,7 @@ export class ScriptsService {
 
   async listAll() {
     return this.prisma.script.findMany({
+      where: { deletedAt: null },
       orderBy: { createdAt: 'desc' },
       include: this.scriptInclude,
     });

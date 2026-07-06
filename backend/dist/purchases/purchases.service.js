@@ -45,7 +45,7 @@ let PurchasesService = class PurchasesService {
             throw new common_1.UnauthorizedException('Steam login required to purchase');
         }
         const script = await this.prisma.script.findFirst({
-            where: { id: scriptId, isPublished: true },
+            where: { id: scriptId, isPublished: true, deletedAt: null },
         });
         if (!script) {
             throw new common_1.NotFoundException('Script not found');

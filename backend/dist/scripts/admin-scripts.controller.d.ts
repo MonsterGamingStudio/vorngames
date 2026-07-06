@@ -40,6 +40,7 @@ export declare class AdminScriptsController {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     })[]>;
     create(body: CreateScriptDto): Promise<{
@@ -79,6 +80,7 @@ export declare class AdminScriptsController {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
     update(id: string, body: CreateScriptDto): Promise<{
@@ -118,6 +120,7 @@ export declare class AdminScriptsController {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
     remove(id: string): Promise<{
@@ -157,6 +160,7 @@ export declare class AdminScriptsController {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
     addMedia(id: string, body: AddScriptMediaDto): Promise<{

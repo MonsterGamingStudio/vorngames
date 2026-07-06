@@ -29,6 +29,7 @@ export declare class ScriptsService {
     private readonly notifications;
     constructor(prisma: PrismaService, storage: StorageService, notifications: NotificationsService);
     private scriptInclude;
+    private readonly catalogWhere;
     private mapMediaItem;
     private mapMediaItems;
     toListItem(script: Script & {
@@ -245,6 +246,7 @@ export declare class ScriptsService {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
     findById(id: string): Promise<{
@@ -284,6 +286,7 @@ export declare class ScriptsService {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
     recordView(scriptId: string, userId: string | null, ipHash: string): Promise<{
@@ -333,6 +336,7 @@ export declare class ScriptsService {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
     update(id: string, input: UpdateScriptInput): Promise<{
@@ -372,6 +376,7 @@ export declare class ScriptsService {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
     unpublish(id: string): Promise<{
@@ -411,6 +416,7 @@ export declare class ScriptsService {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
     addMedia(scriptId: string, data: {
@@ -496,6 +502,7 @@ export declare class ScriptsService {
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     })[]>;
     getStats(scriptId: string, from?: Date, to?: Date): Promise<{

@@ -1366,6 +1366,7 @@ export declare const ScriptScalarFieldEnum: {
     readonly isPublished: "isPublished";
     readonly featuredOnHome: "featuredOnHome";
     readonly publishedAt: "publishedAt";
+    readonly deletedAt: "deletedAt";
     readonly fileUpdatedAt: "fileUpdatedAt";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";

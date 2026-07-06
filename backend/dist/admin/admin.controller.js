@@ -72,7 +72,9 @@ let AdminController = class AdminController {
     async dashboard() {
         const [users, scripts, purchases, openTickets, pendingComments] = await Promise.all([
             this.prisma.user.count(),
-            this.prisma.script.count({ where: { isPublished: true } }),
+            this.prisma.script.count({
+                where: { isPublished: true, deletedAt: null },
+            }),
             this.prisma.purchase.count(),
             this.prisma.supportTicket.count({ where: { status: 'open' } }),
             this.prisma.comment.count({ where: { status: 'pending' } }),

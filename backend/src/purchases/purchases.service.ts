@@ -48,7 +48,7 @@ export class PurchasesService {
     }
 
     const script = await this.prisma.script.findFirst({
-      where: { id: scriptId, isPublished: true },
+      where: { id: scriptId, isPublished: true, deletedAt: null },
     });
 
     if (!script) {

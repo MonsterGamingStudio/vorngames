@@ -29,6 +29,10 @@ let ScriptsService = class ScriptsService {
         media: { orderBy: { sortOrder: 'asc' } },
         versions: { where: { isCurrent: true }, take: 1 },
     };
+    catalogWhere = {
+        isPublished: true,
+        deletedAt: null,
+    };
     mapMediaItem(m) {
         return {
             id: m.id,
@@ -66,7 +70,7 @@ let ScriptsService = class ScriptsService {
         };
     }
     async list(query) {
-        const where = { isPublished: true };
+        const where = { ...this.catalogWhere };
         if (query.search) {
             where.title = { contains: query.search, mode: 'insensitive' };
         }
@@ -89,7 +93,7 @@ let ScriptsService = class ScriptsService {
                 return { items: [], total: 0, page: query.page, limit: query.limit };
             }
             const scripts = await this.prisma.script.findMany({
-                where: { id: { in: ids }, isPublished: true },
+                where: { id: { in: ids }, ...this.catalogWhere },
                 include: this.scriptInclude,
             });
             const ordered = ids
@@ -126,7 +130,7 @@ let ScriptsService = class ScriptsService {
     }
     async getRandom(count = 4) {
         const published = await this.prisma.script.findMany({
-            where: { isPublished: true },
+            where: { ...this.catalogWhere },
             select: { id: true },
         });
         const shuffled = published.sort(() => Math.random() - 0.5).slice(0, count);
@@ -150,7 +154,7 @@ let ScriptsService = class ScriptsService {
             return [];
         }
         const scripts = await this.prisma.script.findMany({
-            where: { id: { in: ids }, isPublished: true },
+            where: { id: { in: ids }, ...this.catalogWhere },
             include: this.scriptInclude,
         });
         return ids
@@ -203,7 +207,7 @@ let ScriptsService = class ScriptsService {
     }
     async findBySlug(slug) {
         const script = await this.prisma.script.findFirst({
-            where: { slug, isPublished: true },
+            where: { slug, ...this.catalogWhere },
             include: {
                 media: { orderBy: { sortOrder: 'asc' } },
                 versions: { where: { isCurrent: true }, take: 1 },
@@ -222,7 +226,7 @@ let ScriptsService = class ScriptsService {
                 versions: { orderBy: { releasedAt: 'desc' } },
             },
         });
-        if (!script) {
+        if (!script || script.deletedAt) {
             throw new common_1.NotFoundException('Script not found');
         }
         return script;
@@ -236,7 +240,7 @@ let ScriptsService = class ScriptsService {
     analyticsDedupeMs = 24 * 60 * 60 * 1000;
     async recordAnalytics(type, scriptId, userId, ipHash) {
         await this.prisma.script.findFirstOrThrow({
-            where: { id: scriptId, isPublished: true },
+            where: { id: scriptId, ...this.catalogWhere },
         });
         const since = new Date(Date.now() - this.analyticsDedupeMs);
         if (type === 'view') {
@@ -269,7 +273,9 @@ let ScriptsService = class ScriptsService {
     }
     async create(input) {
         const slug = input.slug?.trim() || (0, utils_1.slugify)(input.title);
-        const existing = await this.prisma.script.findUnique({ where: { slug } });
+        const existing = await this.prisma.script.findFirst({
+            where: { slug, deletedAt: null },
+        });
         if (existing) {
             throw new common_1.BadRequestException('Slug already exists');
         }
@@ -294,8 +300,8 @@ let ScriptsService = class ScriptsService {
     async update(id, input) {
         const current = await this.findById(id);
         if (input.slug && input.slug !== current.slug) {
-            const existing = await this.prisma.script.findUnique({
-                where: { slug: input.slug },
+            const existing = await this.prisma.script.findFirst({
+                where: { slug: input.slug, deletedAt: null, NOT: { id } },
             });
             if (existing) {
                 throw new common_1.BadRequestException('Slug already exists');
@@ -312,9 +318,13 @@ let ScriptsService = class ScriptsService {
         });
     }
     async unpublish(id) {
+        await this.findById(id);
         return this.prisma.script.update({
             where: { id },
-            data: { isPublished: false },
+            data: {
+                isPublished: false,
+                deletedAt: new Date(),
+            },
             include: this.scriptInclude,
         });
     }
@@ -421,6 +431,7 @@ let ScriptsService = class ScriptsService {
     }
     async listAll() {
         return this.prisma.script.findMany({
+            where: { deletedAt: null },
             orderBy: { createdAt: 'desc' },
             include: this.scriptInclude,
         });

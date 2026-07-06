@@ -117,6 +117,7 @@ exports.ScriptScalarFieldEnum = {
     isPublished: 'isPublished',
     featuredOnHome: 'featuredOnHome',
     publishedAt: 'publishedAt',
+    deletedAt: 'deletedAt',
     fileUpdatedAt: 'fileUpdatedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'

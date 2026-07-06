@@ -258,7 +258,8 @@ export const ApiDocs = {
     },
     unpublish: {
       summary: '[Админ] Снять с публикации',
-      description: 'Soft-delete: isPublished=false. Скрипт пропадает из каталога.',
+      description:
+        'Помечает скрипт удалённым (deletedAt). Скрывается из каталога и из списка в админке. Покупатели сохраняют доступ к скачиванию.',
     },
     addMedia: {
       summary: '[Админ] Добавить медиа по URL',

@@ -33,6 +33,7 @@ export type ScriptMinAggregateOutputType = {
     isPublished: boolean | null;
     featuredOnHome: boolean | null;
     publishedAt: Date | null;
+    deletedAt: Date | null;
     fileUpdatedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -51,6 +52,7 @@ export type ScriptMaxAggregateOutputType = {
     isPublished: boolean | null;
     featuredOnHome: boolean | null;
     publishedAt: Date | null;
+    deletedAt: Date | null;
     fileUpdatedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -69,6 +71,7 @@ export type ScriptCountAggregateOutputType = {
     isPublished: number;
     featuredOnHome: number;
     publishedAt: number;
+    deletedAt: number;
     fileUpdatedAt: number;
     createdAt: number;
     updatedAt: number;
@@ -98,6 +101,7 @@ export type ScriptMinAggregateInputType = {
     isPublished?: true;
     featuredOnHome?: true;
     publishedAt?: true;
+    deletedAt?: true;
     fileUpdatedAt?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -116,6 +120,7 @@ export type ScriptMaxAggregateInputType = {
     isPublished?: true;
     featuredOnHome?: true;
     publishedAt?: true;
+    deletedAt?: true;
     fileUpdatedAt?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -134,6 +139,7 @@ export type ScriptCountAggregateInputType = {
     isPublished?: true;
     featuredOnHome?: true;
     publishedAt?: true;
+    deletedAt?: true;
     fileUpdatedAt?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -181,6 +187,7 @@ export type ScriptGroupByOutputType = {
     isPublished: boolean;
     featuredOnHome: boolean;
     publishedAt: Date | null;
+    deletedAt: Date | null;
     fileUpdatedAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
@@ -210,6 +217,7 @@ export type ScriptWhereInput = {
     isPublished?: Prisma.BoolFilter<"Script"> | boolean;
     featuredOnHome?: Prisma.BoolFilter<"Script"> | boolean;
     publishedAt?: Prisma.DateTimeNullableFilter<"Script"> | Date | string | null;
+    deletedAt?: Prisma.DateTimeNullableFilter<"Script"> | Date | string | null;
     fileUpdatedAt?: Prisma.DateTimeNullableFilter<"Script"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Script"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Script"> | Date | string;
@@ -237,6 +245,7 @@ export type ScriptOrderByWithRelationInput = {
     isPublished?: Prisma.SortOrder;
     featuredOnHome?: Prisma.SortOrder;
     publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     fileUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -267,6 +276,7 @@ export type ScriptWhereUniqueInput = Prisma.AtLeast<{
     isPublished?: Prisma.BoolFilter<"Script"> | boolean;
     featuredOnHome?: Prisma.BoolFilter<"Script"> | boolean;
     publishedAt?: Prisma.DateTimeNullableFilter<"Script"> | Date | string | null;
+    deletedAt?: Prisma.DateTimeNullableFilter<"Script"> | Date | string | null;
     fileUpdatedAt?: Prisma.DateTimeNullableFilter<"Script"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"Script"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Script"> | Date | string;
@@ -294,6 +304,7 @@ export type ScriptOrderByWithAggregationInput = {
     isPublished?: Prisma.SortOrder;
     featuredOnHome?: Prisma.SortOrder;
     publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     fileUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -320,6 +331,7 @@ export type ScriptScalarWhereWithAggregatesInput = {
     isPublished?: Prisma.BoolWithAggregatesFilter<"Script"> | boolean;
     featuredOnHome?: Prisma.BoolWithAggregatesFilter<"Script"> | boolean;
     publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Script"> | Date | string | null;
+    deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Script"> | Date | string | null;
     fileUpdatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Script"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Script"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Script"> | Date | string;
@@ -338,6 +350,7 @@ export type ScriptCreateInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -365,6 +378,7 @@ export type ScriptUncheckedCreateInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -392,6 +406,7 @@ export type ScriptUpdateInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -419,6 +434,7 @@ export type ScriptUncheckedUpdateInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -446,6 +462,7 @@ export type ScriptCreateManyInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -464,6 +481,7 @@ export type ScriptUpdateManyMutationInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -482,6 +500,7 @@ export type ScriptUncheckedUpdateManyInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -500,6 +519,7 @@ export type ScriptCountOrderByAggregateInput = {
     isPublished?: Prisma.SortOrder;
     featuredOnHome?: Prisma.SortOrder;
     publishedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
     fileUpdatedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -523,6 +543,7 @@ export type ScriptMaxOrderByAggregateInput = {
     isPublished?: Prisma.SortOrder;
     featuredOnHome?: Prisma.SortOrder;
     publishedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
     fileUpdatedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -541,6 +562,7 @@ export type ScriptMinOrderByAggregateInput = {
     isPublished?: Prisma.SortOrder;
     featuredOnHome?: Prisma.SortOrder;
     publishedAt?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
     fileUpdatedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -702,6 +724,7 @@ export type ScriptCreateWithoutMediaInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -728,6 +751,7 @@ export type ScriptUncheckedCreateWithoutMediaInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -767,6 +791,7 @@ export type ScriptUpdateWithoutMediaInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -793,6 +818,7 @@ export type ScriptUncheckedUpdateWithoutMediaInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -819,6 +845,7 @@ export type ScriptCreateWithoutVersionsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -845,6 +872,7 @@ export type ScriptUncheckedCreateWithoutVersionsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -884,6 +912,7 @@ export type ScriptUpdateWithoutVersionsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -910,6 +939,7 @@ export type ScriptUncheckedUpdateWithoutVersionsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -936,6 +966,7 @@ export type ScriptCreateWithoutPurchasesInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -962,6 +993,7 @@ export type ScriptUncheckedCreateWithoutPurchasesInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1001,6 +1033,7 @@ export type ScriptUpdateWithoutPurchasesInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1027,6 +1060,7 @@ export type ScriptUncheckedUpdateWithoutPurchasesInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1053,6 +1087,7 @@ export type ScriptCreateWithoutViewsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1079,6 +1114,7 @@ export type ScriptUncheckedCreateWithoutViewsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1118,6 +1154,7 @@ export type ScriptUpdateWithoutViewsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1144,6 +1181,7 @@ export type ScriptUncheckedUpdateWithoutViewsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1170,6 +1208,7 @@ export type ScriptCreateWithoutClicksInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1196,6 +1235,7 @@ export type ScriptUncheckedCreateWithoutClicksInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1235,6 +1275,7 @@ export type ScriptUpdateWithoutClicksInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1261,6 +1302,7 @@ export type ScriptUncheckedUpdateWithoutClicksInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1287,6 +1329,7 @@ export type ScriptCreateWithoutCommentsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1313,6 +1356,7 @@ export type ScriptUncheckedCreateWithoutCommentsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1352,6 +1396,7 @@ export type ScriptUpdateWithoutCommentsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1378,6 +1423,7 @@ export type ScriptUncheckedUpdateWithoutCommentsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1404,6 +1450,7 @@ export type ScriptCreateWithoutPaymentsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1430,6 +1477,7 @@ export type ScriptUncheckedCreateWithoutPaymentsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1469,6 +1517,7 @@ export type ScriptUpdateWithoutPaymentsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1495,6 +1544,7 @@ export type ScriptUncheckedUpdateWithoutPaymentsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1521,6 +1571,7 @@ export type ScriptCreateWithoutTebexLicensesInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1547,6 +1598,7 @@ export type ScriptUncheckedCreateWithoutTebexLicensesInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1586,6 +1638,7 @@ export type ScriptUpdateWithoutTebexLicensesInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1612,6 +1665,7 @@ export type ScriptUncheckedUpdateWithoutTebexLicensesInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1638,6 +1692,7 @@ export type ScriptCreateWithoutTebexPackageMappingsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1664,6 +1719,7 @@ export type ScriptUncheckedCreateWithoutTebexPackageMappingsInput = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: Date | string | null;
+    deletedAt?: Date | string | null;
     fileUpdatedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1703,6 +1759,7 @@ export type ScriptUpdateWithoutTebexPackageMappingsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1729,6 +1786,7 @@ export type ScriptUncheckedUpdateWithoutTebexPackageMappingsInput = {
     isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     featuredOnHome?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     fileUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1807,6 +1865,7 @@ export type ScriptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: boolean;
+    deletedAt?: boolean;
     fileUpdatedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1835,6 +1894,7 @@ export type ScriptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: boolean;
+    deletedAt?: boolean;
     fileUpdatedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1853,6 +1913,7 @@ export type ScriptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: boolean;
+    deletedAt?: boolean;
     fileUpdatedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1871,11 +1932,12 @@ export type ScriptSelectScalar = {
     isPublished?: boolean;
     featuredOnHome?: boolean;
     publishedAt?: boolean;
+    deletedAt?: boolean;
     fileUpdatedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type ScriptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "shortDescription" | "gameCategory" | "priceRub" | "priceUsd" | "discountPercent" | "badge" | "instructionHtml" | "isPublished" | "featuredOnHome" | "publishedAt" | "fileUpdatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["script"]>;
+export type ScriptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "shortDescription" | "gameCategory" | "priceRub" | "priceUsd" | "discountPercent" | "badge" | "instructionHtml" | "isPublished" | "featuredOnHome" | "publishedAt" | "deletedAt" | "fileUpdatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["script"]>;
 export type ScriptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     media?: boolean | Prisma.Script$mediaArgs<ExtArgs>;
     versions?: boolean | Prisma.Script$versionsArgs<ExtArgs>;
@@ -1917,6 +1979,7 @@ export type $ScriptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         isPublished: boolean;
         featuredOnHome: boolean;
         publishedAt: Date | null;
+        deletedAt: Date | null;
         fileUpdatedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
@@ -1999,6 +2062,7 @@ export interface ScriptFieldRefs {
     readonly isPublished: Prisma.FieldRef<"Script", 'Boolean'>;
     readonly featuredOnHome: Prisma.FieldRef<"Script", 'Boolean'>;
     readonly publishedAt: Prisma.FieldRef<"Script", 'DateTime'>;
+    readonly deletedAt: Prisma.FieldRef<"Script", 'DateTime'>;
     readonly fileUpdatedAt: Prisma.FieldRef<"Script", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"Script", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Script", 'DateTime'>;
