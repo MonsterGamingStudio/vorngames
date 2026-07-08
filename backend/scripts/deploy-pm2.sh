@@ -9,6 +9,7 @@ docker compose -f docker-compose.postgres.yml up -d
 echo "==> Dependencies & build"
 npm ci
 npx prisma migrate deploy
+npx prisma generate
 npm run build
 
 echo "==> PM2"

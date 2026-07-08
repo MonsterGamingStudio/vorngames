@@ -1,4 +1,5 @@
 import { GameCategory, Script, ScriptBadge, ScriptMediaType } from '../generated/prisma/client';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../storage/storage.service';
 import { NotificationsService } from '../notifications/notifications.service';
@@ -16,6 +17,7 @@ export type CreateScriptInput = {
     gameCategory: GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number;
     discountPercent?: number;
     badge?: ScriptBadge;
     instructionHtml?: string;
@@ -27,7 +29,8 @@ export declare class ScriptsService {
     private readonly prisma;
     private readonly storage;
     private readonly notifications;
-    constructor(prisma: PrismaService, storage: StorageService, notifications: NotificationsService);
+    private readonly config;
+    constructor(prisma: PrismaService, storage: StorageService, notifications: NotificationsService, config: ConfigService);
     private scriptInclude;
     private readonly catalogWhere;
     private mapMediaItem;
@@ -45,6 +48,8 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         coverUrl: string | null;
@@ -72,6 +77,8 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         coverUrl: string | null;
@@ -87,6 +94,8 @@ export declare class ScriptsService {
             gameCategory: GameCategory;
             priceRub: number;
             priceUsd: number;
+            tebexPackageId: number | null;
+            tebexPayUrl: string | null;
             discountPercent: number | null;
             badge: ScriptBadge;
             coverUrl: string | null;
@@ -111,6 +120,8 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         coverUrl: string | null;
@@ -131,6 +142,8 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         coverUrl: string | null;
@@ -240,6 +253,7 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         instructionHtml: string;
@@ -280,6 +294,7 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         instructionHtml: string;
@@ -330,6 +345,7 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         instructionHtml: string;
@@ -370,6 +386,7 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         instructionHtml: string;
@@ -379,6 +396,7 @@ export declare class ScriptsService {
         deletedAt: Date | null;
         fileUpdatedAt: Date | null;
     }>;
+    private buildTebexPayUrl;
     unpublish(id: string): Promise<{
         media: {
             id: string;
@@ -410,6 +428,7 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         instructionHtml: string;
@@ -496,6 +515,7 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: ScriptBadge;
         instructionHtml: string;

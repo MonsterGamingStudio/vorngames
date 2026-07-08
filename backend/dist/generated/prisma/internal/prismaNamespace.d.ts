@@ -1360,6 +1360,7 @@ export declare const ScriptScalarFieldEnum: {
     readonly gameCategory: "gameCategory";
     readonly priceRub: "priceRub";
     readonly priceUsd: "priceUsd";
+    readonly tebexPackageId: "tebexPackageId";
     readonly discountPercent: "discountPercent";
     readonly badge: "badge";
     readonly instructionHtml: "instructionHtml";

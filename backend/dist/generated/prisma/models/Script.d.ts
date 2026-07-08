@@ -12,11 +12,13 @@ export type AggregateScript = {
 export type ScriptAvgAggregateOutputType = {
     priceRub: number | null;
     priceUsd: number | null;
+    tebexPackageId: number | null;
     discountPercent: number | null;
 };
 export type ScriptSumAggregateOutputType = {
     priceRub: number | null;
     priceUsd: number | null;
+    tebexPackageId: number | null;
     discountPercent: number | null;
 };
 export type ScriptMinAggregateOutputType = {
@@ -27,6 +29,7 @@ export type ScriptMinAggregateOutputType = {
     gameCategory: $Enums.GameCategory | null;
     priceRub: number | null;
     priceUsd: number | null;
+    tebexPackageId: number | null;
     discountPercent: number | null;
     badge: $Enums.ScriptBadge | null;
     instructionHtml: string | null;
@@ -46,6 +49,7 @@ export type ScriptMaxAggregateOutputType = {
     gameCategory: $Enums.GameCategory | null;
     priceRub: number | null;
     priceUsd: number | null;
+    tebexPackageId: number | null;
     discountPercent: number | null;
     badge: $Enums.ScriptBadge | null;
     instructionHtml: string | null;
@@ -65,6 +69,7 @@ export type ScriptCountAggregateOutputType = {
     gameCategory: number;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId: number;
     discountPercent: number;
     badge: number;
     instructionHtml: number;
@@ -80,11 +85,13 @@ export type ScriptCountAggregateOutputType = {
 export type ScriptAvgAggregateInputType = {
     priceRub?: true;
     priceUsd?: true;
+    tebexPackageId?: true;
     discountPercent?: true;
 };
 export type ScriptSumAggregateInputType = {
     priceRub?: true;
     priceUsd?: true;
+    tebexPackageId?: true;
     discountPercent?: true;
 };
 export type ScriptMinAggregateInputType = {
@@ -95,6 +102,7 @@ export type ScriptMinAggregateInputType = {
     gameCategory?: true;
     priceRub?: true;
     priceUsd?: true;
+    tebexPackageId?: true;
     discountPercent?: true;
     badge?: true;
     instructionHtml?: true;
@@ -114,6 +122,7 @@ export type ScriptMaxAggregateInputType = {
     gameCategory?: true;
     priceRub?: true;
     priceUsd?: true;
+    tebexPackageId?: true;
     discountPercent?: true;
     badge?: true;
     instructionHtml?: true;
@@ -133,6 +142,7 @@ export type ScriptCountAggregateInputType = {
     gameCategory?: true;
     priceRub?: true;
     priceUsd?: true;
+    tebexPackageId?: true;
     discountPercent?: true;
     badge?: true;
     instructionHtml?: true;
@@ -181,6 +191,7 @@ export type ScriptGroupByOutputType = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId: number | null;
     discountPercent: number | null;
     badge: $Enums.ScriptBadge;
     instructionHtml: string;
@@ -211,6 +222,7 @@ export type ScriptWhereInput = {
     gameCategory?: Prisma.EnumGameCategoryFilter<"Script"> | $Enums.GameCategory;
     priceRub?: Prisma.IntFilter<"Script"> | number;
     priceUsd?: Prisma.IntFilter<"Script"> | number;
+    tebexPackageId?: Prisma.IntNullableFilter<"Script"> | number | null;
     discountPercent?: Prisma.IntNullableFilter<"Script"> | number | null;
     badge?: Prisma.EnumScriptBadgeFilter<"Script"> | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFilter<"Script"> | string;
@@ -239,6 +251,7 @@ export type ScriptOrderByWithRelationInput = {
     gameCategory?: Prisma.SortOrder;
     priceRub?: Prisma.SortOrder;
     priceUsd?: Prisma.SortOrder;
+    tebexPackageId?: Prisma.SortOrderInput | Prisma.SortOrder;
     discountPercent?: Prisma.SortOrderInput | Prisma.SortOrder;
     badge?: Prisma.SortOrder;
     instructionHtml?: Prisma.SortOrder;
@@ -270,6 +283,7 @@ export type ScriptWhereUniqueInput = Prisma.AtLeast<{
     gameCategory?: Prisma.EnumGameCategoryFilter<"Script"> | $Enums.GameCategory;
     priceRub?: Prisma.IntFilter<"Script"> | number;
     priceUsd?: Prisma.IntFilter<"Script"> | number;
+    tebexPackageId?: Prisma.IntNullableFilter<"Script"> | number | null;
     discountPercent?: Prisma.IntNullableFilter<"Script"> | number | null;
     badge?: Prisma.EnumScriptBadgeFilter<"Script"> | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFilter<"Script"> | string;
@@ -298,6 +312,7 @@ export type ScriptOrderByWithAggregationInput = {
     gameCategory?: Prisma.SortOrder;
     priceRub?: Prisma.SortOrder;
     priceUsd?: Prisma.SortOrder;
+    tebexPackageId?: Prisma.SortOrderInput | Prisma.SortOrder;
     discountPercent?: Prisma.SortOrderInput | Prisma.SortOrder;
     badge?: Prisma.SortOrder;
     instructionHtml?: Prisma.SortOrder;
@@ -325,6 +340,7 @@ export type ScriptScalarWhereWithAggregatesInput = {
     gameCategory?: Prisma.EnumGameCategoryWithAggregatesFilter<"Script"> | $Enums.GameCategory;
     priceRub?: Prisma.IntWithAggregatesFilter<"Script"> | number;
     priceUsd?: Prisma.IntWithAggregatesFilter<"Script"> | number;
+    tebexPackageId?: Prisma.IntNullableWithAggregatesFilter<"Script"> | number | null;
     discountPercent?: Prisma.IntNullableWithAggregatesFilter<"Script"> | number | null;
     badge?: Prisma.EnumScriptBadgeWithAggregatesFilter<"Script"> | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringWithAggregatesFilter<"Script"> | string;
@@ -344,6 +360,7 @@ export type ScriptCreateInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -372,6 +389,7 @@ export type ScriptUncheckedCreateInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -400,6 +418,7 @@ export type ScriptUpdateInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -428,6 +447,7 @@ export type ScriptUncheckedUpdateInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -456,6 +476,7 @@ export type ScriptCreateManyInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -475,6 +496,7 @@ export type ScriptUpdateManyMutationInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -494,6 +516,7 @@ export type ScriptUncheckedUpdateManyInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -513,6 +536,7 @@ export type ScriptCountOrderByAggregateInput = {
     gameCategory?: Prisma.SortOrder;
     priceRub?: Prisma.SortOrder;
     priceUsd?: Prisma.SortOrder;
+    tebexPackageId?: Prisma.SortOrder;
     discountPercent?: Prisma.SortOrder;
     badge?: Prisma.SortOrder;
     instructionHtml?: Prisma.SortOrder;
@@ -527,6 +551,7 @@ export type ScriptCountOrderByAggregateInput = {
 export type ScriptAvgOrderByAggregateInput = {
     priceRub?: Prisma.SortOrder;
     priceUsd?: Prisma.SortOrder;
+    tebexPackageId?: Prisma.SortOrder;
     discountPercent?: Prisma.SortOrder;
 };
 export type ScriptMaxOrderByAggregateInput = {
@@ -537,6 +562,7 @@ export type ScriptMaxOrderByAggregateInput = {
     gameCategory?: Prisma.SortOrder;
     priceRub?: Prisma.SortOrder;
     priceUsd?: Prisma.SortOrder;
+    tebexPackageId?: Prisma.SortOrder;
     discountPercent?: Prisma.SortOrder;
     badge?: Prisma.SortOrder;
     instructionHtml?: Prisma.SortOrder;
@@ -556,6 +582,7 @@ export type ScriptMinOrderByAggregateInput = {
     gameCategory?: Prisma.SortOrder;
     priceRub?: Prisma.SortOrder;
     priceUsd?: Prisma.SortOrder;
+    tebexPackageId?: Prisma.SortOrder;
     discountPercent?: Prisma.SortOrder;
     badge?: Prisma.SortOrder;
     instructionHtml?: Prisma.SortOrder;
@@ -570,6 +597,7 @@ export type ScriptMinOrderByAggregateInput = {
 export type ScriptSumOrderByAggregateInput = {
     priceRub?: Prisma.SortOrder;
     priceUsd?: Prisma.SortOrder;
+    tebexPackageId?: Prisma.SortOrder;
     discountPercent?: Prisma.SortOrder;
 };
 export type ScriptScalarRelationFilter = {
@@ -718,6 +746,7 @@ export type ScriptCreateWithoutMediaInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -745,6 +774,7 @@ export type ScriptUncheckedCreateWithoutMediaInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -785,6 +815,7 @@ export type ScriptUpdateWithoutMediaInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -812,6 +843,7 @@ export type ScriptUncheckedUpdateWithoutMediaInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -839,6 +871,7 @@ export type ScriptCreateWithoutVersionsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -866,6 +899,7 @@ export type ScriptUncheckedCreateWithoutVersionsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -906,6 +940,7 @@ export type ScriptUpdateWithoutVersionsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -933,6 +968,7 @@ export type ScriptUncheckedUpdateWithoutVersionsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -960,6 +996,7 @@ export type ScriptCreateWithoutPurchasesInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -987,6 +1024,7 @@ export type ScriptUncheckedCreateWithoutPurchasesInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1027,6 +1065,7 @@ export type ScriptUpdateWithoutPurchasesInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1054,6 +1093,7 @@ export type ScriptUncheckedUpdateWithoutPurchasesInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1081,6 +1121,7 @@ export type ScriptCreateWithoutViewsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1108,6 +1149,7 @@ export type ScriptUncheckedCreateWithoutViewsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1148,6 +1190,7 @@ export type ScriptUpdateWithoutViewsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1175,6 +1218,7 @@ export type ScriptUncheckedUpdateWithoutViewsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1202,6 +1246,7 @@ export type ScriptCreateWithoutClicksInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1229,6 +1274,7 @@ export type ScriptUncheckedCreateWithoutClicksInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1269,6 +1315,7 @@ export type ScriptUpdateWithoutClicksInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1296,6 +1343,7 @@ export type ScriptUncheckedUpdateWithoutClicksInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1323,6 +1371,7 @@ export type ScriptCreateWithoutCommentsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1350,6 +1399,7 @@ export type ScriptUncheckedCreateWithoutCommentsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1390,6 +1440,7 @@ export type ScriptUpdateWithoutCommentsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1417,6 +1468,7 @@ export type ScriptUncheckedUpdateWithoutCommentsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1444,6 +1496,7 @@ export type ScriptCreateWithoutPaymentsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1471,6 +1524,7 @@ export type ScriptUncheckedCreateWithoutPaymentsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1511,6 +1565,7 @@ export type ScriptUpdateWithoutPaymentsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1538,6 +1593,7 @@ export type ScriptUncheckedUpdateWithoutPaymentsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1565,6 +1621,7 @@ export type ScriptCreateWithoutTebexLicensesInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1592,6 +1649,7 @@ export type ScriptUncheckedCreateWithoutTebexLicensesInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1632,6 +1690,7 @@ export type ScriptUpdateWithoutTebexLicensesInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1659,6 +1718,7 @@ export type ScriptUncheckedUpdateWithoutTebexLicensesInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1686,6 +1746,7 @@ export type ScriptCreateWithoutTebexPackageMappingsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1713,6 +1774,7 @@ export type ScriptUncheckedCreateWithoutTebexPackageMappingsInput = {
     gameCategory: $Enums.GameCategory;
     priceRub: number;
     priceUsd: number;
+    tebexPackageId?: number | null;
     discountPercent?: number | null;
     badge?: $Enums.ScriptBadge;
     instructionHtml?: string;
@@ -1753,6 +1815,7 @@ export type ScriptUpdateWithoutTebexPackageMappingsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1780,6 +1843,7 @@ export type ScriptUncheckedUpdateWithoutTebexPackageMappingsInput = {
     gameCategory?: Prisma.EnumGameCategoryFieldUpdateOperationsInput | $Enums.GameCategory;
     priceRub?: Prisma.IntFieldUpdateOperationsInput | number;
     priceUsd?: Prisma.IntFieldUpdateOperationsInput | number;
+    tebexPackageId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     badge?: Prisma.EnumScriptBadgeFieldUpdateOperationsInput | $Enums.ScriptBadge;
     instructionHtml?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1859,6 +1923,7 @@ export type ScriptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     gameCategory?: boolean;
     priceRub?: boolean;
     priceUsd?: boolean;
+    tebexPackageId?: boolean;
     discountPercent?: boolean;
     badge?: boolean;
     instructionHtml?: boolean;
@@ -1888,6 +1953,7 @@ export type ScriptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
     gameCategory?: boolean;
     priceRub?: boolean;
     priceUsd?: boolean;
+    tebexPackageId?: boolean;
     discountPercent?: boolean;
     badge?: boolean;
     instructionHtml?: boolean;
@@ -1907,6 +1973,7 @@ export type ScriptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
     gameCategory?: boolean;
     priceRub?: boolean;
     priceUsd?: boolean;
+    tebexPackageId?: boolean;
     discountPercent?: boolean;
     badge?: boolean;
     instructionHtml?: boolean;
@@ -1926,6 +1993,7 @@ export type ScriptSelectScalar = {
     gameCategory?: boolean;
     priceRub?: boolean;
     priceUsd?: boolean;
+    tebexPackageId?: boolean;
     discountPercent?: boolean;
     badge?: boolean;
     instructionHtml?: boolean;
@@ -1937,7 +2005,7 @@ export type ScriptSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type ScriptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "shortDescription" | "gameCategory" | "priceRub" | "priceUsd" | "discountPercent" | "badge" | "instructionHtml" | "isPublished" | "featuredOnHome" | "publishedAt" | "deletedAt" | "fileUpdatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["script"]>;
+export type ScriptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "shortDescription" | "gameCategory" | "priceRub" | "priceUsd" | "tebexPackageId" | "discountPercent" | "badge" | "instructionHtml" | "isPublished" | "featuredOnHome" | "publishedAt" | "deletedAt" | "fileUpdatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["script"]>;
 export type ScriptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     media?: boolean | Prisma.Script$mediaArgs<ExtArgs>;
     versions?: boolean | Prisma.Script$versionsArgs<ExtArgs>;
@@ -1973,6 +2041,7 @@ export type $ScriptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         gameCategory: $Enums.GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: $Enums.ScriptBadge;
         instructionHtml: string;
@@ -2056,6 +2125,7 @@ export interface ScriptFieldRefs {
     readonly gameCategory: Prisma.FieldRef<"Script", 'GameCategory'>;
     readonly priceRub: Prisma.FieldRef<"Script", 'Int'>;
     readonly priceUsd: Prisma.FieldRef<"Script", 'Int'>;
+    readonly tebexPackageId: Prisma.FieldRef<"Script", 'Int'>;
     readonly discountPercent: Prisma.FieldRef<"Script", 'Int'>;
     readonly badge: Prisma.FieldRef<"Script", 'ScriptBadge'>;
     readonly instructionHtml: Prisma.FieldRef<"Script", 'String'>;

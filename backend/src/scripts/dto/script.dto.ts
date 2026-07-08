@@ -88,6 +88,19 @@ export class ScriptListItemDto {
   @ApiProperty({ example: 20 })
   priceUsd!: number;
 
+  @ApiPropertyOptional({
+    example: 1234567,
+    description: 'Tebex package ID (optional)',
+  })
+  tebexPackageId?: number | null;
+
+  @ApiPropertyOptional({
+    example: 'https://your-store.tebex.io/package/1234567',
+    description:
+      'Ready-to-use Tebex checkout URL (computed from store base URL + package ID)',
+  })
+  tebexPayUrl?: string | null;
+
   @ApiPropertyOptional({ example: 10 })
   discountPercent?: number | null;
 
@@ -198,6 +211,16 @@ export class CreateScriptDto {
   @IsInt()
   @Min(0)
   priceUsd!: number;
+
+  @ApiPropertyOptional({
+    example: 1234567,
+    description: 'Tebex package ID for this script (optional)',
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  tebexPackageId?: number;
 
   @ApiPropertyOptional({ example: 10 })
   @IsOptional()

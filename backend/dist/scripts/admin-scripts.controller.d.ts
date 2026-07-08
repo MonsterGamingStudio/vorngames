@@ -34,6 +34,7 @@ export declare class AdminScriptsController {
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: import("../generated/prisma/enums").ScriptBadge;
         instructionHtml: string;
@@ -74,6 +75,7 @@ export declare class AdminScriptsController {
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: import("../generated/prisma/enums").ScriptBadge;
         instructionHtml: string;
@@ -114,6 +116,7 @@ export declare class AdminScriptsController {
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: import("../generated/prisma/enums").ScriptBadge;
         instructionHtml: string;
@@ -154,6 +157,7 @@ export declare class AdminScriptsController {
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
+        tebexPackageId: number | null;
         discountPercent: number | null;
         badge: import("../generated/prisma/enums").ScriptBadge;
         instructionHtml: string;

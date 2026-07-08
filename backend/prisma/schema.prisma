@@ -123,6 +123,7 @@ model Script {
   gameCategory     GameCategory
   priceRub         Int
   priceUsd         Int
+  tebexPackageId   Int?
   discountPercent  Int?
   badge            ScriptBadge  @default(none)
   instructionHtml  String       @default("")

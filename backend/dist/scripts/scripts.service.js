@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScriptsService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("../generated/prisma/client");
+const config_1 = require("@nestjs/config");
 const prisma_service_1 = require("../prisma/prisma.service");
 const storage_service_1 = require("../storage/storage.service");
 const utils_1 = require("../common/utils");
@@ -20,10 +21,12 @@ let ScriptsService = class ScriptsService {
     prisma;
     storage;
     notifications;
-    constructor(prisma, storage, notifications) {
+    config;
+    constructor(prisma, storage, notifications, config) {
         this.prisma = prisma;
         this.storage = storage;
         this.notifications = notifications;
+        this.config = config;
     }
     scriptInclude = {
         media: { orderBy: { sortOrder: 'asc' } },
@@ -56,6 +59,8 @@ let ScriptsService = class ScriptsService {
             gameCategory: script.gameCategory,
             priceRub: script.priceRub,
             priceUsd: script.priceUsd,
+            tebexPackageId: script.tebexPackageId,
+            tebexPayUrl: this.buildTebexPayUrl(script.gameCategory, script.tebexPackageId),
             discountPercent: script.discountPercent,
             badge: script.badge,
             coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
@@ -287,6 +292,7 @@ let ScriptsService = class ScriptsService {
                 gameCategory: input.gameCategory,
                 priceRub: input.priceRub,
                 priceUsd: input.priceUsd,
+                tebexPackageId: input.tebexPackageId,
                 discountPercent: input.discountPercent,
                 badge: input.badge ?? client_1.ScriptBadge.none,
                 instructionHtml: input.instructionHtml ?? '',
@@ -316,6 +322,17 @@ let ScriptsService = class ScriptsService {
             },
             include: this.scriptInclude,
         });
+    }
+    buildTebexPayUrl(gameCategory, tebexPackageId) {
+        if (!tebexPackageId)
+            return null;
+        const base = gameCategory === client_1.GameCategory.gmod
+            ? this.config.get('TEBEX_GMOD_STORE_URL')
+            : this.config.get('TEBEX_FIVEM_STORE_URL');
+        if (!base)
+            return null;
+        const normalized = base.replace(/\/+$/, '');
+        return `${normalized}/package/${tebexPackageId}`;
     }
     async unpublish(id) {
         await this.findById(id);
@@ -478,6 +495,7 @@ exports.ScriptsService = ScriptsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         storage_service_1.StorageService,
-        notifications_service_1.NotificationsService])
+        notifications_service_1.NotificationsService,
+        config_1.ConfigService])
 ], ScriptsService);
 //# sourceMappingURL=scripts.service.js.map

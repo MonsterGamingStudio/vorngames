@@ -111,6 +111,7 @@ exports.ScriptScalarFieldEnum = {
     gameCategory: 'gameCategory',
     priceRub: 'priceRub',
     priceUsd: 'priceUsd',
+    tebexPackageId: 'tebexPackageId',
     discountPercent: 'discountPercent',
     badge: 'badge',
     instructionHtml: 'instructionHtml',

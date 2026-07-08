@@ -10,6 +10,7 @@ import {
   ScriptBadge,
   ScriptMediaType,
 } from '../generated/prisma/client';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../storage/storage.service';
 import { slugify } from '../common/utils';
@@ -30,6 +31,7 @@ export type CreateScriptInput = {
   gameCategory: GameCategory;
   priceRub: number;
   priceUsd: number;
+  tebexPackageId?: number;
   discountPercent?: number;
   badge?: ScriptBadge;
   instructionHtml?: string;
@@ -45,6 +47,7 @@ export class ScriptsService {
     private readonly prisma: PrismaService,
     private readonly storage: StorageService,
     private readonly notifications: NotificationsService,
+    private readonly config: ConfigService,
   ) {}
 
   private scriptInclude = {
@@ -96,6 +99,11 @@ export class ScriptsService {
       gameCategory: script.gameCategory,
       priceRub: script.priceRub,
       priceUsd: script.priceUsd,
+      tebexPackageId: script.tebexPackageId,
+      tebexPayUrl: this.buildTebexPayUrl(
+        script.gameCategory,
+        script.tebexPackageId,
+      ),
       discountPercent: script.discountPercent,
       badge: script.badge,
       coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
@@ -389,6 +397,7 @@ export class ScriptsService {
         gameCategory: input.gameCategory,
         priceRub: input.priceRub,
         priceUsd: input.priceUsd,
+        tebexPackageId: input.tebexPackageId,
         discountPercent: input.discountPercent,
         badge: input.badge ?? ScriptBadge.none,
         instructionHtml: input.instructionHtml ?? '',
@@ -423,6 +432,22 @@ export class ScriptsService {
       },
       include: this.scriptInclude,
     });
+  }
+
+  private buildTebexPayUrl(
+    gameCategory: GameCategory,
+    tebexPackageId: number | null,
+  ): string | null {
+    if (!tebexPackageId) return null;
+
+    const base =
+      gameCategory === GameCategory.gmod
+        ? this.config.get<string>('TEBEX_GMOD_STORE_URL')
+        : this.config.get<string>('TEBEX_FIVEM_STORE_URL');
+
+    if (!base) return null;
+    const normalized = base.replace(/\/+$/, '');
+    return `${normalized}/package/${tebexPackageId}`;
   }
 
   async unpublish(id: string) {
