@@ -27,22 +27,22 @@ export const ApiDocs = {
     list: {
       summary: 'Каталог скриптов',
       description:
-        'Список опубликованных скриптов. Фильтры: `search` (по названию), `gameCategory` (gmod | fivem), `sort` (price_asc | price_desc | popular). Пагинация: `page`, `limit` (макс. 100). Сортировка `popular` — по просмотрам за последние 24 часа.',
+        'Список опубликованных скриптов. Фильтры: `search`, `gameCategory`, `sort`, пагинация. В каждом товаре: `tebexPackageId` и готовая `tebexPayUrl` (если задан package ID и `TEBEX_*_STORE_URL` в env).',
     },
     random: {
       summary: 'Случайные скрипты для главной',
       description:
-        'Возвращает N случайных опубликованных скриптов (по умолчанию 4). Используется блоком «Наша продукция» на главной. При каждом запросе набор новый.',
+        'Возвращает N случайных опубликованных скриптов (по умолчанию 4). В ответе у каждого товара есть `tebexPayUrl` при настроенном Tebex.',
     },
     popular: {
       summary: 'Популярные скрипты за 24 часа',
       description:
-        'Топ скриптов по уникальным просмотрам за последние 24 часа. Учитывается дедупликация: один пользователь или IP — не более одного просмотра в сутки на скрипт.',
+        'Топ скриптов по просмотрам за 24 часа. В ответе у каждого товара есть `tebexPayUrl` при настроенном Tebex.',
     },
     bySlug: {
       summary: 'Карточка скрипта',
       description:
-        'Полная информация: медиа, цены (RUB/USD), скидка, badge, instructionHtml, даты. Если передан cookie — дополнительно `isAuthenticated`, `isPurchased`, `requiresAuthToPurchase: true`. Файл скрипта не отдаётся.',
+        'Полная информация: медиа, цены, `tebexPackageId`, `tebexPayUrl`, badge, instructionHtml. С cookie — `isAuthenticated`, `isPurchased`. Файл скрипта не отдаётся.',
     },
     recordView: {
       summary: 'Записать просмотр страницы скрипта',
@@ -245,12 +245,13 @@ export const ApiDocs = {
   adminScripts: {
     listAll: {
       summary: '[Админ] Все скрипты',
-      description: 'Включая неопубликованные. С медиа и текущей версией.',
+      description:
+        'Включая неопубликованные. С медиа, версией, `tebexPackageId` и вычисляемой `tebexPayUrl`.',
     },
     create: {
       summary: '[Админ] Создать скрипт',
       description:
-        'title, slug (опц.), описание, gameCategory, priceRub/priceUsd, discount, badge, instructionHtml, isPublished, featuredOnHome.',
+        'title, slug, описание, gameCategory, priceRub/priceUsd, tebexPackageId (опц.), discount, badge, instructionHtml, isPublished, featuredOnHome.',
     },
     update: {
       summary: '[Админ] Редактировать скрипт',

@@ -33,6 +33,7 @@ import {
   ReorderScriptMediaDto,
   ScriptMediaDto,
   ScriptStatsDto,
+  ScriptListItemWithMediaDto,
   UploadImageBodyDto,
   UploadVersionBodyDto,
 } from './dto/script.dto';
@@ -47,6 +48,7 @@ export class AdminScriptsController {
 
   @Get()
   @ApiOperation(ApiDocs.adminScripts.listAll)
+  @ApiOkResponse({ type: ScriptListItemWithMediaDto, isArray: true })
   listAll() {
     return this.scripts.listAll();
   }

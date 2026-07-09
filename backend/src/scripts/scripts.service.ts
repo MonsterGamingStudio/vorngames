@@ -613,11 +613,19 @@ export class ScriptsService {
   }
 
   async listAll() {
-    return this.prisma.script.findMany({
+    const scripts = await this.prisma.script.findMany({
       where: { deletedAt: null },
       orderBy: { createdAt: 'desc' },
       include: this.scriptInclude,
     });
+
+    return scripts.map((script) => ({
+      ...script,
+      tebexPayUrl: this.buildTebexPayUrl(
+        script.gameCategory,
+        script.tebexPackageId,
+      ),
+    }));
   }
 
   async getStats(scriptId: string, from?: Date, to?: Date) {
