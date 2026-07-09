@@ -1,6 +1,7 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { PaymentsModule } from '../payments/payments.module';
+import { ScriptsModule } from '../scripts/scripts.module';
 import { PurchasesController } from './purchases.controller';
 import { PurchasesService } from './purchases.service';
 
@@ -8,6 +9,7 @@ import { PurchasesService } from './purchases.service';
   imports: [
     forwardRef(() => PaymentsModule),
     NotificationsModule,
+    ScriptsModule,
   ],
   controllers: [PurchasesController],
   providers: [PurchasesService],

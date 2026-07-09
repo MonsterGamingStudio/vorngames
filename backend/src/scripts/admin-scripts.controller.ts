@@ -29,11 +29,11 @@ import { AdminGuard, BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import {
   AddScriptMediaDto,
+  AdminScriptItemDto,
   CreateScriptDto,
   ReorderScriptMediaDto,
   ScriptMediaDto,
   ScriptStatsDto,
-  ScriptListItemWithMediaDto,
   UploadImageBodyDto,
   UploadVersionBodyDto,
 } from './dto/script.dto';
@@ -48,7 +48,7 @@ export class AdminScriptsController {
 
   @Get()
   @ApiOperation(ApiDocs.adminScripts.listAll)
-  @ApiOkResponse({ type: ScriptListItemWithMediaDto, isArray: true })
+  @ApiOkResponse({ type: AdminScriptItemDto, isArray: true })
   listAll() {
     return this.scripts.listAll();
   }
@@ -56,6 +56,7 @@ export class AdminScriptsController {
   @Post()
   @ApiOperation(ApiDocs.adminScripts.create)
   @ApiBody({ type: CreateScriptDto })
+  @ApiOkResponse({ type: AdminScriptItemDto })
   create(@Body() body: CreateScriptDto) {
     return this.scripts.create(body);
   }
@@ -64,6 +65,7 @@ export class AdminScriptsController {
   @ApiOperation(ApiDocs.adminScripts.update)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiBody({ type: CreateScriptDto })
+  @ApiOkResponse({ type: AdminScriptItemDto })
   update(@Param('id') id: string, @Body() body: CreateScriptDto) {
     return this.scripts.update(id, body);
   }

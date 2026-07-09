@@ -99,11 +99,7 @@ export class ScriptsService {
       gameCategory: script.gameCategory,
       priceRub: script.priceRub,
       priceUsd: script.priceUsd,
-      tebexPackageId: script.tebexPackageId,
-      tebexPayUrl: this.buildTebexPayUrl(
-        script.gameCategory,
-        script.tebexPackageId,
-      ),
+      ...this.getTebexFields(script),
       discountPercent: script.discountPercent,
       badge: script.badge,
       coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
@@ -246,24 +242,10 @@ export class ScriptsService {
     },
     userId?: string,
   ) {
-    const coverRaw =
-      script.media.find((m) => m.type === ScriptMediaType.image)?.url ?? null;
-
     return {
-      id: script.id,
-      slug: script.slug,
-      title: script.title,
-      shortDescription: script.shortDescription,
-      gameCategory: script.gameCategory,
-      priceRub: script.priceRub,
-      priceUsd: script.priceUsd,
-      discountPercent: script.discountPercent,
-      badge: script.badge,
+      ...this.toListItem(script),
       instructionHtml: script.instructionHtml,
-      coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
       media: this.mapMediaItems(script.media),
-      publishedAt: script.publishedAt,
-      fileUpdatedAt: script.fileUpdatedAt,
       createdAt: script.createdAt,
       currentVersion: script.versions[0]
         ? {
@@ -275,6 +257,44 @@ export class ScriptsService {
       isAuthenticated: Boolean(userId),
       isPurchased: false,
       requiresAuthToPurchase: true,
+    };
+  }
+
+  toAdminItem(
+    script: Script & {
+      media: Array<{
+        id: string;
+        type: ScriptMediaType;
+        url: string;
+        sortOrder: number;
+      }>;
+      versions: Array<{ id: string; versionLabel: string; releasedAt: Date }>;
+    },
+  ) {
+    return {
+      ...this.toListItemWithMedia(script),
+      instructionHtml: script.instructionHtml,
+      isPublished: script.isPublished,
+      featuredOnHome: script.featuredOnHome,
+      createdAt: script.createdAt,
+      updatedAt: script.updatedAt,
+      currentVersion: script.versions[0]
+        ? {
+            id: script.versions[0].id,
+            versionLabel: script.versions[0].versionLabel,
+            releasedAt: script.versions[0].releasedAt,
+          }
+        : null,
+    };
+  }
+
+  getTebexFields(script: Pick<Script, 'gameCategory' | 'tebexPackageId'>) {
+    return {
+      tebexPackageId: script.tebexPackageId,
+      tebexPayUrl: this.buildTebexPayUrl(
+        script.gameCategory,
+        script.tebexPackageId,
+      ),
     };
   }
 
@@ -389,7 +409,7 @@ export class ScriptsService {
       throw new BadRequestException('Slug already exists');
     }
 
-    return this.prisma.script.create({
+    const created = await this.prisma.script.create({
       data: {
         title: input.title,
         slug,
@@ -407,6 +427,8 @@ export class ScriptsService {
       },
       include: this.scriptInclude,
     });
+
+    return this.toAdminItem(created);
   }
 
   async update(id: string, input: UpdateScriptInput) {
@@ -423,7 +445,7 @@ export class ScriptsService {
 
     const isPublished = input.isPublished ?? current.isPublished;
 
-    return this.prisma.script.update({
+    const updated = await this.prisma.script.update({
       where: { id },
       data: {
         ...input,
@@ -432,6 +454,8 @@ export class ScriptsService {
       },
       include: this.scriptInclude,
     });
+
+    return this.toAdminItem(updated);
   }
 
   private buildTebexPayUrl(
@@ -453,7 +477,7 @@ export class ScriptsService {
   async unpublish(id: string) {
     await this.findById(id);
 
-    return this.prisma.script.update({
+    const updated = await this.prisma.script.update({
       where: { id },
       data: {
         isPublished: false,
@@ -461,6 +485,8 @@ export class ScriptsService {
       },
       include: this.scriptInclude,
     });
+
+    return this.toAdminItem(updated);
   }
 
   async addMedia(
@@ -619,13 +645,7 @@ export class ScriptsService {
       include: this.scriptInclude,
     });
 
-    return scripts.map((script) => ({
-      ...script,
-      tebexPayUrl: this.buildTebexPayUrl(
-        script.gameCategory,
-        script.tebexPackageId,
-      ),
-    }));
+    return scripts.map((script) => this.toAdminItem(script));
   }
 
   async getStats(scriptId: string, from?: Date, to?: Date) {

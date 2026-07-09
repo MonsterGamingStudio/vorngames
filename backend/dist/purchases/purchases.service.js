@@ -19,6 +19,7 @@ const client_1 = require("../generated/prisma/client");
 const prisma_service_1 = require("../prisma/prisma.service");
 const unitpay_service_1 = require("../payments/unitpay.service");
 const notifications_service_1 = require("../notifications/notifications.service");
+const scripts_service_1 = require("../scripts/scripts.service");
 const storage_service_1 = require("../storage/storage.service");
 let PurchasesService = class PurchasesService {
     prisma;
@@ -26,12 +27,14 @@ let PurchasesService = class PurchasesService {
     notifications;
     storage;
     config;
-    constructor(prisma, unitpay, notifications, storage, config) {
+    scripts;
+    constructor(prisma, unitpay, notifications, storage, config, scripts) {
         this.prisma = prisma;
         this.unitpay = unitpay;
         this.notifications = notifications;
         this.storage = storage;
         this.config = config;
+        this.scripts = scripts;
     }
     effectivePrice(script, currency) {
         const base = currency === client_1.Currency.USD ? script.priceUsd : script.priceRub;
@@ -154,18 +157,7 @@ let PurchasesService = class PurchasesService {
                 pricePaid: p.pricePaid,
                 currency: p.currency,
                 needsUpdate,
-                script: {
-                    id: p.script.id,
-                    slug: p.script.slug,
-                    title: p.script.title,
-                    shortDescription: p.script.shortDescription,
-                    gameCategory: p.script.gameCategory,
-                    coverUrl: p.script.media[0]?.url
-                        ? this.storage.getPublicUrl(p.script.media[0].url)
-                        : null,
-                    priceRub: p.script.priceRub,
-                    priceUsd: p.script.priceUsd,
-                },
+                script: this.scripts.toListItem(p.script),
             };
         });
     }
@@ -229,6 +221,7 @@ exports.PurchasesService = PurchasesService = __decorate([
         unitpay_service_1.UnitpayService,
         notifications_service_1.NotificationsService,
         storage_service_1.StorageService,
-        config_1.ConfigService])
+        config_1.ConfigService,
+        scripts_service_1.ScriptsService])
 ], PurchasesService);
 //# sourceMappingURL=purchases.service.js.map

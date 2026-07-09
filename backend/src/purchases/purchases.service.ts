@@ -18,6 +18,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { UnitpayService } from '../payments/unitpay.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { ScriptsService } from '../scripts/scripts.service';
 import { StorageService } from '../storage/storage.service';
 
 @Injectable()
@@ -28,6 +29,7 @@ export class PurchasesService {
     private readonly notifications: NotificationsService,
     private readonly storage: StorageService,
     private readonly config: ConfigService,
+    private readonly scripts: ScriptsService,
   ) {}
 
   private effectivePrice(script: {
@@ -177,18 +179,7 @@ export class PurchasesService {
         pricePaid: p.pricePaid,
         currency: p.currency,
         needsUpdate,
-        script: {
-          id: p.script.id,
-          slug: p.script.slug,
-          title: p.script.title,
-          shortDescription: p.script.shortDescription,
-          gameCategory: p.script.gameCategory,
-          coverUrl: p.script.media[0]?.url
-            ? this.storage.getPublicUrl(p.script.media[0].url)
-            : null,
-          priceRub: p.script.priceRub,
-          priceUsd: p.script.priceUsd,
-        },
+        script: this.scripts.toListItem(p.script),
       };
     });
   }

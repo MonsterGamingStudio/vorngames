@@ -7,6 +7,13 @@ export declare class ScriptsController {
     constructor(scripts: ScriptsService);
     list(query: ScriptListQueryDto): Promise<{
         items: {
+            discountPercent: number | null;
+            badge: import("../generated/prisma/enums").ScriptBadge;
+            coverUrl: string | null;
+            publishedAt: Date | null;
+            fileUpdatedAt: Date | null;
+            tebexPackageId: number | null;
+            tebexPayUrl: string | null;
             id: string;
             slug: string;
             title: string;
@@ -14,13 +21,6 @@ export declare class ScriptsController {
             gameCategory: import("../generated/prisma/enums").GameCategory;
             priceRub: number;
             priceUsd: number;
-            tebexPackageId: number | null;
-            tebexPayUrl: string | null;
-            discountPercent: number | null;
-            badge: import("../generated/prisma/enums").ScriptBadge;
-            coverUrl: string | null;
-            publishedAt: Date | null;
-            fileUpdatedAt: Date | null;
         }[];
         total: number;
         page: number;
@@ -33,6 +33,13 @@ export declare class ScriptsController {
             sortOrder: number;
             url: string;
         }[];
+        discountPercent: number | null;
+        badge: import("../generated/prisma/enums").ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         id: string;
         slug: string;
         title: string;
@@ -40,13 +47,6 @@ export declare class ScriptsController {
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        tebexPayUrl: string | null;
-        discountPercent: number | null;
-        badge: import("../generated/prisma/enums").ScriptBadge;
-        coverUrl: string | null;
-        publishedAt: Date | null;
-        fileUpdatedAt: Date | null;
     }[]>;
     getPopular(limit?: string): Promise<{
         media: {
@@ -55,24 +55,13 @@ export declare class ScriptsController {
             sortOrder: number;
             url: string;
         }[];
-        id: string;
-        slug: string;
-        title: string;
-        shortDescription: string;
-        gameCategory: import("../generated/prisma/enums").GameCategory;
-        priceRub: number;
-        priceUsd: number;
-        tebexPackageId: number | null;
-        tebexPayUrl: string | null;
         discountPercent: number | null;
         badge: import("../generated/prisma/enums").ScriptBadge;
         coverUrl: string | null;
         publishedAt: Date | null;
         fileUpdatedAt: Date | null;
-    }[]>;
-    getBySlug(slug: string, req: Request & {
-        user?: User | null;
-    }): Promise<{
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         id: string;
         slug: string;
         title: string;
@@ -80,18 +69,17 @@ export declare class ScriptsController {
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
-        discountPercent: number | null;
-        badge: import("../generated/prisma/enums").ScriptBadge;
+    }[]>;
+    getBySlug(slug: string, req: Request & {
+        user?: User | null;
+    }): Promise<{
         instructionHtml: string;
-        coverUrl: string | null;
         media: {
             id: string;
             type: import("../generated/prisma/enums").ScriptMediaType;
             sortOrder: number;
             url: string;
         }[];
-        publishedAt: Date | null;
-        fileUpdatedAt: Date | null;
         createdAt: Date;
         currentVersion: {
             id: string;
@@ -101,6 +89,20 @@ export declare class ScriptsController {
         isAuthenticated: boolean;
         isPurchased: boolean;
         requiresAuthToPurchase: boolean;
+        discountPercent: number | null;
+        badge: import("../generated/prisma/enums").ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
+        slug: string;
+        title: string;
+        shortDescription: string;
+        gameCategory: import("../generated/prisma/enums").GameCategory;
+        priceRub: number;
+        priceUsd: number;
     }>;
     recordView(id: string, req: Request & {
         user?: User | null;

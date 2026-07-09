@@ -184,6 +184,26 @@ export class ScriptDetailDto extends ScriptListItemDto {
   requiresAuthToPurchase!: boolean;
 }
 
+export class AdminScriptItemDto extends ScriptListItemWithMediaDto {
+  @ApiProperty({ example: '<p>How to install</p>' })
+  instructionHtml!: string;
+
+  @ApiProperty({ example: true })
+  isPublished!: boolean;
+
+  @ApiProperty({ example: false })
+  featuredOnHome!: boolean;
+
+  @ApiProperty()
+  createdAt!: Date;
+
+  @ApiProperty()
+  updatedAt!: Date;
+
+  @ApiPropertyOptional({ type: ScriptVersionSummaryDto })
+  currentVersion?: ScriptVersionSummaryDto | null;
+}
+
 export class CreateScriptDto {
   @ApiProperty({ example: 'Shop Tycoon' })
   @IsString()

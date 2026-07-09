@@ -3,169 +3,133 @@ import { ScriptsService } from './scripts.service';
 export declare class AdminScriptsController {
     private readonly scripts;
     constructor(scripts: ScriptsService);
-    listAll(): Promise<({
-        media: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            type: import("../generated/prisma/enums").ScriptMediaType;
-            url: string;
-            sortOrder: number;
-        }[];
-        versions: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            versionLabel: string;
-            storageKey: string;
-            fileName: string;
-            fileSize: number;
-            checksum: string | null;
-            releasedAt: Date;
-            isCurrent: boolean;
-        }[];
-    } & {
-        id: string;
+    listAll(): Promise<{
+        instructionHtml: string;
+        isPublished: boolean;
+        featuredOnHome: boolean;
         createdAt: Date;
         updatedAt: Date;
+        currentVersion: {
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        } | null;
+        media: {
+            id: string;
+            type: import("../generated/prisma/enums").ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
+        discountPercent: number | null;
+        badge: import("../generated/prisma/enums").ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
         slug: string;
         title: string;
         shortDescription: string;
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        discountPercent: number | null;
-        badge: import("../generated/prisma/enums").ScriptBadge;
-        instructionHtml: string;
-        isPublished: boolean;
-        featuredOnHome: boolean;
-        publishedAt: Date | null;
-        deletedAt: Date | null;
-        fileUpdatedAt: Date | null;
-    })[]>;
+    }[]>;
     create(body: CreateScriptDto): Promise<{
-        media: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            type: import("../generated/prisma/enums").ScriptMediaType;
-            url: string;
-            sortOrder: number;
-        }[];
-        versions: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            versionLabel: string;
-            storageKey: string;
-            fileName: string;
-            fileSize: number;
-            checksum: string | null;
-            releasedAt: Date;
-            isCurrent: boolean;
-        }[];
-    } & {
-        id: string;
+        instructionHtml: string;
+        isPublished: boolean;
+        featuredOnHome: boolean;
         createdAt: Date;
         updatedAt: Date;
+        currentVersion: {
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        } | null;
+        media: {
+            id: string;
+            type: import("../generated/prisma/enums").ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
+        discountPercent: number | null;
+        badge: import("../generated/prisma/enums").ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
         slug: string;
         title: string;
         shortDescription: string;
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        discountPercent: number | null;
-        badge: import("../generated/prisma/enums").ScriptBadge;
-        instructionHtml: string;
-        isPublished: boolean;
-        featuredOnHome: boolean;
-        publishedAt: Date | null;
-        deletedAt: Date | null;
-        fileUpdatedAt: Date | null;
     }>;
     update(id: string, body: CreateScriptDto): Promise<{
-        media: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            type: import("../generated/prisma/enums").ScriptMediaType;
-            url: string;
-            sortOrder: number;
-        }[];
-        versions: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            versionLabel: string;
-            storageKey: string;
-            fileName: string;
-            fileSize: number;
-            checksum: string | null;
-            releasedAt: Date;
-            isCurrent: boolean;
-        }[];
-    } & {
-        id: string;
+        instructionHtml: string;
+        isPublished: boolean;
+        featuredOnHome: boolean;
         createdAt: Date;
         updatedAt: Date;
+        currentVersion: {
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        } | null;
+        media: {
+            id: string;
+            type: import("../generated/prisma/enums").ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
+        discountPercent: number | null;
+        badge: import("../generated/prisma/enums").ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
         slug: string;
         title: string;
         shortDescription: string;
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        discountPercent: number | null;
-        badge: import("../generated/prisma/enums").ScriptBadge;
-        instructionHtml: string;
-        isPublished: boolean;
-        featuredOnHome: boolean;
-        publishedAt: Date | null;
-        deletedAt: Date | null;
-        fileUpdatedAt: Date | null;
     }>;
     remove(id: string): Promise<{
-        media: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            type: import("../generated/prisma/enums").ScriptMediaType;
-            url: string;
-            sortOrder: number;
-        }[];
-        versions: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            versionLabel: string;
-            storageKey: string;
-            fileName: string;
-            fileSize: number;
-            checksum: string | null;
-            releasedAt: Date;
-            isCurrent: boolean;
-        }[];
-    } & {
-        id: string;
+        instructionHtml: string;
+        isPublished: boolean;
+        featuredOnHome: boolean;
         createdAt: Date;
         updatedAt: Date;
+        currentVersion: {
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        } | null;
+        media: {
+            id: string;
+            type: import("../generated/prisma/enums").ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
+        discountPercent: number | null;
+        badge: import("../generated/prisma/enums").ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
         slug: string;
         title: string;
         shortDescription: string;
         gameCategory: import("../generated/prisma/enums").GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        discountPercent: number | null;
-        badge: import("../generated/prisma/enums").ScriptBadge;
-        instructionHtml: string;
-        isPublished: boolean;
-        featuredOnHome: boolean;
-        publishedAt: Date | null;
-        deletedAt: Date | null;
-        fileUpdatedAt: Date | null;
     }>;
     addMedia(id: string, body: AddScriptMediaDto): Promise<{
         id: string;

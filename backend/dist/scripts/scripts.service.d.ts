@@ -41,6 +41,13 @@ export declare class ScriptsService {
             type: string;
         }[];
     }): {
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         id: string;
         slug: string;
         title: string;
@@ -48,13 +55,6 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        tebexPayUrl: string | null;
-        discountPercent: number | null;
-        badge: ScriptBadge;
-        coverUrl: string | null;
-        publishedAt: Date | null;
-        fileUpdatedAt: Date | null;
     };
     toListItemWithMedia(script: Script & {
         media: Array<{
@@ -70,6 +70,13 @@ export declare class ScriptsService {
             sortOrder: number;
             url: string;
         }[];
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         id: string;
         slug: string;
         title: string;
@@ -77,16 +84,16 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        tebexPayUrl: string | null;
-        discountPercent: number | null;
-        badge: ScriptBadge;
-        coverUrl: string | null;
-        publishedAt: Date | null;
-        fileUpdatedAt: Date | null;
     };
     list(query: ScriptListQuery): Promise<{
         items: {
+            discountPercent: number | null;
+            badge: ScriptBadge;
+            coverUrl: string | null;
+            publishedAt: Date | null;
+            fileUpdatedAt: Date | null;
+            tebexPackageId: number | null;
+            tebexPayUrl: string | null;
             id: string;
             slug: string;
             title: string;
@@ -94,13 +101,6 @@ export declare class ScriptsService {
             gameCategory: GameCategory;
             priceRub: number;
             priceUsd: number;
-            tebexPackageId: number | null;
-            tebexPayUrl: string | null;
-            discountPercent: number | null;
-            badge: ScriptBadge;
-            coverUrl: string | null;
-            publishedAt: Date | null;
-            fileUpdatedAt: Date | null;
         }[];
         total: number;
         page: number;
@@ -113,6 +113,13 @@ export declare class ScriptsService {
             sortOrder: number;
             url: string;
         }[];
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         id: string;
         slug: string;
         title: string;
@@ -120,13 +127,6 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        tebexPayUrl: string | null;
-        discountPercent: number | null;
-        badge: ScriptBadge;
-        coverUrl: string | null;
-        publishedAt: Date | null;
-        fileUpdatedAt: Date | null;
     }[]>;
     getPopular(limit?: number): Promise<{
         media: {
@@ -135,6 +135,13 @@ export declare class ScriptsService {
             sortOrder: number;
             url: string;
         }[];
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
         id: string;
         slug: string;
         title: string;
@@ -142,13 +149,6 @@ export declare class ScriptsService {
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        tebexPayUrl: string | null;
-        discountPercent: number | null;
-        badge: ScriptBadge;
-        coverUrl: string | null;
-        publishedAt: Date | null;
-        fileUpdatedAt: Date | null;
     }[]>;
     toDetail(script: Script & {
         media: Array<{
@@ -163,25 +163,13 @@ export declare class ScriptsService {
             releasedAt: Date;
         }>;
     }, userId?: string): {
-        id: string;
-        slug: string;
-        title: string;
-        shortDescription: string;
-        gameCategory: GameCategory;
-        priceRub: number;
-        priceUsd: number;
-        discountPercent: number | null;
-        badge: ScriptBadge;
         instructionHtml: string;
-        coverUrl: string | null;
         media: {
             id: string;
             type: ScriptMediaType;
             sortOrder: number;
             url: string;
         }[];
-        publishedAt: Date | null;
-        fileUpdatedAt: Date | null;
         createdAt: Date;
         currentVersion: {
             id: string;
@@ -191,27 +179,77 @@ export declare class ScriptsService {
         isAuthenticated: boolean;
         isPurchased: boolean;
         requiresAuthToPurchase: boolean;
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
+        slug: string;
+        title: string;
+        shortDescription: string;
+        gameCategory: GameCategory;
+        priceRub: number;
+        priceUsd: number;
+    };
+    toAdminItem(script: Script & {
+        media: Array<{
+            id: string;
+            type: ScriptMediaType;
+            url: string;
+            sortOrder: number;
+        }>;
+        versions: Array<{
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        }>;
+    }): {
+        instructionHtml: string;
+        isPublished: boolean;
+        featuredOnHome: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        currentVersion: {
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        } | null;
+        media: {
+            id: string;
+            type: ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
+        slug: string;
+        title: string;
+        shortDescription: string;
+        gameCategory: GameCategory;
+        priceRub: number;
+        priceUsd: number;
+    };
+    getTebexFields(script: Pick<Script, 'gameCategory' | 'tebexPackageId'>): {
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
     };
     enrichDetailWithPurchase(detail: ReturnType<ScriptsService['toDetail']>, userId?: string): Promise<{
-        id: string;
-        slug: string;
-        title: string;
-        shortDescription: string;
-        gameCategory: GameCategory;
-        priceRub: number;
-        priceUsd: number;
-        discountPercent: number | null;
-        badge: ScriptBadge;
         instructionHtml: string;
-        coverUrl: string | null;
         media: {
             id: string;
             type: ScriptMediaType;
             sortOrder: number;
             url: string;
         }[];
-        publishedAt: Date | null;
-        fileUpdatedAt: Date | null;
         createdAt: Date;
         currentVersion: {
             id: string;
@@ -221,6 +259,20 @@ export declare class ScriptsService {
         isAuthenticated: boolean;
         isPurchased: boolean;
         requiresAuthToPurchase: boolean;
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
+        slug: string;
+        title: string;
+        shortDescription: string;
+        gameCategory: GameCategory;
+        priceRub: number;
+        priceUsd: number;
     }>;
     findBySlug(slug: string): Promise<{
         media: {
@@ -315,128 +367,101 @@ export declare class ScriptsService {
     private readonly analyticsDedupeMs;
     private recordAnalytics;
     create(input: CreateScriptInput): Promise<{
-        media: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            type: ScriptMediaType;
-            url: string;
-            sortOrder: number;
-        }[];
-        versions: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            versionLabel: string;
-            storageKey: string;
-            fileName: string;
-            fileSize: number;
-            checksum: string | null;
-            releasedAt: Date;
-            isCurrent: boolean;
-        }[];
-    } & {
-        id: string;
+        instructionHtml: string;
+        isPublished: boolean;
+        featuredOnHome: boolean;
         createdAt: Date;
         updatedAt: Date;
+        currentVersion: {
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        } | null;
+        media: {
+            id: string;
+            type: ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
         slug: string;
         title: string;
         shortDescription: string;
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        discountPercent: number | null;
-        badge: ScriptBadge;
-        instructionHtml: string;
-        isPublished: boolean;
-        featuredOnHome: boolean;
-        publishedAt: Date | null;
-        deletedAt: Date | null;
-        fileUpdatedAt: Date | null;
     }>;
     update(id: string, input: UpdateScriptInput): Promise<{
-        media: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            type: ScriptMediaType;
-            url: string;
-            sortOrder: number;
-        }[];
-        versions: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            versionLabel: string;
-            storageKey: string;
-            fileName: string;
-            fileSize: number;
-            checksum: string | null;
-            releasedAt: Date;
-            isCurrent: boolean;
-        }[];
-    } & {
-        id: string;
+        instructionHtml: string;
+        isPublished: boolean;
+        featuredOnHome: boolean;
         createdAt: Date;
         updatedAt: Date;
+        currentVersion: {
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        } | null;
+        media: {
+            id: string;
+            type: ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
         slug: string;
         title: string;
         shortDescription: string;
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        discountPercent: number | null;
-        badge: ScriptBadge;
-        instructionHtml: string;
-        isPublished: boolean;
-        featuredOnHome: boolean;
-        publishedAt: Date | null;
-        deletedAt: Date | null;
-        fileUpdatedAt: Date | null;
     }>;
     private buildTebexPayUrl;
     unpublish(id: string): Promise<{
-        media: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            type: ScriptMediaType;
-            url: string;
-            sortOrder: number;
-        }[];
-        versions: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            versionLabel: string;
-            storageKey: string;
-            fileName: string;
-            fileSize: number;
-            checksum: string | null;
-            releasedAt: Date;
-            isCurrent: boolean;
-        }[];
-    } & {
-        id: string;
+        instructionHtml: string;
+        isPublished: boolean;
+        featuredOnHome: boolean;
         createdAt: Date;
         updatedAt: Date;
+        currentVersion: {
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        } | null;
+        media: {
+            id: string;
+            type: ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
         slug: string;
         title: string;
         shortDescription: string;
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        discountPercent: number | null;
-        badge: ScriptBadge;
-        instructionHtml: string;
-        isPublished: boolean;
-        featuredOnHome: boolean;
-        publishedAt: Date | null;
-        deletedAt: Date | null;
-        fileUpdatedAt: Date | null;
     }>;
     addMedia(scriptId: string, data: {
         type: ScriptMediaType;
@@ -484,47 +509,38 @@ export declare class ScriptsService {
         sortOrder: number;
         url: string;
     }[]>;
-    listAll(): Promise<({
-        media: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            type: ScriptMediaType;
-            url: string;
-            sortOrder: number;
-        }[];
-        versions: {
-            id: string;
-            createdAt: Date;
-            scriptId: string;
-            versionLabel: string;
-            storageKey: string;
-            fileName: string;
-            fileSize: number;
-            checksum: string | null;
-            releasedAt: Date;
-            isCurrent: boolean;
-        }[];
-    } & {
-        id: string;
+    listAll(): Promise<{
+        instructionHtml: string;
+        isPublished: boolean;
+        featuredOnHome: boolean;
         createdAt: Date;
         updatedAt: Date;
+        currentVersion: {
+            id: string;
+            versionLabel: string;
+            releasedAt: Date;
+        } | null;
+        media: {
+            id: string;
+            type: ScriptMediaType;
+            sortOrder: number;
+            url: string;
+        }[];
+        discountPercent: number | null;
+        badge: ScriptBadge;
+        coverUrl: string | null;
+        publishedAt: Date | null;
+        fileUpdatedAt: Date | null;
+        tebexPackageId: number | null;
+        tebexPayUrl: string | null;
+        id: string;
         slug: string;
         title: string;
         shortDescription: string;
         gameCategory: GameCategory;
         priceRub: number;
         priceUsd: number;
-        tebexPackageId: number | null;
-        discountPercent: number | null;
-        badge: ScriptBadge;
-        instructionHtml: string;
-        isPublished: boolean;
-        featuredOnHome: boolean;
-        publishedAt: Date | null;
-        deletedAt: Date | null;
-        fileUpdatedAt: Date | null;
-    })[]>;
+    }[]>;
     getStats(scriptId: string, from?: Date, to?: Date): Promise<{
         views: number;
         clicks: number;

@@ -4,6 +4,7 @@ import { Currency, User } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { UnitpayService } from '../payments/unitpay.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { ScriptsService } from '../scripts/scripts.service';
 import { StorageService } from '../storage/storage.service';
 export declare class PurchasesService {
     private readonly prisma;
@@ -11,7 +12,8 @@ export declare class PurchasesService {
     private readonly notifications;
     private readonly storage;
     private readonly config;
-    constructor(prisma: PrismaService, unitpay: UnitpayService, notifications: NotificationsService, storage: StorageService, config: ConfigService);
+    private readonly scripts;
+    constructor(prisma: PrismaService, unitpay: UnitpayService, notifications: NotificationsService, storage: StorageService, config: ConfigService, scripts: ScriptsService);
     private effectivePrice;
     createPurchase(user: User, scriptId: string, currency?: Currency): Promise<{
         payment_url: string;
@@ -25,12 +27,18 @@ export declare class PurchasesService {
         currency: Currency;
         needsUpdate: boolean;
         script: {
+            discountPercent: number | null;
+            badge: import("../generated/prisma/enums").ScriptBadge;
+            coverUrl: string | null;
+            publishedAt: Date | null;
+            fileUpdatedAt: Date | null;
+            tebexPackageId: number | null;
+            tebexPayUrl: string | null;
             id: string;
             slug: string;
             title: string;
             shortDescription: string;
             gameCategory: import("../generated/prisma/enums").GameCategory;
-            coverUrl: string | null;
             priceRub: number;
             priceUsd: number;
         };

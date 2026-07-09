@@ -20,12 +20,18 @@ export declare class PurchasesController {
         currency: Currency;
         needsUpdate: boolean;
         script: {
+            discountPercent: number | null;
+            badge: import("../generated/prisma/enums").ScriptBadge;
+            coverUrl: string | null;
+            publishedAt: Date | null;
+            fileUpdatedAt: Date | null;
+            tebexPackageId: number | null;
+            tebexPayUrl: string | null;
             id: string;
             slug: string;
             title: string;
             shortDescription: string;
             gameCategory: import("../generated/prisma/enums").GameCategory;
-            coverUrl: string | null;
             priceRub: number;
             priceUsd: number;
         };

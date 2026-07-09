@@ -65,7 +65,7 @@ export const ApiDocs = {
     list: {
       summary: 'Купленные скрипты',
       description:
-        'Список покупок текущего пользователя: скрипт, цена, дата. Флаг `needsUpdate: true` — вышла новая версия файла, которую ещё не скачивали.',
+        'Список покупок текущего пользователя: скрипт (включая `tebexPackageId`, `tebexPayUrl`), цена, дата. Флаг `needsUpdate: true` — вышла новая версия файла, которую ещё не скачивали.',
     },
     download: {
       summary: 'Скачать купленный скрипт',
@@ -251,11 +251,12 @@ export const ApiDocs = {
     create: {
       summary: '[Админ] Создать скрипт',
       description:
-        'title, slug, описание, gameCategory, priceRub/priceUsd, tebexPackageId (опц.), discount, badge, instructionHtml, isPublished, featuredOnHome.',
+        'title, slug, описание, gameCategory, priceRub/priceUsd, tebexPackageId (опц.), discount, badge, instructionHtml, isPublished, featuredOnHome. Ответ включает `tebexPayUrl`.',
     },
     update: {
       summary: '[Админ] Редактировать скрипт',
-      description: 'Частичное обновление любых полей. Смена slug проверяется на уникальность.',
+      description:
+        'Частичное обновление любых полей. Ответ включает `tebexPackageId` и `tebexPayUrl`. Смена slug проверяется на уникальность.',
     },
     unpublish: {
       summary: '[Админ] Снять с публикации',

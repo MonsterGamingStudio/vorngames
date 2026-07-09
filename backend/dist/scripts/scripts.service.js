@@ -59,8 +59,7 @@ let ScriptsService = class ScriptsService {
             gameCategory: script.gameCategory,
             priceRub: script.priceRub,
             priceUsd: script.priceUsd,
-            tebexPackageId: script.tebexPackageId,
-            tebexPayUrl: this.buildTebexPayUrl(script.gameCategory, script.tebexPackageId),
+            ...this.getTebexFields(script),
             discountPercent: script.discountPercent,
             badge: script.badge,
             coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
@@ -168,22 +167,10 @@ let ScriptsService = class ScriptsService {
             .map((s) => this.toListItemWithMedia(s));
     }
     toDetail(script, userId) {
-        const coverRaw = script.media.find((m) => m.type === client_1.ScriptMediaType.image)?.url ?? null;
         return {
-            id: script.id,
-            slug: script.slug,
-            title: script.title,
-            shortDescription: script.shortDescription,
-            gameCategory: script.gameCategory,
-            priceRub: script.priceRub,
-            priceUsd: script.priceUsd,
-            discountPercent: script.discountPercent,
-            badge: script.badge,
+            ...this.toListItem(script),
             instructionHtml: script.instructionHtml,
-            coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
             media: this.mapMediaItems(script.media),
-            publishedAt: script.publishedAt,
-            fileUpdatedAt: script.fileUpdatedAt,
             createdAt: script.createdAt,
             currentVersion: script.versions[0]
                 ? {
@@ -195,6 +182,29 @@ let ScriptsService = class ScriptsService {
             isAuthenticated: Boolean(userId),
             isPurchased: false,
             requiresAuthToPurchase: true,
+        };
+    }
+    toAdminItem(script) {
+        return {
+            ...this.toListItemWithMedia(script),
+            instructionHtml: script.instructionHtml,
+            isPublished: script.isPublished,
+            featuredOnHome: script.featuredOnHome,
+            createdAt: script.createdAt,
+            updatedAt: script.updatedAt,
+            currentVersion: script.versions[0]
+                ? {
+                    id: script.versions[0].id,
+                    versionLabel: script.versions[0].versionLabel,
+                    releasedAt: script.versions[0].releasedAt,
+                }
+                : null,
+        };
+    }
+    getTebexFields(script) {
+        return {
+            tebexPackageId: script.tebexPackageId,
+            tebexPayUrl: this.buildTebexPayUrl(script.gameCategory, script.tebexPackageId),
         };
     }
     async enrichDetailWithPurchase(detail, userId) {
@@ -284,7 +294,7 @@ let ScriptsService = class ScriptsService {
         if (existing) {
             throw new common_1.BadRequestException('Slug already exists');
         }
-        return this.prisma.script.create({
+        const created = await this.prisma.script.create({
             data: {
                 title: input.title,
                 slug,
@@ -302,6 +312,7 @@ let ScriptsService = class ScriptsService {
             },
             include: this.scriptInclude,
         });
+        return this.toAdminItem(created);
     }
     async update(id, input) {
         const current = await this.findById(id);
@@ -314,7 +325,7 @@ let ScriptsService = class ScriptsService {
             }
         }
         const isPublished = input.isPublished ?? current.isPublished;
-        return this.prisma.script.update({
+        const updated = await this.prisma.script.update({
             where: { id },
             data: {
                 ...input,
@@ -322,6 +333,7 @@ let ScriptsService = class ScriptsService {
             },
             include: this.scriptInclude,
         });
+        return this.toAdminItem(updated);
     }
     buildTebexPayUrl(gameCategory, tebexPackageId) {
         if (!tebexPackageId)
@@ -336,7 +348,7 @@ let ScriptsService = class ScriptsService {
     }
     async unpublish(id) {
         await this.findById(id);
-        return this.prisma.script.update({
+        const updated = await this.prisma.script.update({
             where: { id },
             data: {
                 isPublished: false,
@@ -344,6 +356,7 @@ let ScriptsService = class ScriptsService {
             },
             include: this.scriptInclude,
         });
+        return this.toAdminItem(updated);
     }
     async addMedia(scriptId, data) {
         await this.findById(scriptId);
@@ -447,11 +460,12 @@ let ScriptsService = class ScriptsService {
         return this.listMedia(scriptId);
     }
     async listAll() {
-        return this.prisma.script.findMany({
+        const scripts = await this.prisma.script.findMany({
             where: { deletedAt: null },
             orderBy: { createdAt: 'desc' },
             include: this.scriptInclude,
         });
+        return scripts.map((script) => this.toAdminItem(script));
     }
     async getStats(scriptId, from, to) {
         await this.findById(scriptId);

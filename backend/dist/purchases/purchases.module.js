@@ -10,6 +10,7 @@ exports.PurchasesModule = void 0;
 const common_1 = require("@nestjs/common");
 const notifications_module_1 = require("../notifications/notifications.module");
 const payments_module_1 = require("../payments/payments.module");
+const scripts_module_1 = require("../scripts/scripts.module");
 const purchases_controller_1 = require("./purchases.controller");
 const purchases_service_1 = require("./purchases.service");
 let PurchasesModule = class PurchasesModule {
@@ -20,6 +21,7 @@ exports.PurchasesModule = PurchasesModule = __decorate([
         imports: [
             (0, common_1.forwardRef)(() => payments_module_1.PaymentsModule),
             notifications_module_1.NotificationsModule,
+            scripts_module_1.ScriptsModule,
         ],
         controllers: [purchases_controller_1.PurchasesController],
         providers: [purchases_service_1.PurchasesService],

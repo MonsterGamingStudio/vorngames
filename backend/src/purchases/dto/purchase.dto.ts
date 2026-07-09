@@ -46,6 +46,18 @@ export class PurchaseScriptDto {
 
   @ApiProperty()
   priceUsd!: number;
+
+  @ApiPropertyOptional({
+    example: 1234567,
+    description: 'Tebex package ID (optional)',
+  })
+  tebexPackageId?: number | null;
+
+  @ApiPropertyOptional({
+    example: 'https://your-store.tebex.io/package/1234567',
+    description: 'Ready-to-use Tebex checkout URL',
+  })
+  tebexPayUrl?: string | null;
 }
 
 export class PurchaseItemDto {
