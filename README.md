@@ -134,6 +134,7 @@ cd backend
 | POST | `/api/payments/create` | Создание платежа UnitPay (секрет в заголовке) |
 | GET | `/api/payments/unitpay/handler` | Webhook UnitPay (check / pay / error) |
 | POST | `/api/tebex/webhook` | Webhook Tebex — выдача скриптов после покупки |
+| POST | `/api/scripts/:id/buy` | [Auth] Создать Tebex checkout basket, вернуть `{ ident }` |
 | GET | `/api/admin/tebex-licenses` | [Админ] Список Tebex-покупок |
 | PATCH | `/api/admin/tebex-licenses/:id` | [Админ] Включить/отключить лицензию |
 | GET | `/api/admin/tebex-packages` | [Админ] Маппинг Tebex package → скрипт |
@@ -144,6 +145,20 @@ cd backend
 Пользователь в БД: `username`, `avatarUrl`, `balance` (RUB).
 
 ### Tebex (покупка скриптов)
+
+**Checkout basket** — `POST /api/scripts/:id/buy` (cookie `access_token`)
+
+Создаёт корзину через [Tebex Headless API](https://docs.tebex.io/developers/headless-api/endpoints): basket + package по `tebexPackageId` из вебстора. Steam ID передаётся автоматически.
+
+Ответ `200`:
+
+```json
+{
+  "ident": "1a-55fff4107740a1f40d844ff89607557f45bfafb3"
+}
+```
+
+Фронт использует `ident` для Tebex.js / embedded checkout. Steam ID пользователя передаётся в Tebex автоматически.
 
 Webhook URL в панели Tebex (для GMod и FiveM проектов):
 
@@ -217,3 +232,9 @@ Webhook URL в панели Tebex (для GMod и FiveM проектов):
 | `TEBEX_GMOD_WEBHOOK_SECRET` | Secret Key webhook Tebex (GMod) |
 | `TEBEX_FIVEM_WEBHOOK_SECRET` | Secret Key webhook Tebex (FiveM) |
 | `TEBEX_SKIP_IP_CHECK` | `true` локально; в prod — `false` |
+| `TEBEX_GMOD_PUBLIC_TOKEN` | Public token Tebex Headless API (GMod) |
+| `TEBEX_FIVEM_PUBLIC_TOKEN` | Public token Tebex Headless API (FiveM) |
+| `TEBEX_GMOD_PROJECT_ID` | Project ID Tebex Checkout API (GMod, опционально) |
+| `TEBEX_GMOD_PRIVATE_KEY` | Private Key Tebex Checkout API (GMod, опционально) |
+| `TEBEX_FIVEM_PROJECT_ID` | Project ID Tebex Checkout API (FiveM, опционально) |
+| `TEBEX_FIVEM_PRIVATE_KEY` | Private Key Tebex Checkout API (FiveM, опционально) |

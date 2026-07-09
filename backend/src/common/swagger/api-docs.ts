@@ -175,6 +175,11 @@ export const ApiDocs = {
   },
 
   tebex: {
+    buy: {
+      summary: 'Создать Tebex checkout basket',
+      description:
+        'Только для авторизованных. Создаёт корзину через Tebex Headless API для скрипта с `tebexPackageId`, добавляет package по ID вебстора и возвращает `{ ident }` для Tebex.js. Steam ID передаётся как `target_username_id`. После оплаты выдача — через `POST /api/tebex/webhook`.',
+    },
     webhook: {
       summary: 'Webhook Tebex',
       description:

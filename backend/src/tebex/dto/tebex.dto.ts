@@ -145,3 +145,11 @@ export class TebexPackageMappingDto {
   @ApiProperty({ example: '2025-01-15T12:00:00.000Z' })
   updatedAt!: Date;
 }
+
+export class TebexBuyResponseDto {
+  @ApiProperty({
+    example: '1a-55fff4107740a1f40d844ff89607557f45bfafb3',
+    description: 'Tebex checkout basket identifier for Tebex.js',
+  })
+  ident!: string;
+}

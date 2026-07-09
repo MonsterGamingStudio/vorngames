@@ -18,16 +18,18 @@ import {
   ApiOperation,
   ApiParam,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import type { Request } from 'express';
-import { TebexLicenseStatus, TebexStore } from '../generated/prisma/client';
+import { TebexLicenseStatus, TebexStore, User } from '../generated/prisma/client';
 import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { AdminGuard, BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApiDocs } from '../common/swagger/api-docs';
-import { parsePagination } from '../common/utils';
+import { getClientIp, parsePagination } from '../common/utils';
 import {
   CreateTebexPackageMappingDto,
+  TebexBuyResponseDto,
   TebexLicenseAdminDto,
   TebexLicensesQueryDto,
   TebexPackageMappingDto,
@@ -66,6 +68,22 @@ export class TebexController {
 
     const clientIp = this.resolveClientIp(req);
     return this.tebex.handleWebhook(rawBody, signature, clientIp);
+  }
+
+  @Post('scripts/:id/buy')
+  @ApiCookieAuth(JWT_COOKIE_NAME)
+  @UseGuards(JwtAuthGuard, BlockedUserGuard)
+  @ApiOperation(ApiDocs.tebex.buy)
+  @ApiParam({ name: 'id', format: 'uuid', description: 'Script ID' })
+  @ApiOkResponse({ type: TebexBuyResponseDto })
+  @ApiUnauthorizedResponse({
+    description: 'Authentication required — purchase is not available to guests',
+  })
+  buy(
+    @Param('id') id: string,
+    @Req() req: Request & { user: User },
+  ) {
+    return this.tebex.createBuyBasket(req.user, id, getClientIp(req));
   }
 
   @Get('admin/tebex-licenses')

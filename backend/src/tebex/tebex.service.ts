@@ -20,6 +20,7 @@ import {
   TEBEX_ALLOWED_IPS,
   TEBEX_WEBHOOK_TYPES,
 } from './tebex.constants';
+import { TebexHeadlessService } from './tebex-headless.service';
 import {
   TebexPaymentSubject,
   TebexProduct,
@@ -35,6 +36,7 @@ export class TebexService {
     private readonly prisma: PrismaService,
     private readonly config: ConfigService,
     private readonly notifications: NotificationsService,
+    private readonly headless: TebexHeadlessService,
   ) {}
 
   async handleWebhook(
@@ -66,6 +68,64 @@ export class TebexService {
 
     this.logger.log(`Ignored Tebex webhook type: ${payload.type}`);
     return { ok: true };
+  }
+
+  async createBuyBasket(
+    user: User,
+    scriptId: string,
+    clientIp?: string,
+  ): Promise<{ ident: string }> {
+    const script = await this.loadBuyableScript(user, scriptId);
+    const profileUrl = this.buildProfileUrl();
+    const publicToken = this.headless.getPublicToken(script.gameCategory);
+
+    const basket = await this.headless.createBasket(publicToken, {
+      completeUrl: profileUrl,
+      cancelUrl: profileUrl,
+      custom: {
+        steamId: user.steamId,
+        scriptId: script.id,
+        username: user.steamId,
+        packageId: script.tebexPackageId,
+        ip: clientIp,
+      },
+    });
+
+    await this.headless.addPackage(basket.ident, {
+      packageId: script.tebexPackageId!,
+      quantity: 1,
+      targetUsernameId: user.steamId,
+    });
+
+    return { ident: basket.ident };
+  }
+
+  private async loadBuyableScript(user: User, scriptId: string) {
+    if (!user?.id) {
+      throw new UnauthorizedException('Steam login required to purchase');
+    }
+
+    const script = await this.prisma.script.findFirst({
+      where: { id: scriptId, isPublished: true, deletedAt: null },
+    });
+
+    if (!script) {
+      throw new NotFoundException('Script not found');
+    }
+
+    if (!script.tebexPackageId) {
+      throw new BadRequestException('Script is not available for Tebex checkout');
+    }
+
+    const existing = await this.prisma.purchase.findUnique({
+      where: { userId_scriptId: { userId: user.id, scriptId } },
+    });
+
+    if (existing) {
+      throw new ConflictException('Script already purchased');
+    }
+
+    return script;
   }
 
   async linkPendingLicenses(user: User): Promise<void> {
@@ -330,6 +390,8 @@ export class TebexService {
     const scriptId = await this.resolveScriptId(
       storeConfig.store,
       product.id,
+      subject,
+      product,
     );
 
     if (!scriptId) {
@@ -529,11 +591,53 @@ export class TebexService {
   private async resolveScriptId(
     store: TebexStore,
     packageId: number,
+    subject?: TebexPaymentSubject,
+    product?: TebexProduct,
   ): Promise<string | null> {
     const mapping = await this.prisma.tebexPackageMapping.findUnique({
       where: { store_packageId: { store, packageId } },
     });
-    return mapping?.scriptId ?? null;
+
+    if (mapping?.scriptId) {
+      return mapping.scriptId;
+    }
+
+    const scriptIdFromCustom = this.extractScriptIdFromCustom(subject, product);
+    if (!scriptIdFromCustom) {
+      return null;
+    }
+
+    const script = await this.prisma.script.findFirst({
+      where: { id: scriptIdFromCustom, deletedAt: null },
+    });
+
+    return script?.id ?? null;
+  }
+
+  private extractScriptIdFromCustom(
+    subject?: TebexPaymentSubject,
+    product?: TebexProduct,
+  ): string | null {
+    const candidates = [
+      product?.custom?.scriptId,
+      subject?.custom?.scriptId,
+    ];
+
+    for (const value of candidates) {
+      if (typeof value === 'string' && value.length > 0) {
+        return value;
+      }
+    }
+
+    return null;
+  }
+
+  private buildProfileUrl(): string {
+    const base = (this.config.get<string>('FRONTEND_URL') ?? '').replace(
+      /\/+$/,
+      '',
+    );
+    return `${base}/profile/me`;
   }
 
   private extractSteamId(

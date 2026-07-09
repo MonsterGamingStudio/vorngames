@@ -1,4 +1,4 @@
-import { TebexStore } from '../generated/prisma/client';
+import { GameCategory, TebexStore } from '../generated/prisma/client';
 
 export type TebexWebhookEnvelope = {
   id: string;
@@ -20,6 +20,7 @@ export type TebexPaymentSubject = {
     username?: { id?: string; username?: string };
   };
   products?: TebexProduct[];
+  custom?: Record<string, unknown>;
 };
 
 export type TebexProduct = {
@@ -30,9 +31,40 @@ export type TebexProduct = {
   base_price?: { amount: number; currency: string };
   variables?: Array<{ identifier: string; option: string }>;
   username?: { id?: string; username?: string };
+  custom?: Record<string, unknown>;
 };
 
 export type TebexStoreConfig = {
   store: TebexStore;
   secret: string;
+};
+
+export type TebexCheckoutCredentials = {
+  projectId: string;
+  privateKey: string;
+};
+
+export type TebexCheckoutBasket = {
+  ident: string;
+  links?: {
+    checkout?: string;
+  };
+};
+
+export type TebexHeadlessBasket = {
+  ident: string;
+  links?: {
+    checkout?: string;
+    payment?: string;
+  };
+};
+
+export type TebexBuyBasketInput = {
+  scriptId: string;
+  scriptTitle: string;
+  tebexPackageId: number;
+  priceUsd: number;
+  gameCategory: GameCategory;
+  steamId: string;
+  clientIp?: string;
 };
