@@ -142,6 +142,19 @@ cd backend
 | PATCH | `/api/admin/tebex-packages/:id` | [Админ] Изменить маппинг |
 | DELETE | `/api/admin/tebex-packages/:id` | [Админ] Удалить маппинг |
 
+### Каталог скриптов
+
+| Method | Path | Описание |
+|--------|------|----------|
+| GET | `/api/scripts` | Каталог: `search`, `gameCategory`, `sort` (`relevance`, `price_asc`, `popular`, `comments`), пагинация |
+| GET | `/api/scripts/home/random` | Случайные скрипты для главной (`featuredOnHome=true`) |
+| GET | `/api/scripts/home/popular` | Топ по просмотрам за 24 ч |
+| GET | `/api/scripts/:slug` | Карточка скрипта |
+| POST | `/api/admin/scripts/:id/cover` | [Админ] Загрузить обложку (отдельно от галереи) |
+| DELETE | `/api/admin/scripts/:id/cover` | [Админ] Удалить обложку |
+
+Поля списка: `badge` (`null` если нет), `hasUniqueOffer`, `featuredOnHome`, `coverUrl`, `priceRub`/`priceUsd` (2 знака после запятой).
+
 Пользователь в БД: `username`, `avatarUrl`, `balance` (RUB).
 
 ### Tebex (покупка скриптов)

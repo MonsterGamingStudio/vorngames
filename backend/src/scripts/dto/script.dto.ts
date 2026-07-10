@@ -5,6 +5,7 @@ import {
   IsBoolean,
   IsEnum,
   IsInt,
+  IsNumber,
   IsOptional,
   IsString,
   Min,
@@ -27,7 +28,9 @@ export enum ScriptBadgeDto {
 export enum ScriptSortDto {
   price_asc = 'price_asc',
   price_desc = 'price_desc',
+  relevance = 'relevance',
   popular = 'popular',
+  comments = 'comments',
 }
 
 export enum ScriptMediaTypeDto {
@@ -82,10 +85,10 @@ export class ScriptListItemDto {
   @ApiProperty({ enum: GameCategoryDto })
   gameCategory!: GameCategoryDto;
 
-  @ApiProperty({ example: 1500 })
+  @ApiProperty({ example: 1500.0 })
   priceRub!: number;
 
-  @ApiProperty({ example: 20 })
+  @ApiProperty({ example: 19.99 })
   priceUsd!: number;
 
   @ApiPropertyOptional({
@@ -104,8 +107,18 @@ export class ScriptListItemDto {
   @ApiPropertyOptional({ example: 10 })
   discountPercent?: number | null;
 
-  @ApiProperty({ enum: ScriptBadgeDto })
-  badge!: ScriptBadgeDto;
+  @ApiPropertyOptional({
+    enum: ScriptBadgeDto,
+    nullable: true,
+    description: 'null when no unique offer badge',
+  })
+  badge!: ScriptBadgeDto | null;
+
+  @ApiProperty({ example: true, description: 'True when badge is set (not none)' })
+  hasUniqueOffer!: boolean;
+
+  @ApiProperty({ example: false, description: 'Shown on home random block when true' })
+  featuredOnHome!: boolean;
 
   @ApiPropertyOptional({ example: '/api/storage/local/scripts/cover.jpg' })
   coverUrl!: string | null;
@@ -191,9 +204,6 @@ export class AdminScriptItemDto extends ScriptListItemWithMediaDto {
   @ApiProperty({ example: true })
   isPublished!: boolean;
 
-  @ApiProperty({ example: false })
-  featuredOnHome!: boolean;
-
   @ApiProperty()
   createdAt!: Date;
 
@@ -222,13 +232,15 @@ export class CreateScriptDto {
   @IsEnum(GameCategoryDto)
   gameCategory!: GameCategoryDto;
 
-  @ApiProperty({ example: 1500 })
-  @IsInt()
+  @ApiProperty({ example: 1500.0 })
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
   priceRub!: number;
 
-  @ApiProperty({ example: 20 })
-  @IsInt()
+  @ApiProperty({ example: 19.99 })
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
   priceUsd!: number;
 
@@ -244,6 +256,76 @@ export class CreateScriptDto {
 
   @ApiPropertyOptional({ example: 10 })
   @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  discountPercent?: number;
+
+  @ApiPropertyOptional({ enum: ScriptBadgeDto })
+  @IsOptional()
+  @IsEnum(ScriptBadgeDto)
+  badge?: ScriptBadgeDto;
+
+  @ApiPropertyOptional({ example: '<p>How to install</p>' })
+  @IsOptional()
+  @IsString()
+  instructionHtml?: string;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  @IsBoolean()
+  isPublished?: boolean;
+
+  @ApiPropertyOptional({ example: false })
+  @IsOptional()
+  @IsBoolean()
+  featuredOnHome?: boolean;
+}
+
+export class UpdateScriptDto {
+  @ApiPropertyOptional({ example: 'Shop Tycoon' })
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @ApiPropertyOptional({ example: 'shop-tycoon' })
+  @IsOptional()
+  @IsString()
+  slug?: string;
+
+  @ApiPropertyOptional({ example: 'Build your own supermarket' })
+  @IsOptional()
+  @IsString()
+  shortDescription?: string;
+
+  @ApiPropertyOptional({ enum: GameCategoryDto })
+  @IsOptional()
+  @IsEnum(GameCategoryDto)
+  gameCategory?: GameCategoryDto;
+
+  @ApiPropertyOptional({ example: 1500.0 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  priceRub?: number;
+
+  @ApiPropertyOptional({ example: 19.99 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  priceUsd?: number;
+
+  @ApiPropertyOptional({ example: 1234567 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  tebexPackageId?: number;
+
+  @ApiPropertyOptional({ example: 10 })
+  @IsOptional()
+  @Type(() => Number)
   @IsInt()
   discountPercent?: number;
 
@@ -302,6 +384,11 @@ export class ReorderScriptMediaDto {
   @ValidateNested({ each: true })
   @Type(() => ReorderScriptMediaItemDto)
   items!: ReorderScriptMediaItemDto[];
+}
+
+export class ScriptCoverResponseDto {
+  @ApiProperty({ example: 'https://cdn.vorngames.com/scripts/cover.jpg' })
+  coverUrl!: string;
 }
 
 export class ScriptStatsDto {

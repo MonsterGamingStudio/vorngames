@@ -27,12 +27,12 @@ export const ApiDocs = {
     list: {
       summary: 'Каталог скриптов',
       description:
-        'Список опубликованных скриптов. Фильтры: `search`, `gameCategory`, `sort`, пагинация. В каждом товаре: `tebexPackageId` и готовая `tebexPayUrl` (если задан package ID и `TEBEX_*_STORE_URL` в env).',
+        'Список опубликованных скриптов. Фильтры: `search`, `gameCategory`, `sort` (`relevance` по умолчанию, `price_asc`, `popular`, `comments`), пагинация. В каждом товаре: `badge` (null если нет), `hasUniqueOffer`, `featuredOnHome`, `coverUrl` (отдельная обложка или fallback на первое фото галереи), цены с 2 знаками после запятой, `tebexPackageId` и `tebexPayUrl`.',
     },
     random: {
       summary: 'Случайные скрипты для главной',
       description:
-        'Возвращает N случайных опубликованных скриптов (по умолчанию 4). В ответе у каждого товара есть `tebexPayUrl` при настроенном Tebex.',
+        'Возвращает N случайных опубликованных скриптов с `featuredOnHome=true` (по умолчанию 4). Порядок перемешан на сервере.',
     },
     popular: {
       summary: 'Популярные скрипты за 24 часа',
@@ -256,12 +256,12 @@ export const ApiDocs = {
     create: {
       summary: '[Админ] Создать скрипт',
       description:
-        'title, slug, описание, gameCategory, priceRub/priceUsd, tebexPackageId (опц.), discount, badge, instructionHtml, isPublished, featuredOnHome. Ответ включает `tebexPayUrl`.',
+        'title, slug, описание, gameCategory, priceRub/priceUsd (до 2 знаков после запятой), tebexPackageId (опц.), discount, badge, instructionHtml, isPublished, featuredOnHome. Обложка — отдельно через POST cover.',
     },
     update: {
       summary: '[Админ] Редактировать скрипт',
       description:
-        'Частичное обновление любых полей. Ответ включает `tebexPackageId` и `tebexPayUrl`. Смена slug проверяется на уникальность.',
+        'Частичное обновление (UpdateScriptDto). Смена slug проверяется на уникальность.',
     },
     unpublish: {
       summary: '[Админ] Снять с публикации',
@@ -273,8 +273,18 @@ export const ApiDocs = {
       description: 'type: image | youtube, url, sortOrder. Для YouTube — полная ссылка.',
     },
     uploadImage: {
-      summary: '[Админ] Загрузить картинку',
-      description: 'multipart/form-data: file (jpeg/png/webp/gif), sortOrder. Хранится в R2/local CDN.',
+      summary: '[Админ] Загрузить картинку в галерею',
+      description:
+        'multipart/form-data: file (jpeg/png/webp/gif), sortOrder. Галерея отделена от обложки (`coverUrl`).',
+    },
+    uploadCover: {
+      summary: '[Админ] Загрузить обложку',
+      description:
+        'multipart/form-data: file (jpeg/png/webp/gif). Заменяет предыдущую обложку. Не добавляет фото в галерею.',
+    },
+    removeCover: {
+      summary: '[Админ] Удалить обложку',
+      description: 'Удаляет coverKey и файл из хранилища. Галерея не затрагивается.',
     },
     listMedia: {
       summary: '[Админ] Список медиа скрипта',

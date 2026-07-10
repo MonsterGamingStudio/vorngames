@@ -13,6 +13,7 @@ import {
   Currency,
   PaymentStatus,
   PaymentType,
+  Prisma,
   User,
 } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -32,16 +33,22 @@ export class PurchasesService {
     private readonly scripts: ScriptsService,
   ) {}
 
-  private effectivePrice(script: {
-    priceRub: number;
-    priceUsd: number;
-    discountPercent: number | null;
-  }, currency: Currency): number {
-    const base = currency === Currency.USD ? script.priceUsd : script.priceRub;
-    if (script.discountPercent && script.discountPercent > 0) {
-      return Math.round(base * (1 - script.discountPercent / 100));
-    }
-    return base;
+  private effectivePrice(
+    script: {
+      priceRub: Prisma.Decimal | number;
+      priceUsd: Prisma.Decimal | number;
+      discountPercent: number | null;
+    },
+    currency: Currency,
+  ): number {
+    const base = Number(
+      currency === Currency.USD ? script.priceUsd : script.priceRub,
+    );
+    const discounted =
+      script.discountPercent && script.discountPercent > 0
+        ? base * (1 - script.discountPercent / 100)
+        : base;
+    return Math.round(discounted);
   }
 
   async createPurchase(user: User, scriptId: string, currency: Currency = Currency.RUB) {

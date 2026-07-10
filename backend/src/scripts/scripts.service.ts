@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
+  CommentStatus,
   GameCategory,
   Prisma,
   Script,
@@ -19,7 +20,7 @@ import { NotificationsService } from '../notifications/notifications.service';
 export type ScriptListQuery = {
   search?: string;
   gameCategory?: GameCategory;
-  sort?: 'price_asc' | 'price_desc' | 'popular';
+  sort?: 'price_asc' | 'price_desc' | 'relevance' | 'popular' | 'comments';
   page: number;
   limit: number;
 };
@@ -60,6 +61,39 @@ export class ScriptsService {
     deletedAt: null,
   };
 
+  private serializePrice(value: Prisma.Decimal | number): number {
+    return Number(value);
+  }
+
+  private resolveCoverUrl(
+    script: Pick<Script, 'coverKey'> & {
+      media: { url: string; type: string }[];
+    },
+  ): string | null {
+    if (script.coverKey) {
+      return this.storage.getPublicUrl(script.coverKey);
+    }
+    const fallback =
+      script.media.find((m) => m.type === ScriptMediaType.image)?.url ?? null;
+    return fallback ? this.storage.getPublicUrl(fallback) : null;
+  }
+
+  private shuffleArray<T>(items: T[]): T[] {
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  private mapBadgeFields(badge: ScriptBadge) {
+    return {
+      badge: badge === ScriptBadge.none ? null : badge,
+      hasUniqueOffer: badge !== ScriptBadge.none,
+    };
+  }
+
   private mapMediaItem(m: {
     id: string;
     type: ScriptMediaType;
@@ -88,21 +122,22 @@ export class ScriptsService {
     return media.map((m) => this.mapMediaItem(m));
   }
 
-  toListItem(script: Script & { media: { url: string; type: string }[] }) {
-    const coverRaw =
-      script.media.find((m) => m.type === ScriptMediaType.image)?.url ?? null;
+  toListItem(
+    script: Script & { media: { url: string; type: string }[] },
+  ) {
     return {
       id: script.id,
       slug: script.slug,
       title: script.title,
       shortDescription: script.shortDescription,
       gameCategory: script.gameCategory,
-      priceRub: script.priceRub,
-      priceUsd: script.priceUsd,
+      priceRub: this.serializePrice(script.priceRub),
+      priceUsd: this.serializePrice(script.priceUsd),
       ...this.getTebexFields(script),
       discountPercent: script.discountPercent,
-      badge: script.badge,
-      coverUrl: coverRaw ? this.storage.getPublicUrl(coverRaw) : null,
+      ...this.mapBadgeFields(script.badge),
+      featuredOnHome: script.featuredOnHome,
+      coverUrl: this.resolveCoverUrl(script),
       publishedAt: script.publishedAt,
       fileUpdatedAt: script.fileUpdatedAt,
     };
@@ -135,45 +170,45 @@ export class ScriptsService {
     }
 
     const skip = (query.page - 1) * query.limit;
+    const sort = query.sort ?? 'relevance';
 
-    if (query.sort === 'popular') {
-      const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
-      const popular = await this.prisma.scriptView.groupBy({
-        by: ['scriptId'],
-        where: { createdAt: { gte: since }, script: where },
-        _count: { scriptId: true },
-        orderBy: { _count: { scriptId: 'desc' } },
-        skip,
-        take: query.limit,
-      });
+    if (sort === 'popular') {
+      return this.listByViewCount(where, skip, query);
+    }
 
-      const ids = popular.map((p) => p.scriptId);
-      if (ids.length === 0) {
-        return { items: [], total: 0, page: query.page, limit: query.limit };
-      }
+    if (sort === 'comments') {
+      return this.listByCommentCount(where, skip, query);
+    }
 
-      const scripts = await this.prisma.script.findMany({
-        where: { id: { in: ids }, ...this.catalogWhere },
+    if (sort === 'relevance' && query.search) {
+      const all = await this.prisma.script.findMany({
+        where,
         include: this.scriptInclude,
+        orderBy: { publishedAt: 'desc' },
       });
-      const ordered = ids
-        .map((id) => scripts.find((s) => s.id === id))
-        .filter(Boolean);
-
+      const term = query.search.toLowerCase();
+      all.sort((a, b) => {
+        const aStarts = a.title.toLowerCase().startsWith(term) ? 0 : 1;
+        const bStarts = b.title.toLowerCase().startsWith(term) ? 0 : 1;
+        if (aStarts !== bStarts) return aStarts - bStarts;
+        return (
+          (b.publishedAt?.getTime() ?? 0) - (a.publishedAt?.getTime() ?? 0)
+        );
+      });
       return {
-        items: ordered.map((s) => this.toListItem(s!)),
-        total: await this.prisma.script.count({ where }),
+        items: all.slice(skip, skip + query.limit).map((s) => this.toListItem(s)),
+        total: all.length,
         page: query.page,
         limit: query.limit,
       };
     }
 
     const orderBy: Prisma.ScriptOrderByWithRelationInput =
-      query.sort === 'price_desc'
+      sort === 'price_desc'
         ? { priceRub: 'desc' }
-        : query.sort === 'price_asc'
+        : sort === 'price_asc'
           ? { priceRub: 'asc' }
-          : { createdAt: 'desc' };
+          : { publishedAt: 'desc' };
 
     const [items, total] = await Promise.all([
       this.prisma.script.findMany({
@@ -194,26 +229,123 @@ export class ScriptsService {
     };
   }
 
+  private async listByViewCount(
+    where: Prisma.ScriptWhereInput,
+    skip: number,
+    query: ScriptListQuery,
+  ) {
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const popular = await this.prisma.scriptView.groupBy({
+      by: ['scriptId'],
+      where: { createdAt: { gte: since }, script: where },
+      _count: { scriptId: true },
+      orderBy: { _count: { scriptId: 'desc' } },
+      skip,
+      take: query.limit,
+    });
+
+    const ids = popular.map((p) => p.scriptId);
+    if (ids.length === 0) {
+      return { items: [], total: 0, page: query.page, limit: query.limit };
+    }
+
+    const scripts = await this.prisma.script.findMany({
+      where: { id: { in: ids }, ...this.catalogWhere },
+      include: this.scriptInclude,
+    });
+    const ordered = ids
+      .map((id) => scripts.find((s) => s.id === id))
+      .filter(Boolean);
+
+    const total = await this.prisma.scriptView.groupBy({
+      by: ['scriptId'],
+      where: { createdAt: { gte: since }, script: where },
+    });
+
+    return {
+      items: ordered.map((s) => this.toListItem(s!)),
+      total: total.length,
+      page: query.page,
+      limit: query.limit,
+    };
+  }
+
+  private async listByCommentCount(
+    where: Prisma.ScriptWhereInput,
+    skip: number,
+    query: ScriptListQuery,
+  ) {
+    const ranked = await this.prisma.comment.groupBy({
+      by: ['scriptId'],
+      where: { status: CommentStatus.approved, script: where },
+      _count: { scriptId: true },
+      orderBy: { _count: { scriptId: 'desc' } },
+      skip,
+      take: query.limit,
+    });
+
+    const ids = ranked.map((r) => r.scriptId);
+    if (ids.length === 0) {
+      return { items: [], total: 0, page: query.page, limit: query.limit };
+    }
+
+    const scripts = await this.prisma.script.findMany({
+      where: { id: { in: ids }, ...this.catalogWhere },
+      include: this.scriptInclude,
+    });
+    const ordered = ids
+      .map((id) => scripts.find((s) => s.id === id))
+      .filter(Boolean);
+
+    const total = await this.prisma.script.count({
+      where: {
+        ...where,
+        comments: { some: { status: CommentStatus.approved } },
+      },
+    });
+
+    return {
+      items: ordered.map((s) => this.toListItem(s!)),
+      total,
+      page: query.page,
+      limit: query.limit,
+    };
+  }
+
   async getRandom(count = 4) {
-    const published = await this.prisma.script.findMany({
-      where: { ...this.catalogWhere },
+    const featured = await this.prisma.script.findMany({
+      where: { ...this.catalogWhere, featuredOnHome: true },
       select: { id: true },
     });
 
-    const shuffled = published.sort(() => Math.random() - 0.5).slice(0, count);
+    if (featured.length === 0) {
+      return [];
+    }
+
+    const shuffledIds = this.shuffleArray(featured)
+      .slice(0, count)
+      .map((s) => s.id);
+
     const scripts = await this.prisma.script.findMany({
-      where: { id: { in: shuffled.map((s) => s.id) } },
+      where: { id: { in: shuffledIds } },
       include: this.scriptInclude,
     });
 
-    return scripts.map((s) => this.toListItemWithMedia(s));
+    const byId = new Map(scripts.map((s) => [s.id, s]));
+    return shuffledIds
+      .map((id) => byId.get(id))
+      .filter(Boolean)
+      .map((s) => this.toListItemWithMedia(s!));
   }
 
   async getPopular(limit = 8) {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const popular = await this.prisma.scriptView.groupBy({
       by: ['scriptId'],
-      where: { createdAt: { gte: since } },
+      where: {
+        createdAt: { gte: since },
+        script: { ...this.catalogWhere },
+      },
       _count: { scriptId: true },
       orderBy: { _count: { scriptId: 'desc' } },
       take: limit,
@@ -365,9 +497,7 @@ export class ScriptsService {
     userId: string | null,
     ipHash: string,
   ) {
-    await this.prisma.script.findFirstOrThrow({
-      where: { id: scriptId, ...this.catalogWhere },
-    });
+    await this.assertPublishedScript(scriptId);
 
     const since = new Date(Date.now() - this.analyticsDedupeMs);
 
@@ -528,11 +658,77 @@ export class ScriptsService {
     });
   }
 
+  async uploadCover(scriptId: string, file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('File is required');
+    }
+    this.storage.assertSize(file.buffer);
+    this.storage.assertImageMime(file.mimetype);
+
+    const script = await this.findById(scriptId);
+    const key = this.storage.buildKey(
+      `scripts/${scriptId}/cover`,
+      file.originalname,
+    );
+    const { key: storageKey } = await this.storage.upload(
+      key,
+      file.buffer,
+      file.mimetype,
+    );
+
+    if (script.coverKey && script.coverKey !== storageKey) {
+      try {
+        await this.storage.delete(script.coverKey);
+      } catch {
+        // ignore missing storage file
+      }
+    }
+
+    await this.prisma.script.update({
+      where: { id: scriptId },
+      data: { coverKey: storageKey },
+    });
+
+    return { coverUrl: this.storage.getPublicUrl(storageKey) };
+  }
+
+  async removeCover(scriptId: string) {
+    const script = await this.findById(scriptId);
+    if (!script.coverKey) {
+      return { ok: true };
+    }
+
+    try {
+      await this.storage.delete(script.coverKey);
+    } catch {
+      // ignore missing storage file
+    }
+
+    await this.prisma.script.update({
+      where: { id: scriptId },
+      data: { coverKey: null },
+    });
+
+    return { ok: true };
+  }
+
+  private async assertPublishedScript(scriptId: string) {
+    const script = await this.prisma.script.findFirst({
+      where: { id: scriptId, ...this.catalogWhere },
+    });
+    if (!script) {
+      throw new NotFoundException('Script not found');
+    }
+  }
+
   async addVersion(
     scriptId: string,
     file: Express.Multer.File,
     versionLabel: string,
   ) {
+    if (!file) {
+      throw new BadRequestException('File is required');
+    }
     this.storage.assertSize(file.buffer);
     this.storage.assertScriptMime(file.mimetype);
 
@@ -650,6 +846,17 @@ export class ScriptsService {
 
   async getStats(scriptId: string, from?: Date, to?: Date) {
     await this.findById(scriptId);
+
+    if (from && Number.isNaN(from.getTime())) {
+      throw new BadRequestException('Invalid from date');
+    }
+    if (to && Number.isNaN(to.getTime())) {
+      throw new BadRequestException('Invalid to date');
+    }
+    if (from && to && from > to) {
+      throw new BadRequestException('from must be before to');
+    }
+
     const dateFilter: Prisma.DateTimeFilter = {};
     if (from) dateFilter.gte = from;
     if (to) dateFilter.lte = to;

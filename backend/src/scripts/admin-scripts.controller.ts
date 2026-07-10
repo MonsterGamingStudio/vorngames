@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -32,8 +33,10 @@ import {
   AdminScriptItemDto,
   CreateScriptDto,
   ReorderScriptMediaDto,
+  ScriptCoverResponseDto,
   ScriptMediaDto,
   ScriptStatsDto,
+  UpdateScriptDto,
   UploadImageBodyDto,
   UploadVersionBodyDto,
 } from './dto/script.dto';
@@ -64,17 +67,50 @@ export class AdminScriptsController {
   @Patch(':id')
   @ApiOperation(ApiDocs.adminScripts.update)
   @ApiParam({ name: 'id', format: 'uuid' })
-  @ApiBody({ type: CreateScriptDto })
+  @ApiBody({ type: UpdateScriptDto })
   @ApiOkResponse({ type: AdminScriptItemDto })
-  update(@Param('id') id: string, @Body() body: CreateScriptDto) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() body: UpdateScriptDto,
+  ) {
     return this.scripts.update(id, body);
   }
 
   @Delete(':id')
   @ApiOperation(ApiDocs.adminScripts.unpublish)
   @ApiParam({ name: 'id', format: 'uuid' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.scripts.unpublish(id);
+  }
+
+  @Post(':id/cover')
+  @ApiOperation(ApiDocs.adminScripts.uploadCover)
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: {
+        file: { type: 'string', format: 'binary' },
+      },
+    },
+  })
+  @ApiOkResponse({ type: ScriptCoverResponseDto })
+  @UseInterceptors(FileInterceptor('file'))
+  uploadCover(
+    @Param('id', ParseUUIDPipe) id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.scripts.uploadCover(id, file);
+  }
+
+  @Delete(':id/cover')
+  @ApiOperation(ApiDocs.adminScripts.removeCover)
+  @ApiParam({ name: 'id', format: 'uuid' })
+  @ApiOkResponse({ type: OkResponseDto })
+  removeCover(@Param('id', ParseUUIDPipe) id: string) {
+    return this.scripts.removeCover(id);
   }
 
   @Post(':id/media')
@@ -82,7 +118,7 @@ export class AdminScriptsController {
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiBody({ type: AddScriptMediaDto })
   @ApiOkResponse({ type: ScriptMediaDto })
-  addMedia(@Param('id') id: string, @Body() body: AddScriptMediaDto) {
+  addMedia(@Param('id', ParseUUIDPipe) id: string, @Body() body: AddScriptMediaDto) {
     return this.scripts.addMedia(id, body);
   }
 
@@ -103,7 +139,7 @@ export class AdminScriptsController {
   @ApiOkResponse({ type: ScriptMediaDto })
   @UseInterceptors(FileInterceptor('file'))
   uploadImage(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile() file: Express.Multer.File,
     @Body() body: UploadImageBodyDto,
   ) {
@@ -114,7 +150,7 @@ export class AdminScriptsController {
   @ApiOperation(ApiDocs.adminScripts.listMedia)
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiOkResponse({ type: ScriptMediaDto, isArray: true })
-  listMedia(@Param('id') id: string) {
+  listMedia(@Param('id', ParseUUIDPipe) id: string) {
     return this.scripts.listMedia(id);
   }
 
@@ -123,7 +159,10 @@ export class AdminScriptsController {
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiBody({ type: ReorderScriptMediaDto })
   @ApiOkResponse({ type: ScriptMediaDto, isArray: true })
-  reorderMedia(@Param('id') id: string, @Body() body: ReorderScriptMediaDto) {
+  reorderMedia(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() body: ReorderScriptMediaDto,
+  ) {
     return this.scripts.reorderMedia(id, body.items);
   }
 
@@ -132,7 +171,10 @@ export class AdminScriptsController {
   @ApiParam({ name: 'id', format: 'uuid' })
   @ApiParam({ name: 'mediaId', format: 'uuid' })
   @ApiOkResponse({ type: OkResponseDto })
-  removeMedia(@Param('id') id: string, @Param('mediaId') mediaId: string) {
+  removeMedia(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('mediaId', ParseUUIDPipe) mediaId: string,
+  ) {
     return this.scripts.removeMedia(id, mediaId);
   }
 
@@ -152,7 +194,7 @@ export class AdminScriptsController {
   })
   @UseInterceptors(FileInterceptor('file'))
   uploadVersion(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile() file: Express.Multer.File,
     @Body() body: UploadVersionBodyDto,
   ) {
@@ -166,7 +208,7 @@ export class AdminScriptsController {
   @ApiQuery({ name: 'to', required: false, example: '2026-12-31' })
   @ApiOkResponse({ type: ScriptStatsDto })
   stats(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
   ) {
