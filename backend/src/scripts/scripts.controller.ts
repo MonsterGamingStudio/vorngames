@@ -62,10 +62,10 @@ export class ScriptsController {
 
   @Get('home/popular')
   @ApiOperation(ApiDocs.scripts.popular)
-  @ApiQuery({ name: 'limit', required: false, example: 8 })
+  @ApiQuery({ name: 'limit', required: false, example: 4 })
   @ApiOkResponse({ type: ScriptListItemWithMediaDto, isArray: true })
   getPopular(@Query('limit') limit?: string) {
-    return this.scripts.getPopular(Number(limit) || 8);
+    return this.scripts.getPopular(Number(limit) || 4);
   }
 
   @Get(':slug')

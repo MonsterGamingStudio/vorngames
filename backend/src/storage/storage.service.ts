@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -25,8 +26,11 @@ const SCRIPT_MIMES = new Set([
   'application/octet-stream',
 ]);
 
+export type UploadContext = Record<string, unknown>;
+
 @Injectable()
 export class StorageService {
+  private readonly logger = new Logger('StorageUpload');
   private readonly adapter: StorageAdapter;
   private readonly maxUploadBytes: number;
   private readonly publicBaseUrl: string | null;
@@ -50,20 +54,48 @@ export class StorageService {
     return this.driver === 's3' || this.driver === 'r2';
   }
 
-  assertSize(buffer: Buffer): void {
+  assertSize(buffer: Buffer, context?: UploadContext): void {
+    if (!buffer?.length) {
+      this.logger.warn(
+        `[validate:size] empty buffer ${JSON.stringify(context ?? {})}`,
+      );
+      throw new BadRequestException('File is empty or unreadable');
+    }
+
     if (buffer.length > this.maxUploadBytes) {
+      this.logger.warn(
+        `[validate:size] too large ${JSON.stringify({
+          ...context,
+          size: buffer.length,
+          maxBytes: this.maxUploadBytes,
+        })}`,
+      );
       throw new BadRequestException('File exceeds maximum upload size');
     }
   }
 
-  assertImageMime(mimeType: string): void {
+  assertImageMime(mimeType: string, context?: UploadContext): void {
     if (!IMAGE_MIMES.has(mimeType)) {
+      this.logger.warn(
+        `[validate:mime] unsupported image ${JSON.stringify({
+          ...context,
+          mimeType,
+          allowed: [...IMAGE_MIMES],
+        })}`,
+      );
       throw new BadRequestException('Unsupported image type');
     }
   }
 
-  assertScriptMime(mimeType: string): void {
+  assertScriptMime(mimeType: string, context?: UploadContext): void {
     if (!SCRIPT_MIMES.has(mimeType)) {
+      this.logger.warn(
+        `[validate:mime] unsupported script ${JSON.stringify({
+          ...context,
+          mimeType,
+          allowed: [...SCRIPT_MIMES],
+        })}`,
+      );
       throw new BadRequestException('Unsupported script file type');
     }
   }
@@ -73,16 +105,67 @@ export class StorageService {
     return `${prefix}/${randomUUID()}${ext}`;
   }
 
-  upload(
+  async upload(
     key: string,
     buffer: Buffer,
     mimeType: string,
+    context?: UploadContext,
   ): Promise<{ key: string }> {
-    return this.adapter.upload(key, buffer, mimeType);
+    const meta = {
+      driver: this.driver,
+      key,
+      mimeType,
+      size: buffer.length,
+      maxBytes: this.maxUploadBytes,
+      ...context,
+    };
+    const startedAt = Date.now();
+
+    this.logger.log(`[upload:start] ${JSON.stringify(meta)}`);
+
+    try {
+      const result = await this.adapter.upload(key, buffer, mimeType);
+      this.logger.log(
+        `[upload:ok] ${JSON.stringify({
+          ...meta,
+          storageKey: result.key,
+          durationMs: Date.now() - startedAt,
+        })}`,
+      );
+      return result;
+    } catch (error) {
+      this.logger.error(
+        `[upload:fail] ${JSON.stringify({
+          ...meta,
+          durationMs: Date.now() - startedAt,
+          error:
+            error instanceof Error
+              ? { name: error.name, message: error.message, stack: error.stack }
+              : { message: String(error) },
+        })}`,
+      );
+      throw error;
+    }
   }
 
-  delete(key: string): Promise<void> {
-    return this.adapter.delete(key);
+  async delete(key: string, context?: UploadContext): Promise<void> {
+    this.logger.log(`[delete:start] ${JSON.stringify({ key, ...context })}`);
+    try {
+      await this.adapter.delete(key);
+      this.logger.log(`[delete:ok] ${JSON.stringify({ key, ...context })}`);
+    } catch (error) {
+      this.logger.error(
+        `[delete:fail] ${JSON.stringify({
+          key,
+          ...context,
+          error:
+            error instanceof Error
+              ? { name: error.name, message: error.message, stack: error.stack }
+              : { message: String(error) },
+        })}`,
+      );
+      throw error;
+    }
   }
 
   getSignedUrl(key: string, ttlSeconds = 300): Promise<string> {

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import {
@@ -15,6 +16,10 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../storage/storage.service';
 import { slugify } from '../common/utils';
+import {
+  formatUploadError,
+  formatUploadFileMeta,
+} from '../common/utils/upload-log.util';
 import { NotificationsService } from '../notifications/notifications.service';
 
 export type ScriptListQuery = {
@@ -46,6 +51,8 @@ export type UpdateScriptInput = Partial<CreateScriptInput> & {
 
 @Injectable()
 export class ScriptsService {
+  private readonly logger = new Logger(ScriptsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly storage: StorageService,
@@ -340,7 +347,7 @@ export class ScriptsService {
       .map((s) => this.toListItemWithMedia(s!));
   }
 
-  async getPopular(limit = 8) {
+  async getPopular(limit = 4) {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const popular = await this.prisma.scriptView.groupBy({
       by: ['scriptId'],
@@ -353,20 +360,45 @@ export class ScriptsService {
       take: limit,
     });
 
-    const ids = popular.map((p) => p.scriptId);
-    if (!ids.length) {
-      return [];
+    const popularIds = popular.map((p) => p.scriptId);
+    const ordered: Array<
+      Script & {
+        media: Array<{
+          id: string;
+          type: ScriptMediaType;
+          url: string;
+          sortOrder: number;
+        }>;
+        versions: Array<{ id: string; versionLabel: string; releasedAt: Date }>;
+      }
+    > = [];
+
+    if (popularIds.length > 0) {
+      const scripts = await this.prisma.script.findMany({
+        where: { id: { in: popularIds }, ...this.catalogWhere },
+        include: this.scriptInclude,
+      });
+      for (const id of popularIds) {
+        const script = scripts.find((s) => s.id === id);
+        if (script) ordered.push(script);
+      }
     }
 
-    const scripts = await this.prisma.script.findMany({
-      where: { id: { in: ids }, ...this.catalogWhere },
-      include: this.scriptInclude,
-    });
+    if (ordered.length < limit) {
+      const excludeIds = ordered.map((s) => s.id);
+      const filler = await this.prisma.script.findMany({
+        where: {
+          ...this.catalogWhere,
+          ...(excludeIds.length ? { id: { notIn: excludeIds } } : {}),
+        },
+        include: this.scriptInclude,
+      });
+      ordered.push(
+        ...this.shuffleArray(filler).slice(0, limit - ordered.length),
+      );
+    }
 
-    return ids
-      .map((id) => scripts.find((s) => s.id === id))
-      .filter(Boolean)
-      .map((s) => this.toListItemWithMedia(s!));
+    return ordered.map((s) => this.toListItemWithMedia(s));
   }
 
   toDetail(
@@ -674,56 +706,137 @@ export class ScriptsService {
   }
 
   async uploadImage(scriptId: string, file: Express.Multer.File, sortOrder = 0) {
+    const context = { kind: 'script-image', scriptId, sortOrder };
+    this.logger.log(
+      `[uploadImage:start] ${JSON.stringify({
+        ...context,
+        file: formatUploadFileMeta(file),
+      })}`,
+    );
+
     if (!file) {
+      this.logger.error(`[uploadImage] file missing ${JSON.stringify(context)}`);
       throw new BadRequestException('File is required');
     }
-    this.storage.assertSize(file.buffer);
-    this.storage.assertImageMime(file.mimetype);
-    const key = this.storage.buildKey(`scripts/${scriptId}/images`, file.originalname);
-    const { key: storageKey } = await this.storage.upload(
-      key,
-      file.buffer,
-      file.mimetype,
-    );
-    return this.addMedia(scriptId, {
-      type: ScriptMediaType.image,
-      url: storageKey,
-      sortOrder,
-    });
+    if (!file.buffer?.length) {
+      this.logger.error(
+        `[uploadImage] buffer missing ${JSON.stringify({
+          ...context,
+          file: formatUploadFileMeta(file),
+        })}`,
+      );
+      throw new BadRequestException('File buffer is empty or unreadable');
+    }
+
+    try {
+      this.storage.assertSize(file.buffer, context);
+      this.storage.assertImageMime(file.mimetype, context);
+      const key = this.storage.buildKey(
+        `scripts/${scriptId}/images`,
+        file.originalname,
+      );
+      const { key: storageKey } = await this.storage.upload(
+        key,
+        file.buffer,
+        file.mimetype,
+        context,
+      );
+      const result = await this.addMedia(scriptId, {
+        type: ScriptMediaType.image,
+        url: storageKey,
+        sortOrder,
+      });
+      this.logger.log(
+        `[uploadImage:ok] ${JSON.stringify({ ...context, storageKey })}`,
+      );
+      return result;
+    } catch (error) {
+      this.logger.error(
+        `[uploadImage:fail] ${JSON.stringify({
+          ...context,
+          file: formatUploadFileMeta(file),
+          error: formatUploadError(error),
+        })}`,
+      );
+      throw error;
+    }
   }
 
   async uploadCover(scriptId: string, file: Express.Multer.File) {
+    const context = { kind: 'script-cover', scriptId };
+    this.logger.log(
+      `[uploadCover:start] ${JSON.stringify({
+        ...context,
+        file: formatUploadFileMeta(file),
+      })}`,
+    );
+
     if (!file) {
+      this.logger.error(`[uploadCover] file missing ${JSON.stringify(context)}`);
       throw new BadRequestException('File is required');
     }
-    this.storage.assertSize(file.buffer);
-    this.storage.assertImageMime(file.mimetype);
-
-    const script = await this.findById(scriptId);
-    const key = this.storage.buildKey(
-      `scripts/${scriptId}/cover`,
-      file.originalname,
-    );
-    const { key: storageKey } = await this.storage.upload(
-      key,
-      file.buffer,
-      file.mimetype,
-    );
-
-    if (script.coverKey && script.coverKey !== storageKey) {
-      try {
-        await this.storage.delete(script.coverKey);
-      } catch {
-        // ignore missing storage file
-      }
+    if (!file.buffer?.length) {
+      this.logger.error(
+        `[uploadCover] buffer missing ${JSON.stringify({
+          ...context,
+          file: formatUploadFileMeta(file),
+        })}`,
+      );
+      throw new BadRequestException('File buffer is empty or unreadable');
     }
 
-    await this.prisma.script.update({
-      where: { id: scriptId },
-      data: { coverKey: storageKey },
-    });
+    try {
+      this.storage.assertSize(file.buffer, context);
+      this.storage.assertImageMime(file.mimetype, context);
 
-    return { coverUrl: this.storage.getPublicUrl(storageKey) };
+      const script = await this.findById(scriptId);
+      const key = this.storage.buildKey(
+        `scripts/${scriptId}/cover`,
+        file.originalname,
+      );
+      const { key: storageKey } = await this.storage.upload(
+        key,
+        file.buffer,
+        file.mimetype,
+        context,
+      );
+
+      if (script.coverKey && script.coverKey !== storageKey) {
+        try {
+          await this.storage.delete(script.coverKey, {
+            ...context,
+            phase: 'replace-old-cover',
+          });
+        } catch (error) {
+          this.logger.warn(
+            `[uploadCover] old cover delete failed ${JSON.stringify({
+              ...context,
+              oldCoverKey: script.coverKey,
+              error: formatUploadError(error),
+            })}`,
+          );
+        }
+      }
+
+      await this.prisma.script.update({
+        where: { id: scriptId },
+        data: { coverKey: storageKey },
+      });
+
+      this.logger.log(
+        `[uploadCover:ok] ${JSON.stringify({ ...context, storageKey })}`,
+      );
+      return { coverUrl: this.storage.getPublicUrl(storageKey) };
+    } catch (error) {
+      this.logger.error(
+        `[uploadCover:fail] ${JSON.stringify({
+          ...context,
+          file: formatUploadFileMeta(file),
+          error: formatUploadError(error),
+        })}`,
+      );
+      throw error;
+    }
   }
 
   async removeCover(scriptId: string) {
@@ -760,59 +873,100 @@ export class ScriptsService {
     file: Express.Multer.File,
     versionLabel: string,
   ) {
-    if (!file) {
-      throw new BadRequestException('File is required');
-    }
-    this.storage.assertSize(file.buffer);
-    this.storage.assertScriptMime(file.mimetype);
-
-    const script = await this.findById(scriptId);
-    const key = this.storage.buildKey(`scripts/${scriptId}/files`, file.originalname);
-    const { key: storageKey } = await this.storage.upload(
-      key,
-      file.buffer,
-      file.mimetype,
+    const context = { kind: 'script-version', scriptId, versionLabel };
+    this.logger.log(
+      `[addVersion:start] ${JSON.stringify({
+        ...context,
+        file: formatUploadFileMeta(file),
+      })}`,
     );
 
-    await this.prisma.scriptVersion.updateMany({
-      where: { scriptId, isCurrent: true },
-      data: { isCurrent: false },
-    });
-
-    const version = await this.prisma.scriptVersion.create({
-      data: {
-        scriptId,
-        versionLabel,
-        storageKey,
-        fileName: file.originalname,
-        fileSize: file.size,
-        isCurrent: true,
-      },
-    });
-
-    await this.prisma.script.update({
-      where: { id: scriptId },
-      data: { fileUpdatedAt: new Date() },
-    });
-
-    const purchasers = await this.prisma.purchase.findMany({
-      where: { scriptId },
-      select: { userId: true },
-    });
-
-    if (purchasers.length > 0) {
-      await this.notifications.createMany(
-        purchasers.map((p) => ({
-          userId: p.userId,
-          type: 'script_update' as const,
-          title: 'Обновление скрипта',
-          body: `Вышло новое обновление для «${script.title}»`,
-          payload: { scriptId, versionId: version.id },
-        })),
+    if (!file) {
+      this.logger.error(`[addVersion] file missing ${JSON.stringify(context)}`);
+      throw new BadRequestException('File is required');
+    }
+    if (!file.buffer?.length) {
+      this.logger.error(
+        `[addVersion] buffer missing ${JSON.stringify({
+          ...context,
+          file: formatUploadFileMeta(file),
+        })}`,
       );
+      throw new BadRequestException('File buffer is empty or unreadable');
     }
 
-    return version;
+    try {
+      this.storage.assertSize(file.buffer, context);
+      this.storage.assertScriptMime(file.mimetype, context);
+
+      const script = await this.findById(scriptId);
+      const key = this.storage.buildKey(
+        `scripts/${scriptId}/files`,
+        file.originalname,
+      );
+      const { key: storageKey } = await this.storage.upload(
+        key,
+        file.buffer,
+        file.mimetype,
+        context,
+      );
+
+      await this.prisma.scriptVersion.updateMany({
+        where: { scriptId, isCurrent: true },
+        data: { isCurrent: false },
+      });
+
+      const version = await this.prisma.scriptVersion.create({
+        data: {
+          scriptId,
+          versionLabel,
+          storageKey,
+          fileName: file.originalname,
+          fileSize: file.size,
+          isCurrent: true,
+        },
+      });
+
+      await this.prisma.script.update({
+        where: { id: scriptId },
+        data: { fileUpdatedAt: new Date() },
+      });
+
+      const purchasers = await this.prisma.purchase.findMany({
+        where: { scriptId },
+        select: { userId: true },
+      });
+
+      if (purchasers.length > 0) {
+        await this.notifications.createMany(
+          purchasers.map((p) => ({
+            userId: p.userId,
+            type: 'script_update' as const,
+            title: 'Обновление скрипта',
+            body: `Вышло новое обновление для «${script.title}»`,
+            payload: { scriptId, versionId: version.id },
+          })),
+        );
+      }
+
+      this.logger.log(
+        `[addVersion:ok] ${JSON.stringify({
+          ...context,
+          storageKey,
+          versionId: version.id,
+        })}`,
+      );
+      return version;
+    } catch (error) {
+      this.logger.error(
+        `[addVersion:fail] ${JSON.stringify({
+          ...context,
+          file: formatUploadFileMeta(file),
+          error: formatUploadError(error),
+        })}`,
+      );
+      throw error;
+    }
   }
 
   async listMedia(scriptId: string) {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createReadStream, existsSync } from 'fs';
 import { mkdir, unlink, writeFile } from 'fs/promises';
@@ -7,6 +7,7 @@ import { StorageAdapter } from './storage.interface';
 
 @Injectable()
 export class LocalStorageAdapter implements StorageAdapter {
+  private readonly logger = new Logger('LocalStorage');
   private readonly uploadDir: string;
 
   constructor(config: ConfigService) {
@@ -20,12 +21,46 @@ export class LocalStorageAdapter implements StorageAdapter {
   async upload(
     key: string,
     buffer: Buffer,
-    _mimeType: string,
+    mimeType: string,
   ): Promise<{ key: string }> {
     const filePath = this.resolvePath(key);
-    await mkdir(dirname(filePath), { recursive: true });
-    await writeFile(filePath, buffer);
-    return { key };
+    const startedAt = Date.now();
+
+    this.logger.log(
+      `[write:start] ${JSON.stringify({
+        key,
+        filePath,
+        uploadDir: this.uploadDir,
+        mimeType,
+        size: buffer.length,
+      })}`,
+    );
+
+    try {
+      await mkdir(dirname(filePath), { recursive: true });
+      await writeFile(filePath, buffer);
+      this.logger.log(
+        `[write:ok] ${JSON.stringify({
+          key,
+          filePath,
+          durationMs: Date.now() - startedAt,
+        })}`,
+      );
+      return { key };
+    } catch (error) {
+      this.logger.error(
+        `[write:fail] ${JSON.stringify({
+          key,
+          filePath,
+          durationMs: Date.now() - startedAt,
+          error:
+            error instanceof Error
+              ? { name: error.name, message: error.message, stack: error.stack }
+              : { message: String(error) },
+        })}`,
+      );
+      throw error;
+    }
   }
 
   async delete(key: string): Promise<void> {

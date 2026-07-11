@@ -9,6 +9,7 @@ import session from 'express-session';
 import { AppModule } from './app.module';
 import { JWT_COOKIE_NAME } from './auth/auth.constants';
 import { PrismaExceptionFilter } from './common/filters/prisma-exception.filter';
+import { MulterExceptionFilter } from './common/filters/multer-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -37,7 +38,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
   app.use(cookieParser());
-  app.useGlobalFilters(new PrismaExceptionFilter());
+  app.useGlobalFilters(new PrismaExceptionFilter(), new MulterExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

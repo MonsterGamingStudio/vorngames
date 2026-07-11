@@ -6,13 +6,14 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Readable } from 'stream';
 import { StorageAdapter } from './storage.interface';
 
 @Injectable()
 export class S3StorageAdapter implements StorageAdapter {
+  private readonly logger = new Logger('S3Storage');
   private client: S3Client | null = null;
   private bucket: string | null = null;
 
@@ -53,16 +54,52 @@ export class S3StorageAdapter implements StorageAdapter {
     buffer: Buffer,
     mimeType: string,
   ): Promise<{ key: string }> {
-    const { client, bucket } = this.resolveClient();
-    await client.send(
-      new PutObjectCommand({
-        Bucket: bucket,
-        Key: key,
-        Body: buffer,
-        ContentType: mimeType,
-      }),
-    );
-    return { key };
+    const startedAt = Date.now();
+    let bucket = this.bucket;
+
+    try {
+      const resolved = this.resolveClient();
+      bucket = resolved.bucket;
+      this.logger.log(
+        `[put:start] ${JSON.stringify({
+          key,
+          bucket,
+          mimeType,
+          size: buffer.length,
+        })}`,
+      );
+
+      await resolved.client.send(
+        new PutObjectCommand({
+          Bucket: resolved.bucket,
+          Key: key,
+          Body: buffer,
+          ContentType: mimeType,
+        }),
+      );
+
+      this.logger.log(
+        `[put:ok] ${JSON.stringify({
+          key,
+          bucket,
+          durationMs: Date.now() - startedAt,
+        })}`,
+      );
+      return { key };
+    } catch (error) {
+      this.logger.error(
+        `[put:fail] ${JSON.stringify({
+          key,
+          bucket,
+          durationMs: Date.now() - startedAt,
+          error:
+            error instanceof Error
+              ? { name: error.name, message: error.message, stack: error.stack }
+              : { message: String(error) },
+        })}`,
+      );
+      throw error;
+    }
   }
 
   async delete(key: string): Promise<void> {

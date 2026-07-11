@@ -24,6 +24,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { OkResponseDto } from '../common/dto/common.dto';
+import { FileUploadLogInterceptor } from '../common/interceptors/file-upload-log.interceptor';
 import { ApiDocs } from '../common/swagger/api-docs';
 import { JWT_COOKIE_NAME } from '../auth/auth.constants';
 import { AdminGuard, BlockedUserGuard } from '../auth/guards';
@@ -97,7 +98,7 @@ export class AdminScriptsController {
     },
   })
   @ApiOkResponse({ type: ScriptCoverResponseDto })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file'), FileUploadLogInterceptor)
   uploadCover(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile() file: Express.Multer.File,
@@ -137,7 +138,7 @@ export class AdminScriptsController {
     },
   })
   @ApiOkResponse({ type: ScriptMediaDto })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file'), FileUploadLogInterceptor)
   uploadImage(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile() file: Express.Multer.File,
@@ -192,7 +193,7 @@ export class AdminScriptsController {
       },
     },
   })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file'), FileUploadLogInterceptor)
   uploadVersion(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile() file: Express.Multer.File,
