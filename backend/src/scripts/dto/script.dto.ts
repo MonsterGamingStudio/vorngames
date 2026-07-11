@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -260,8 +260,13 @@ export class CreateScriptDto {
   @IsInt()
   discountPercent?: number;
 
-  @ApiPropertyOptional({ enum: ScriptBadgeDto })
+  @ApiPropertyOptional({
+    enum: ScriptBadgeDto,
+    nullable: true,
+    description: 'null or "none" — без бейджа',
+  })
   @IsOptional()
+  @Transform(({ value }) => (value === null ? ScriptBadgeDto.none : value))
   @IsEnum(ScriptBadgeDto)
   badge?: ScriptBadgeDto;
 
@@ -329,8 +334,13 @@ export class UpdateScriptDto {
   @IsInt()
   discountPercent?: number;
 
-  @ApiPropertyOptional({ enum: ScriptBadgeDto })
+  @ApiPropertyOptional({
+    enum: ScriptBadgeDto,
+    nullable: true,
+    description: 'null or "none" — без бейджа',
+  })
   @IsOptional()
+  @Transform(({ value }) => (value === null ? ScriptBadgeDto.none : value))
   @IsEnum(ScriptBadgeDto)
   badge?: ScriptBadgeDto;
 

@@ -7,11 +7,28 @@ import {
 import { Prisma } from '../../generated/prisma/client';
 import type { Response } from 'express';
 
-@Catch(Prisma.PrismaClientKnownRequestError)
+@Catch(
+  Prisma.PrismaClientKnownRequestError,
+  Prisma.PrismaClientValidationError,
+)
 export class PrismaExceptionFilter implements ExceptionFilter {
-  catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
+  catch(
+    exception:
+      | Prisma.PrismaClientKnownRequestError
+      | Prisma.PrismaClientValidationError,
+    host: ArgumentsHost,
+  ) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
+
+    if (exception instanceof Prisma.PrismaClientValidationError) {
+      response.status(HttpStatus.BAD_REQUEST).json({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: this.formatValidationMessage(exception.message),
+        error: 'Bad Request',
+      });
+      return;
+    }
 
     switch (exception.code) {
       case 'P2002': {
@@ -46,5 +63,13 @@ export class PrismaExceptionFilter implements ExceptionFilter {
           error: 'Bad Request',
         });
     }
+  }
+
+  private formatValidationMessage(message: string): string {
+    const fieldMatch = message.match(/Argument `(\w+)`/);
+    if (fieldMatch) {
+      return `Invalid value for field "${fieldMatch[1]}"`;
+    }
+    return 'Invalid request data';
   }
 }

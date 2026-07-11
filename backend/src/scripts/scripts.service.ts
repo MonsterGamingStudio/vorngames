@@ -40,7 +40,9 @@ export type CreateScriptInput = {
   featuredOnHome?: boolean;
 };
 
-export type UpdateScriptInput = Partial<CreateScriptInput>;
+export type UpdateScriptInput = Partial<CreateScriptInput> & {
+  badge?: ScriptBadge | null;
+};
 
 @Injectable()
 export class ScriptsService {
@@ -549,7 +551,7 @@ export class ScriptsService {
         priceUsd: input.priceUsd,
         tebexPackageId: input.tebexPackageId,
         discountPercent: input.discountPercent,
-        badge: input.badge ?? ScriptBadge.none,
+        badge: input.badge == null ? ScriptBadge.none : input.badge,
         instructionHtml: input.instructionHtml ?? '',
         isPublished: input.isPublished ?? false,
         featuredOnHome: input.featuredOnHome ?? false,
@@ -578,7 +580,7 @@ export class ScriptsService {
     const updated = await this.prisma.script.update({
       where: { id },
       data: {
-        ...input,
+        ...this.buildUpdateData(input),
         publishedAt:
           isPublished && !current.publishedAt ? new Date() : current.publishedAt,
       },
@@ -586,6 +588,38 @@ export class ScriptsService {
     });
 
     return this.toAdminItem(updated);
+  }
+
+  private buildUpdateData(input: UpdateScriptInput): Prisma.ScriptUpdateInput {
+    const data: Prisma.ScriptUpdateInput = {};
+
+    if (input.title !== undefined) data.title = input.title;
+    if (input.slug !== undefined) data.slug = input.slug;
+    if (input.shortDescription !== undefined) {
+      data.shortDescription = input.shortDescription;
+    }
+    if (input.gameCategory !== undefined) data.gameCategory = input.gameCategory;
+    if (input.priceRub !== undefined) data.priceRub = input.priceRub;
+    if (input.priceUsd !== undefined) data.priceUsd = input.priceUsd;
+    if (input.tebexPackageId !== undefined) {
+      data.tebexPackageId = input.tebexPackageId;
+    }
+    if (input.discountPercent !== undefined) {
+      data.discountPercent = input.discountPercent;
+    }
+    if (input.instructionHtml !== undefined) {
+      data.instructionHtml = input.instructionHtml;
+    }
+    if (input.isPublished !== undefined) data.isPublished = input.isPublished;
+    if (input.featuredOnHome !== undefined) {
+      data.featuredOnHome = input.featuredOnHome;
+    }
+    if ('badge' in input) {
+      data.badge =
+        input.badge == null ? ScriptBadge.none : input.badge;
+    }
+
+    return data;
   }
 
   private buildTebexPayUrl(
