@@ -83,6 +83,14 @@ export class PurchaseItemDto {
   script!: PurchaseScriptDto;
 }
 
+export class AdminPurchaseItemDto extends PurchaseItemDto {
+  @ApiProperty({
+    example: false,
+    description: 'True when purchase was granted by admin without payment',
+  })
+  grantedByAdmin!: boolean;
+}
+
 export class GrantPurchaseDto {
   @ApiProperty({ format: 'uuid' })
   @IsUUID()

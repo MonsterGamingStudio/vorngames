@@ -224,6 +224,11 @@ export const ApiDocs = {
       summary: '[Админ] Блокировка / роль',
       description: 'isBlocked, blockedReason, role (user | admin).',
     },
+    listUserPurchases: {
+      summary: '[Админ] Покупки пользователя',
+      description:
+        'Список всех Purchase пользователя (новые первыми): скрипт, цена, needsUpdate, grantedByAdmin.',
+    },
     grantPurchase: {
       summary: '[Админ] Выдать скрипт пользователю',
       description: 'Создаёт Purchase без оплаты (grantedByAdmin). Тело: scriptId, currency.',

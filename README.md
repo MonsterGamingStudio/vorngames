@@ -135,6 +135,8 @@ cd backend
 | GET | `/api/payments/unitpay/handler` | Webhook UnitPay (check / pay / error) |
 | POST | `/api/tebex/webhook` | Webhook Tebex — выдача скриптов после покупки |
 | POST | `/api/scripts/:id/buy` | [Auth] Создать Tebex checkout basket, вернуть `{ ident }` |
+| GET | `/api/profile/purchases` | [Auth] Купленные скрипты текущего пользователя |
+| GET | `/api/admin/users/:id/purchases` | [Админ] Покупки пользователя по ID |
 | GET | `/api/admin/tebex-licenses` | [Админ] Список Tebex-покупок |
 | PATCH | `/api/admin/tebex-licenses/:id` | [Админ] Включить/отключить лицензию |
 | GET | `/api/admin/tebex-packages` | [Админ] Маппинг Tebex package → скрипт |

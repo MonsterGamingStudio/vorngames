@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -23,7 +24,7 @@ import { AdminGuard, BlockedUserGuard } from '../auth/guards';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApiDocs } from '../common/swagger/api-docs';
 import { parsePagination } from '../common/utils';
-import { GrantPurchaseDto } from '../purchases/dto/purchase.dto';
+import { GrantPurchaseDto, AdminPurchaseItemDto } from '../purchases/dto/purchase.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { PurchasesService } from '../purchases/purchases.service';
 import { ScriptsService } from '../scripts/scripts.service';
@@ -75,6 +76,14 @@ export class AdminController {
   @ApiBody({ type: UpdateUserDto })
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.users.updateUser(id, body);
+  }
+
+  @Get('users/:id/purchases')
+  @ApiOperation(ApiDocs.admin.listUserPurchases)
+  @ApiParam({ name: 'id', format: 'uuid', description: 'User ID' })
+  @ApiOkResponse({ type: AdminPurchaseItemDto, isArray: true })
+  listUserPurchases(@Param('id', ParseUUIDPipe) id: string) {
+    return this.purchases.listPurchasesForUserAdmin(id);
   }
 
   @Post('users/:id/purchases/grant')

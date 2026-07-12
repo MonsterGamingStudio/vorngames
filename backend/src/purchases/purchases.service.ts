@@ -160,6 +160,18 @@ export class PurchasesService {
   }
 
   async listUserPurchases(userId: string) {
+    return this.fetchUserPurchases(userId);
+  }
+
+  async listPurchasesForUserAdmin(userId: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return this.fetchUserPurchases(userId, true);
+  }
+
+  private async fetchUserPurchases(userId: string, admin = false) {
     const purchases = await this.prisma.purchase.findMany({
       where: { userId },
       include: {
@@ -187,6 +199,7 @@ export class PurchasesService {
         currency: p.currency,
         needsUpdate,
         script: this.scripts.toListItem(p.script),
+        ...(admin ? { grantedByAdmin: p.grantedByAdmin } : {}),
       };
     });
   }
