@@ -8,6 +8,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Max,
   Min,
   ValidateNested,
 } from 'class-validator';
@@ -85,11 +86,20 @@ export class ScriptListItemDto {
   @ApiProperty({ enum: GameCategoryDto })
   gameCategory!: GameCategoryDto;
 
-  @ApiProperty({ example: 1500.0 })
+  @ApiProperty({ example: 1500.0, description: 'Базовая цена без скидки (RUB)' })
   priceRub!: number;
 
-  @ApiProperty({ example: 19.99 })
+  @ApiProperty({ example: 19.99, description: 'Базовая цена без скидки (USD)' })
   priceUsd!: number;
+
+  @ApiProperty({ example: 1350.0, description: 'Цена к оплате с учётом скидки (RUB)' })
+  finalPriceRub!: number;
+
+  @ApiProperty({ example: 17.99, description: 'Цена к оплате с учётом скидки (USD)' })
+  finalPriceUsd!: number;
+
+  @ApiProperty({ example: false, description: 'true когда задана активная скидка' })
+  hasDiscount!: boolean;
 
   @ApiPropertyOptional({
     example: 1234567,
@@ -104,7 +114,11 @@ export class ScriptListItemDto {
   })
   tebexPayUrl?: string | null;
 
-  @ApiPropertyOptional({ example: 10 })
+  @ApiPropertyOptional({
+    example: 10,
+    nullable: true,
+    description: 'Процент скидки; null — без скидки',
+  })
   discountPercent?: number | null;
 
   @ApiPropertyOptional({
@@ -254,11 +268,21 @@ export class CreateScriptDto {
   @Min(1)
   tebexPackageId?: number;
 
-  @ApiPropertyOptional({ example: 10 })
+  @ApiPropertyOptional({
+    example: 10,
+    nullable: true,
+    description: 'Процент скидки (1–100); null или 0 — без скидки',
+  })
   @IsOptional()
+  @Transform(({ value }) => {
+    if (value === null || value === '' || value === 0) return null;
+    return value;
+  })
   @Type(() => Number)
   @IsInt()
-  discountPercent?: number;
+  @Min(1)
+  @Max(100)
+  discountPercent?: number | null;
 
   @ApiPropertyOptional({
     enum: ScriptBadgeDto,
@@ -328,11 +352,21 @@ export class UpdateScriptDto {
   @Min(1)
   tebexPackageId?: number;
 
-  @ApiPropertyOptional({ example: 10 })
+  @ApiPropertyOptional({
+    example: 10,
+    nullable: true,
+    description: 'Процент скидки (1–100); null или 0 — без скидки',
+  })
   @IsOptional()
+  @Transform(({ value }) => {
+    if (value === null || value === '' || value === 0) return null;
+    return value;
+  })
   @Type(() => Number)
   @IsInt()
-  discountPercent?: number;
+  @Min(1)
+  @Max(100)
+  discountPercent?: number | null;
 
   @ApiPropertyOptional({
     enum: ScriptBadgeDto,
