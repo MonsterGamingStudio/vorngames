@@ -17,6 +17,11 @@ import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from '../storage/storage.service';
 import { slugify } from '../common/utils';
 import {
+  applyDiscount,
+  hasActiveDiscount,
+  normalizeDiscountPercent,
+} from '../common/utils/price.util';
+import {
   formatUploadError,
   formatUploadFileMeta,
 } from '../common/utils/upload-log.util';
@@ -38,7 +43,7 @@ export type CreateScriptInput = {
   priceRub: number;
   priceUsd: number;
   tebexPackageId?: number;
-  discountPercent?: number;
+  discountPercent?: number | null;
   badge?: ScriptBadge;
   instructionHtml?: string;
   isPublished?: boolean;
@@ -131,6 +136,21 @@ export class ScriptsService {
     return media.map((m) => this.mapMediaItem(m));
   }
 
+  private mapPriceFields(script: Pick<Script, 'priceRub' | 'priceUsd' | 'discountPercent'>) {
+    const priceRub = this.serializePrice(script.priceRub);
+    const priceUsd = this.serializePrice(script.priceUsd);
+    const discountPercent = normalizeDiscountPercent(script.discountPercent);
+
+    return {
+      priceRub,
+      priceUsd,
+      discountPercent,
+      finalPriceRub: applyDiscount(priceRub, discountPercent),
+      finalPriceUsd: applyDiscount(priceUsd, discountPercent),
+      hasDiscount: hasActiveDiscount(discountPercent),
+    };
+  }
+
   toListItem(
     script: Script & { media: { url: string; type: string }[] },
   ) {
@@ -140,10 +160,8 @@ export class ScriptsService {
       title: script.title,
       shortDescription: script.shortDescription,
       gameCategory: script.gameCategory,
-      priceRub: this.serializePrice(script.priceRub),
-      priceUsd: this.serializePrice(script.priceUsd),
+      ...this.mapPriceFields(script),
       ...this.getTebexFields(script),
-      discountPercent: script.discountPercent,
       ...this.mapBadgeFields(script.badge),
       featuredOnHome: script.featuredOnHome,
       coverUrl: this.resolveCoverUrl(script),
@@ -582,7 +600,7 @@ export class ScriptsService {
         priceRub: input.priceRub,
         priceUsd: input.priceUsd,
         tebexPackageId: input.tebexPackageId,
-        discountPercent: input.discountPercent,
+        discountPercent: normalizeDiscountPercent(input.discountPercent),
         badge: input.badge == null ? ScriptBadge.none : input.badge,
         instructionHtml: input.instructionHtml ?? '',
         isPublished: input.isPublished ?? false,
@@ -636,8 +654,8 @@ export class ScriptsService {
     if (input.tebexPackageId !== undefined) {
       data.tebexPackageId = input.tebexPackageId;
     }
-    if (input.discountPercent !== undefined) {
-      data.discountPercent = input.discountPercent;
+    if ('discountPercent' in input) {
+      data.discountPercent = normalizeDiscountPercent(input.discountPercent);
     }
     if (input.instructionHtml !== undefined) {
       data.instructionHtml = input.instructionHtml;

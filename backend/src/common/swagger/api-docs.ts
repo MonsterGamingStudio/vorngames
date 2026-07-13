@@ -261,7 +261,7 @@ export const ApiDocs = {
     create: {
       summary: '[Админ] Создать скрипт',
       description:
-        'title, slug, описание, gameCategory, priceRub/priceUsd (до 2 знаков после запятой), tebexPackageId (опц.), discount, badge, instructionHtml, isPublished, featuredOnHome. Обложка — отдельно через POST cover.',
+        'title, slug, описание, gameCategory, priceRub/priceUsd (базовая цена), discountPercent (опц., null — без скидки), tebexPackageId (опц.), badge, instructionHtml, isPublished, featuredOnHome. Обложка — отдельно через POST cover.',
     },
     update: {
       summary: '[Админ] Редактировать скрипт',

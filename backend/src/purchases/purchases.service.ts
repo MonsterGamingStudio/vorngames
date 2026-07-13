@@ -21,6 +21,7 @@ import { UnitpayService } from '../payments/unitpay.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { ScriptsService } from '../scripts/scripts.service';
 import { StorageService } from '../storage/storage.service';
+import { applyDiscountForPayment } from '../common/utils/price.util';
 
 @Injectable()
 export class PurchasesService {
@@ -44,11 +45,7 @@ export class PurchasesService {
     const base = Number(
       currency === Currency.USD ? script.priceUsd : script.priceRub,
     );
-    const discounted =
-      script.discountPercent && script.discountPercent > 0
-        ? base * (1 - script.discountPercent / 100)
-        : base;
-    return Math.round(discounted);
+    return applyDiscountForPayment(base, script.discountPercent);
   }
 
   async createPurchase(user: User, scriptId: string, currency: Currency = Currency.RUB) {
